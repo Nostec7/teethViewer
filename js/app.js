@@ -45,13 +45,13 @@ function createControls() {
 
 function createLights() {
 
-  const ambientLight = new THREE.HemisphereLight( 0xddeeff, 0x0f0e0d, 5 );
+  const ambientLight = new THREE.HemisphereLight( 0xddeeff, 0x0f0e0d, 4.5 );
 
-  const leftLight = new THREE.DirectionalLight( 0xffffff, 5 );
-  leftLight.position.set( 30, 10, 10 );
+  const leftLight = new THREE.DirectionalLight( 0xffffff, 3 );
+  leftLight.position.set( -30, 10, 7 );
 	
   const rightLight = new THREE.DirectionalLight( 0xffffff, 5 );
-  rightLight.position.set( -30, 10, 10 );	
+  rightLight.position.set( 30, 10, 10 );	
 
   scene.add( ambientLight, leftLight, rightLight );
 
