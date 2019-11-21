@@ -28,7 +28,6 @@ a:hover{
 
 /*===========SCRUBBER=============*/
 .scrubber {
-    position: absolute;
     margin: auto;
     bottom: 30px;
     width: 40%;
