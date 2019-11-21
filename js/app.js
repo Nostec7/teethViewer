@@ -5,6 +5,8 @@ let controls;
 let renderer;
 let scene;
 let scrubber;
+var animationElement;
+var actionElement;
 var mixerElement;
 
 const mixers = [];
@@ -82,6 +84,8 @@ function loadModels() {
     const mixer = new THREE.AnimationMixer( model );
     mixers.push( mixer );
 
+	  animationElement = animation;
+	  actionElement = action;
     const action = mixer.clipAction( animation );
     //action.play();
 	  //mixer.setTime(1);
