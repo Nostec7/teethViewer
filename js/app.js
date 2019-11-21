@@ -171,22 +171,17 @@ function addMouthOpeningScrubber(){
 	scruber.value(0);
 	scrubber.min(0).max(60).step(1).value(0.6).orientation('horizontal');
 	
-	
+	scrubber.onScrubStart = function (value) {
+    	console.log(value); // the value at the time of scrub start
+	}
+	// onValueChanged is called whenever the scrubber is moved.
+	scrubber.onValueChanged = function (value) {
+	  console.log(value); // the value at time of invocation
+	}
+	// onScrubEnd is called whenever a user stops scrubbing
+	scrubber.onScrubEnd = function (value) {
+	    console.log(value); // the value at the time of scrub end
+	}
 }
-scrubber.onScrubStart = function (value) {
-    console.log(value); // the value at the time of scrub start
-}
-// onValueChanged is called whenever the scrubber is moved.
-scrubber.onValueChanged = function (value) {
-  console.log(value); // the value at time of invocation
-}
-// onScrubEnd is called whenever a user stops scrubbing
-scrubber.onScrubEnd = function (value) {
-    console.log(value); // the value at the time of scrub end
-}
-
-
-
-
 
 init();
