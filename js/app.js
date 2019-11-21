@@ -193,7 +193,7 @@ function addMouthOpeningScrubber(){
 	scrubber.onValueChanged = function (value) {
 		
 		
-		let currentPos = value * animationMaxTime / animationLength; //animation's time based on slider value
+		let currentPos = value * (animationMaxTime+0.5) / animationLength; //animation's time based on slider value
 
 		globalAction.paused = false
 		seekAnimationTime(globalMixer, currentPos)
