@@ -4,6 +4,7 @@ let camera;
 let controls;
 let renderer;
 let scene;
+let scrubber;
 
 const mixers = [];
 const clock = new THREE.Clock();
@@ -150,5 +151,42 @@ function onWindowResize() {
 }
 
 window.addEventListener( 'resize', onWindowResize );
+
+
+function addMouthOpeningScrubber(){
+	scrubber = new ScrubberView();
+	document.body.appendChild(scrubber.elt);
+	
+	
+	/*scrubber.min();// 0
+	scrubber.max(); // 1
+	scrubber.step(); // 0
+	scrubber.value(); // 0
+	scrubber.orientation(); // 'horizontal'
+
+	scruber.value(0.5); // Updates the scrubber's value
+	scrubber.value(); // 0.5*/
+
+	// Setters are chainable
+	scruber.value(0);
+	scrubber.min(0).max(60).step(1).value(0.6).orientation('horizontal');
+	
+	
+}
+scrubber.onScrubStart = function (value) {
+    console.log(value); // the value at the time of scrub start
+}
+// onValueChanged is called whenever the scrubber is moved.
+scrubber.onValueChanged = function (value) {
+  console.log(value); // the value at time of invocation
+}
+// onScrubEnd is called whenever a user stops scrubbing
+scrubber.onScrubEnd = function (value) {
+    console.log(value); // the value at the time of scrub end
+}
+
+
+
+
 
 init();
