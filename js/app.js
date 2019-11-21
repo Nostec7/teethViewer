@@ -158,8 +158,8 @@ window.addEventListener( 'resize', onWindowResize );
 
 function addMouthOpeningScrubber(){
 	scrubber = new ScrubberView();
-	document.body.appendChild(scrubber.elt);
-	
+	//document.body.appendChild(scrubber.elt);
+	document.getElementsByClassName("controls-container")[0].appendChild(scrubber.elt);
 	
 	/*scrubber.min();// 0
 	scrubber.max(); // 1
