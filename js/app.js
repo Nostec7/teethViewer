@@ -5,9 +5,11 @@ let controls;
 let renderer;
 let scene;
 let scrubber;
-var animationElement;
-var actionElement;
-var mixerElement;
+var globalAnimation;
+var globalAction;
+var globalMixer;
+let animationMaxTime = 1.4; //Animation time when mouth is fully opened
+let animationLength = animationMaxTime * 100;
 
 const mixers = [];
 const clock = new THREE.Clock();
@@ -84,20 +86,16 @@ function loadModels() {
     const mixer = new THREE.AnimationMixer( model );
     mixers.push( mixer );
 
-	  animationElement = animation;
+	 
 	  
-    const action = mixer.clipAction( animation );
-	  actionElement = action;
-    //action.play();
-	  //mixer.setTime(1);
-	  mixerElement = mixer;
+    const action = mixer.clipAction( animation );  
+    action.play();
+    action.paused = true;
 	  
-	  console.log('mixer');
-	  console.log(mixer);
-	  console.log('action');
-	  console.log(action);
-	  console.log('animation');
-	  console.log(animation);
+	  
+	  globalAnimation = animation;
+	  globalAction = action;
+	  globalMixer = mixer;
 	  
 
     scene.add( model );
@@ -186,14 +184,22 @@ function addMouthOpeningScrubber(){
 
 	// Setters are chainable
 	scrubber.value(0);
-	scrubber.min(0).max(60).step(1).value(0.6).orientation('horizontal');
+	scrubber.min(0).max(60).step(1).value(animationMaxTime).orientation('horizontal');
 	
 	scrubber.onScrubStart = function (value) {
     	console.log(value); // the value at the time of scrub start
 	}
 	// onValueChanged is called whenever the scrubber is moved.
 	scrubber.onValueChanged = function (value) {
-	  console.log(value); // the value at time of invocation
+		
+		
+		let currentPos = value * animationMaxTime / animationLength; //animation's time based on slider value
+
+		globalAction.paused = false
+		seekAnimationTime(globalMixer, currentPos)
+		globalAction.paused = true
+		
+	  console.log(value, currentPos); // the value at time of invocation
 	}
 	// onScrubEnd is called whenever a user stops scrubbing
 	scrubber.onScrubEnd = function (value) {
