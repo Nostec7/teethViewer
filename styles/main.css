@@ -25,11 +25,20 @@ a:hover{
   height: 100%;
 }
 
+.controls-container{
+  position:absolute;
+  width: 90%;
+  height:200px;
+  bottom:20px;
+  left:5%;
+}
+
 
 /*===========SCRUBBER=============*/
 .scrubber {
-    margin: auto;
+    position:relative;
     bottom: 30px;
+    margin: auto;
     width: 40%;
     height: 40px;
 }
