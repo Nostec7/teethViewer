@@ -33,7 +33,7 @@ function init() {
 function createCamera() {
 
   camera = new THREE.PerspectiveCamera( 35, container.clientWidth / container.clientHeight, 1, 5000 );
-  camera.position.set( 0, 0, 15 );
+  camera.position.set( 0, 2, 16 );
 
 }
 
@@ -71,7 +71,7 @@ function loadModels() {
     mixers.push( mixer );
 
     const action = mixer.clipAction( animation );
-    action.play();
+    //action.play();
 
     scene.add( model );
 
@@ -86,8 +86,8 @@ function loadModels() {
 
   // load the first model. Each model is loaded asynchronously,
   // so don't make any assumption about which one will finish loading first
-  const parrotPosition = new THREE.Vector3( 0, 0, 2.5 );
-  loader.load( 'models/Parrot.glb', gltf => onLoad( gltf, parrotPosition ), onProgress, onError );
+  /*const parrotPosition = new THREE.Vector3( 0, 0, 2.5 );
+  loader.load( 'models/Parrot.glb', gltf => onLoad( gltf, parrotPosition ), onProgress, onError );*/
 
   const teethPosition = new THREE.Vector3( 0, 0, 1.0 );
   loader.load( 'models/Teeth.glb', gltf => onLoad( gltf, teethPosition ), onProgress, onError );
