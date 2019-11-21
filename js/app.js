@@ -90,7 +90,7 @@ function loadModels() {
   loader.load( 'models/Parrot.glb', gltf => onLoad( gltf, parrotPosition ), onProgress, onError );
 
   const teethPosition = new THREE.Vector3( 0, 0, 1.0 );
-  loader.load( 'models/Teeth.gltf', gltf => onLoad( gltf, teethPosition ), onProgress, onError );
+  loader.load( 'models/Teeth.glb', gltf => onLoad( gltf, teethPosition ), onProgress, onError );
 
 }
 
