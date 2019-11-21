@@ -77,12 +77,14 @@ function loadModels() {
     model.position.copy( position );
 
     const animation = gltf.animations[ 0 ];
-
     const mixer = new THREE.AnimationMixer( model );
     mixers.push( mixer );
 
     const action = mixer.clipAction( animation );
     //action.play();
+	  action.setTime(1);
+	  console.log(action.timeScale);
+	  
 
     scene.add( model );
 
