@@ -85,8 +85,9 @@ function loadModels() {
     mixers.push( mixer );
 
 	  animationElement = animation;
-	  actionElement = action;
+	  
     const action = mixer.clipAction( animation );
+	  actionElement = action;
     //action.play();
 	  //mixer.setTime(1);
 	  mixerElement = mixer;
