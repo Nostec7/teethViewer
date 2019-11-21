@@ -5,6 +5,7 @@ let controls;
 let renderer;
 let scene;
 let scrubber;
+var mixerElement;
 
 const mixers = [];
 const clock = new THREE.Clock();
@@ -77,12 +78,15 @@ function loadModels() {
     model.position.copy( position );
 
     const animation = gltf.animations[ 0 ];
+	  
     const mixer = new THREE.AnimationMixer( model );
     mixers.push( mixer );
 
     const action = mixer.clipAction( animation );
     //action.play();
 	  //mixer.setTime(1);
+	  mixerElement = mixer;
+	  
 	  console.log('mixer');
 	  console.log(mixer);
 	  console.log('action');
