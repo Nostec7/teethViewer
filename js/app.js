@@ -82,8 +82,8 @@ function loadModels() {
 
     const action = mixer.clipAction( animation );
     //action.play();
-	  action.setTime(1);
-	  console.log(action.timeScale);
+	  mixer.setTime(1);
+	  console.log(mixer.timeScale);
 	  
 
     scene.add( model );
