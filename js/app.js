@@ -165,11 +165,11 @@ function addMouthOpeningScrubber(){
 	scrubber.value(); // 0
 	scrubber.orientation(); // 'horizontal'
 
-	scruber.value(0.5); // Updates the scrubber's value
+	scrubber.value(0.5); // Updates the scrubber's value
 	scrubber.value(); // 0.5*/
 
 	// Setters are chainable
-	scruber.value(0);
+	scrubber.value(0);
 	scrubber.min(0).max(60).step(1).value(0.6).orientation('horizontal');
 	
 	scrubber.onScrubStart = function (value) {
