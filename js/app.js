@@ -8,7 +8,7 @@ let scrubber;
 var globalAnimation;
 var globalAction;
 var globalMixer;
-let animationMaxTime = 1.8; //Animation time when mouth is fully opened
+let animationMaxTime = 1.99; //Animation time when mouth is fully opened
 let animationLength = animationMaxTime * 100;
 
 const mixers = [];
