@@ -14,13 +14,14 @@ function init() {
   container = document.querySelector( '#scene-container' );
 
   scene = new THREE.Scene();
-  scene.background = new THREE.Color( 0x000000 );
+  scene.background = new THREE.Color( 0x25282d );
 
   createCamera();
   createControls();
   createLights();
   loadModels();
   createRenderer();
+  addMouthOpeningScrubber();
 
   renderer.setAnimationLoop( () => {
 
