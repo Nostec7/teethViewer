@@ -205,6 +205,13 @@ function addMouthOpeningScrubber(){
 	scrubber.onScrubEnd = function (value) {
 	    console.log(value); // the value at the time of scrub end
 	}
+function seekAnimationTime(animMixer, timeInSeconds){
+    animMixer.time=0;
+    for(var i=0;i<animMixer._actions.length;i++){
+      animMixer._actions[i].time=0;
+    }
+    animMixer.update(timeInSeconds)
+  }
 }
 
 init();
