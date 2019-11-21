@@ -33,7 +33,7 @@ function init() {
 function createCamera() {
 
   camera = new THREE.PerspectiveCamera( 35, container.clientWidth / container.clientHeight, 1, 5000 );
-  camera.position.set( 0, 2, 16 );
+  camera.position.set( 0, 6, 16 );
 
 }
 
@@ -48,10 +48,10 @@ function createLights() {
   const ambientLight = new THREE.HemisphereLight( 0xddeeff, 0x0f0e0d, 5 );
 
   const leftLight = new THREE.DirectionalLight( 0xffffff, 5 );
-  leftLight.position.set( 20, 10, 10 );
+  leftLight.position.set( 30, 10, 10 );
 	
   const rightLight = new THREE.DirectionalLight( 0xffffff, 5 );
-  rightLight.position.set( -20, 10, 10 );	
+  rightLight.position.set( -30, 10, 10 );	
 
   scene.add( ambientLight, leftLight, rightLight );
 
@@ -92,7 +92,7 @@ function loadModels() {
   /*const parrotPosition = new THREE.Vector3( 0, 0, 2.5 );
   loader.load( 'models/Parrot.glb', gltf => onLoad( gltf, parrotPosition ), onProgress, onError );*/
 
-  const teethPosition = new THREE.Vector3( 0, 0, -1 );
+  const teethPosition = new THREE.Vector3( 0, 0, 0 );
   loader.load( 'models/Teeth.glb', gltf => onLoad( gltf, teethPosition ), onProgress, onError );
 
 }
