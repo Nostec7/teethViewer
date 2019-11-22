@@ -10,7 +10,7 @@ let animationLength = animationMaxTime * 100;
 let selectedObject;
 let isTouchDevice = true; // touch or mouse device (determines if mouse one first mousemove event)
 let hasTouched = false;
-let hasClicked = false;
+let hasClicked = true;
 
 let startingTouchePos;
 let touchTravelDistance = 0;
@@ -373,10 +373,13 @@ function raycast ( e ) {
 	    }
     } else{
 	    selectedObject = closestIntersection.object;
+	    addOutlinePass(selectedObject); 
+	    
+	    
 	    if(hasClicked){
 		//addSelectedOutlinePass(selectedObject); 
-		addOutlinePass(selectedObject); 
-		hasClicked = false;
+		
+		//hasClicked = false;
 	    } else{
     	  	//addOutlinePass(selectedObject); 
 	    }
