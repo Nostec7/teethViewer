@@ -2,7 +2,7 @@ let container;
 let camera;
 let controls;
 let renderer;
-let composer;
+let composer, copyPass, renderPass;
 let scene;
 let scrubber;
 var globalAnimation;
@@ -37,6 +37,9 @@ function init() {
   renderer.domElement.addEventListener( 'mousedown', raycast, false );
 	
   //Outlining the object
+  renderPass = new THREE.RenderPass( scene, camera );
+  copyPass = new THREE.ShaderPass( THREE.CopyShader );
+  copyPass.renderToScreen = true;
   composer = new THREE.EffectComposer(renderer);
   outlinePass = new THREE.OutlinePass(new THREE.Vector2(window.innerWidth, window.innerHeight), scene, camera);
   composer.addPass( outlinePass );
