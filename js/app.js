@@ -37,8 +37,8 @@ function init() {
   renderer.domElement.addEventListener( 'mousedown', raycast, false );
 	
   //Outlining the object
-  copyPass = new THREE.ShaderPass( THREE.CopyShader );
-  copyPass.renderToScreen = true;
+  /*copyPass = new THREE.ShaderPass( THREE.CopyShader );
+  copyPass.renderToScreen = true;*/
 	
   composer = new THREE.EffectComposer(renderer);
   renderPass = new THREE.RenderPass( scene, camera );
@@ -51,7 +51,7 @@ function init() {
 	outlinePass.pulsePeriod = Number( 0 );
 	outlinePass.visibleEdgeColor.set( "#ffffff" );
 	outlinePass.hiddenEdgeColor.set( "#000000" );
-	outlinePass.selectedObjects = selectedObject;
+	//outlinePass.selectedObjects = selectedObject;
   composer.addPass( outlinePass );
 
   renderer.setAnimationLoop( () => {
