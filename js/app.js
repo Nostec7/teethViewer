@@ -147,6 +147,7 @@ function createControls() {
   controls.dampingFactor = 1.2;
   controls.minPolarAngle = 0.0;
   controls.maxPolarAngle = 2.9;
+  controls.screenSpacePanning = true;
   controls.update();
 	
 }
