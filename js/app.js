@@ -279,8 +279,12 @@ function raycast ( e ) {
     //3. compute intersections (no 2nd parameter true anymore)
     var intersects = raycaster.intersectObjects( scene.children );
 
+    let closestIntersection = 1000;
     for ( var i = 0; i < intersects.length; i++ ) {
-        console.log( intersects[ i ] ); 
+        //console.log( intersects[ i ] );
+	if(intersects[i].distance < closestIntersection){
+		closestIntersection = intersects[i];
+	}
         /*
             An intersection has the following properties :
                 - object : intersected object (THREE.Mesh)
@@ -291,6 +295,7 @@ function raycast ( e ) {
                 - uv : intersection point in the object's UV coordinates (THREE.Vector2)
         */
     }
+	console.log( closestIntersection );
 
 }
 
