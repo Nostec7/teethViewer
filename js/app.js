@@ -37,10 +37,13 @@ function init() {
   renderer.domElement.addEventListener( 'mousedown', raycast, false );
 	
   //Outlining the object
-  /*copyPass = new THREE.ShaderPass( THREE.CopyShader );
-  copyPass.renderToScreen = true;*/
+  var renderPass = new THREE.RenderPass( scene, camera );
+  copyPass = new THREE.ShaderPass( THREE.CopyShader );
+  copyPass.renderToScreen = true;
 	
   composer = new THREE.EffectComposer(renderer);
+	composer.addPass( renderPass );
+	composer.addPass( copyPass );
   //renderPass = new THREE.RenderPass( scene, camera );
   
   
