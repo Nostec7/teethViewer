@@ -253,7 +253,7 @@ function raycast ( e ) {
     raycaster.setFromCamera( mouse, camera );    
 
     //3. compute intersections (no 2nd parameter true anymore)
-    var intersects = raycaster.intersectObjects( scene.children );
+    var intersects = raycaster.intersectObjects( scene.children, true );
 
     for ( var i = 0; i < intersects.length; i++ ) {
         console.log( intersects[ i ] ); 
