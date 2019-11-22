@@ -374,10 +374,11 @@ function raycast ( e ) {
     } else{
 	    selectedObject = closestIntersection.object;
 	    if(hasClicked){
-		//addSelectedOutlinePass(selectedObject);   
+		//addSelectedOutlinePass(selectedObject); 
+		addOutlinePass(selectedObject); 
 		hasClicked = false;
 	    } else{
-    	  	addOutlinePass(selectedObject); 
+    	  	//addOutlinePass(selectedObject); 
 	    }
 	    
 	  
