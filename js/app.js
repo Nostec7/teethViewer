@@ -5,13 +5,15 @@ let renderer;
 let composer, copyPass, renderPass;
 let scene;
 let scrubber;
+let animationMaxTime = 1.99; //Animation time when mouth is fully opened
+let animationLength = animationMaxTime * 100;
+let selectedObject;
+
+var globalModel;
 var globalAnimation;
 var globalAction;
 var globalMixer;
 let globalLoader;
-let animationMaxTime = 1.99; //Animation time when mouth is fully opened
-let animationLength = animationMaxTime * 100;
-let selectedObject;
 
 let raycaster, mouse = { x : 0, y : 0 };
 
@@ -123,6 +125,7 @@ function loadModels() {
     const model = gltf.scene.children[ 0 ];
     model.position.copy( position );
 
+	 
     const animation = gltf.animations[ 0 ];
 	  
     const mixer = new THREE.AnimationMixer( model );
@@ -134,7 +137,7 @@ function loadModels() {
     action.play();
     action.paused = true;
 	  
-	  
+	  globalModel = model;
 	  globalAnimation = animation;
 	  globalAction = action;
 	  globalMixer = mixer;
