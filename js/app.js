@@ -58,7 +58,6 @@ function init() {
 
     update();
     render();
-    composer.render();
 
   } );
 
@@ -194,6 +193,7 @@ function update() {
 
 function render() {
 
+  composer.render();
   renderer.render( scene, camera );
 
 }
