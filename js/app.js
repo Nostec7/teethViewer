@@ -301,8 +301,9 @@ function raycast ( e ) {
 }
 
 function onWindowTouchStart(event) {
-	startingTouchePos = [(event.changedTouches[0].clientX / window.innerWidth) * 2 - 1, 
-			     (event.changedTouches[0].clientY / window.innerHeight) * 2 + 1];
+    mouse.x = (event.changedTouches[0].clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(event.changedTouches[0].clientY / window.innerHeight) * 2 + 1;
+    startingTouchePos = new Array(mouse.x, mouse.y);
 }
 
 function onWindowTouchEnd(event) {
