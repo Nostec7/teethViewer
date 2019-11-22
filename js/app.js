@@ -64,7 +64,7 @@ function init() {
 	mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
 	mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 	   //console.log(mouse.x, mouse.y);
-	raycast (event);
+	//raycast (event);
   
 	/*if(get2dDistance(startingTouchePos, mouse) < 0.01){ // This is touch
 		raycast (event);
@@ -395,10 +395,14 @@ function addOutlinePass(object){
 		} else{
 			outlinePass = new THREE.OutlinePass(new THREE.Vector2(window.innerWidth, window.innerHeight), scene, camera);
 			if(isTouchDevice){
-				outlinePass.edgeStrength = Number( 10 );
-				outlinePass.edgeThickness = Number( 2 );
+				//outlinePass.edgeStrength = Number( 10 );
+				//outlinePass.edgeThickness = Number( 2 );
+				outlinePass.edgeStrength = Number( 25 );
+				outlinePass.edgeThickness = Number( 3 );
 			} else{
-				outlinePass.edgeStrength = Number( 10 );
+				//outlinePass.edgeStrength = Number( 10 );
+				//outlinePass.edgeThickness = Number( 2 );	
+				outlinePass.edgeStrength = Number( 20 );
 				outlinePass.edgeThickness = Number( 2 );	
 			}
 
