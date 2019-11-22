@@ -412,8 +412,10 @@ function addOutlinePass(object){
 
 			outlinePass.edgeGlow = Number( 0);
 			outlinePass.pulsePeriod = Number( 0 );
-			outlinePass.visibleEdgeColor.set( new THREE.Color("rgb(15, 15, 15)") );
-			outlinePass.hiddenEdgeColor.set( new THREE.Color("rgb(4, 4, 4)") );
+			//outlinePass.visibleEdgeColor.set( new THREE.Color("rgb(15, 15, 15)") );
+			//outlinePass.hiddenEdgeColor.set( new THREE.Color("rgb(4, 4, 4)") );
+			outlinePass.visibleEdgeColor.set( new THREE.Color("rgb(255, 255, 255)") );
+		outlinePass.hiddenEdgeColor.set( new THREE.Color("rgb(9, 9, 9)") );
 			outlinePass.selectedObjects = [object];
 			composer.addPass( outlinePass );
 		}
