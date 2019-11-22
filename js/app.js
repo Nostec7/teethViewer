@@ -98,8 +98,6 @@ function init() {
   composer.addPass( renderPass );
   composer.addPass( copyPass );
   //renderPass = new THREE.RenderPass( scene, camera );
-  
-	initPostprocessing();
 	
   renderer.setAnimationLoop( () => {
 
@@ -122,47 +120,6 @@ function createCamera() {
   
 }
 
-
-
-function initPostprocessing() {
-    // Setup render pass
-    var renderPass = new THREE.RenderPass( scene, camera );
-    effectComposer = new THREE.EffectComposer( renderer );
-
-    // Setup depth pass
-    depthMaterial = new THREE.MeshDepthMaterial();
-    depthMaterial.depthPacking = THREE.RGBADepthPacking;
-    depthMaterial.blending = THREE.NoBlending;
-
-    var pars = { minFilter: THREE.LinearFilter, magFilter: THREE.LinearFilter,format: THREE.RGBAFormat, stencilBuffer: false };
-    depthRenderTarget = new THREE.WebGLRenderTarget( window.innerWidth, window.innerHeight, pars );
-
-    // Setup Anti Aliasing pass
-    msaaRenderPass = new THREE.SSAARenderPass ( scene, camera );
-    msaaRenderPass.unbiased = false;
-    msaaRenderPass.sampleLevel = 2;
-
-    // Setup Ambient Occlusion pass
-    ssaoPass = new THREE.ShaderPass( THREE.SSAOShader );
-    ssaoPass.renderToScreen = true;
-    ssaoPass.uniforms[ 'tDepth' ].value = depthRenderTarget.texture;
-    ssaoPass.uniforms[ 'size' ].value.set( window.innerWidth, window.innerHeight );
-    ssaoPass.uniforms[ 'cameraNear' ].value = camera.near;
-    ssaoPass.uniforms[ 'cameraFar' ].value = camera.far;
-    ssaoPass.uniforms[ 'onlyAO' ].value = false;
-    ssaoPass.uniforms[ 'aoClamp' ].value = 1.0;
-    ssaoPass.uniforms[ 'lumInfluence' ].value = 0.7;
-
-    effectComposer.addPass( renderPass );
-    effectComposer.addPass( msaaRenderPass );
-    effectComposer.addPass( ssaoPass );
-}
-function updatePostprocessing() {
-    scene.overrideMaterial = depthMaterial;
-    renderer.render( scene, camera, depthRenderTarget, true );
-    scene.overrideMaterial = null;
-    effectComposer.render();
-}
 
 function isMobileTablet(){
     var check = false;
@@ -296,12 +253,8 @@ function update() {
 
 function render() {
 
-  
   renderer.render( scene, camera );
   composer.render();
-	
-	
-updatePostprocessing();
 
 }
 
