@@ -39,20 +39,27 @@ function init() {
   createRenderer();
   addMouthOpeningScrubber();
 	
+	
   raycaster = new THREE.Raycaster();
   renderer.domElement.addEventListener( 'mousedown', raycast, false );
+	
   renderer.domElement.addEventListener('touchstart', function(event){
   	mouse.x = (event.changedTouches[0].clientX / window.innerWidth) * 2 - 1;
 	mouse.y = -(event.changedTouches[0].clientY / window.innerHeight) * 2 + 1;
 	console.log('starting', mouse.x, mouse.y);
 	startingTouchePos = new Array(mouse.x, mouse.y);	  
   }, false);
+	
   renderer.domElement.addEventListener('touchend', function(event){
 	
     	mouse.x = (event.changedTouches[0].clientX / window.innerWidth) * 2 - 1;
     	mouse.y = -(event.changedTouches[0].clientY / window.innerHeight) * 2 + 1;
 	console.log('ending', mouse.x, mouse.y);
+	  
+	let distance = Math.sqrt( startingTouchePos[0]*mouse.x + startingTouchePos[1]*mouse.y );
+    	alert(distance);
   }, false);
+	
 	
   //Outlining the object
   var renderPass = new THREE.RenderPass( scene, camera );
