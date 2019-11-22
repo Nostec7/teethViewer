@@ -55,8 +55,8 @@ function createLights() {
   const ambientLight = new THREE.HemisphereLight( 0xddeeff, 0x0f0e0d, 4.5 );
   ambientLight.castShadow = true;
 
-  const frontLight = new THREE.DirectionalLight( 0xffffff, 3 );
-  frontLight.position.set( 0, 0, 30 );
+  const frontLight = new THREE.DirectionalLight( 0xffffff, 2 );
+  frontLight.position.set( 0, 5, 30 );
 	frontLight.castShadow = true;
 	frontLight.shadow.mapSize.width = 512;
 	frontLight.shadow.mapSize.height = 512;
@@ -66,13 +66,13 @@ function createLights() {
   const farLeftLight = new THREE.DirectionalLight( 0xffffff, 2 );
   farLeftLight.position.set( -30, 2, 2 );
 	
-  const leftLight = new THREE.DirectionalLight( 0xffffff, 2.5 );
+  const leftLight = new THREE.DirectionalLight( 0xffffff, 2 );
   leftLight.position.set( -30, 10, 7 );
 	
   const farRightLight = new THREE.DirectionalLight( 0xffffff, 2 );
   farRightLight.position.set( 30, 3, 2 );
 	
-  const rightLight = new THREE.DirectionalLight( 0xffffff, 3 );
+  const rightLight = new THREE.DirectionalLight( 0xffffff, 2 );
   rightLight.position.set( 20, 10, 10 );	
 
   scene.add( ambientLight, frontLight, farLeftLight, leftLight, rightLight, farRightLight );
