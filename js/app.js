@@ -254,7 +254,7 @@ function raycast ( e ) {
     //3. compute intersections (no 2nd parameter true anymore)
     var intersects = raycaster.intersectObjects( scene.children );
     
-    let closestIntersection = getClosestIntersection();
+    let closestIntersection = getClosestIntersection(intersects);
     
 
 }
