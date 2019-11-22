@@ -99,29 +99,7 @@ function init() {
   composer.addPass( copyPass );
   //renderPass = new THREE.RenderPass( scene, camera );
   
-
-	var depthShader = THREE.ShaderLib[ "depthRGBA" ]; // Depth encoding into RGBA texture
-var depthUniforms = THREE.UniformsUtils.clone( depthShader.uniforms );
-
-
-depthMaterial = new THREE.ShaderMaterial( { fragmentShader: depthShader.fragmentShader,
-vertexShader: depthShader.vertexShader, uniforms: depthUniforms } );
-depthMaterial.blending = THREE.NoBlending;
-
-
-depthTarget = new THREE.WebGLRenderTarget( window.innerWidth, window.innerHeight,
-{ minFilter: THREE.NearestFilter, magFilter: THREE.NearestFilter, format: THREE.RGBAFormat } );
-	
-	var effect = new THREE.ShaderPass( THREE.SSAOShader );
-effect.uniforms[ 'tDepth' ].value = depthTarget;
-effect.uniforms[ 'size' ].value.set( window.innerWidth, window.innerHeight );
-effect.uniforms[ 'cameraNear' ].value = camera.near;
-effect.uniforms[ 'cameraFar' ].value = camera.far;
-effect.renderToScreen = true;
-composer.addPass( effect );
-	
-	
-	
+	initPostprocessing();
 	
   renderer.setAnimationLoop( () => {
 
@@ -142,8 +120,48 @@ function createCamera() {
   camera = new THREE.PerspectiveCamera( 35, container.clientWidth / container.clientHeight, 1, 5000 );
   camera.position.set( 0, 1, 16 );
   
-	
+}
 
+
+
+function initPostprocessing() {
+    // Setup render pass
+    var renderPass = new THREE.RenderPass( scene, camera );
+    effectComposer = new THREE.EffectComposer( renderer );
+
+    // Setup depth pass
+    depthMaterial = new THREE.MeshDepthMaterial();
+    depthMaterial.depthPacking = THREE.RGBADepthPacking;
+    depthMaterial.blending = THREE.NoBlending;
+
+    var pars = { minFilter: THREE.LinearFilter, magFilter: THREE.LinearFilter,format: THREE.RGBAFormat, stencilBuffer: false };
+    depthRenderTarget = new THREE.WebGLRenderTarget( window.innerWidth, window.innerHeight, pars );
+
+    // Setup Anti Aliasing pass
+    msaaRenderPass = new THREE.ManualMSAARenderPass( scene, camera );
+    msaaRenderPass.unbiased = false;
+    msaaRenderPass.sampleLevel = 2;
+
+    // Setup Ambient Occlusion pass
+    ssaoPass = new THREE.ShaderPass( THREE.SSAOShader );
+    ssaoPass.renderToScreen = true;
+    ssaoPass.uniforms[ 'tDepth' ].value = depthRenderTarget.texture;
+    ssaoPass.uniforms[ 'size' ].value.set( window.innerWidth, window.innerHeight );
+    ssaoPass.uniforms[ 'cameraNear' ].value = camera.near;
+    ssaoPass.uniforms[ 'cameraFar' ].value = camera.far;
+    ssaoPass.uniforms[ 'onlyAO' ].value = false;
+    ssaoPass.uniforms[ 'aoClamp' ].value = 1.0;
+    ssaoPass.uniforms[ 'lumInfluence' ].value = 0.7;
+
+    effectComposer.addPass( renderPass );
+    effectComposer.addPass( msaaRenderPass );
+    effectComposer.addPass( ssaoPass );
+}
+function updatePostprocessing() {
+    scene.overrideMaterial = depthMaterial;
+    renderer.render( scene, camera, depthRenderTarget, true );
+    scene.overrideMaterial = null;
+    effectComposer.render();
 }
 
 function isMobileTablet(){
@@ -279,19 +297,11 @@ function update() {
 function render() {
 
   
-  /*renderer.render( scene, camera );
-  composer.render();*/
+  renderer.render( scene, camera );
+  composer.render();
 	
 	
-	
-	
-	 controls.update();
-
-    scene.overrideMaterial = depthMaterial;
-    renderer.render( scene, camera, depthTarget );
-
-    scene.overrideMaterial = null;
-    composer.render();
+updatePostprocessing();
 
 }
 
