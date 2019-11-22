@@ -388,7 +388,7 @@ function raycast ( e ) {
 
 
 function addOutlinePass(object){
-	if(composer.passes[3] == undefined || !composer.passes[3].selectedObjects.includes(object)){
+	/*if(composer.passes[3] == undefined || !composer.passes[3].selectedObjects.includes(object)){
 		if(composer.passes[2] != undefined){
 			outlinePass.enabled = true;
 			composer.passes[2].selectedObjects = [object];
@@ -409,13 +409,13 @@ function addOutlinePass(object){
 			outlinePass.selectedObjects = [object];
 			composer.addPass( outlinePass );
 		}
-	}
+	}*/
 }
 
 function addSelectedOutlinePass(object){
-	if(composer.passes[3] != undefined){
+	if(composer.passes[2] != undefined){
 		outlinePass.enabled = true;
-		composer.passes[3].selectedObjects = [object];
+		composer.passes[2].selectedObjects = [object];
 	} else{
 		outlinePass = new THREE.OutlinePass(new THREE.Vector2(window.innerWidth, window.innerHeight), scene, camera);
 		if(isTouchDevice){
