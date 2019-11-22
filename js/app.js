@@ -289,7 +289,7 @@ function raycast ( e ) {
 }
 
 function addOutlinePass(object){
-	if(composer.passes.length > 1){
+	if(composer.passes.length > 2){
 		composer.passes[2].selectedObjects = [object];
 	} else{
 		outlinePass = new THREE.OutlinePass(new THREE.Vector2(window.innerWidth, window.innerHeight), scene, camera);
