@@ -3,6 +3,7 @@ let container;
 let camera;
 let controls;
 let renderer;
+let composer;
 let scene;
 let scrubber;
 var globalAnimation;
@@ -34,7 +35,12 @@ function init() {
   addMouthOpeningScrubber();
 	
   raycaster = new THREE.Raycaster();
-  renderer.domElement.addEventListener( 'click', raycast, false );
+  renderer.domElement.addEventListener( 'mousedown', raycast, false );
+	
+  //Outlining the object
+  composer = new EffectComposer(renderer);
+  outlinePass = new THREE.OutlinePass(new THREE.Vector2(window.innerWidth, window.innerHeight), scene, camera);
+  composer.addPass( outlinePass );
 
   renderer.setAnimationLoop( () => {
 
@@ -259,6 +265,7 @@ function raycast ( e ) {
     let closestIntersection = intersects[0];
     console.log(closestIntersection);
     selectedObject = closestIntersection.object;
+    outlinePass.selectedObjects = selectedObject;
 	
     for ( var i = 0; i < intersects.length; i++ ) {
         //console.log( intersects[ i ] ); 
