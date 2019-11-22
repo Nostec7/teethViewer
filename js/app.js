@@ -272,7 +272,11 @@ function update() {
 function render() {
 
   
-  renderer.render( scene, camera );
+  //renderer.render( scene, camera );
+scene.overrideMaterial = depthMaterial;
+renderer.render( scene, camera, depthTarget );
+	scene.overrideMaterial = null;
+	
   composer.render();
 
 }
