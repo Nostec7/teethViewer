@@ -11,6 +11,7 @@ var globalMixer;
 let globalLoader;
 let animationMaxTime = 1.99; //Animation time when mouth is fully opened
 let animationLength = animationMaxTime * 100;
+let selectedObject;
 
 let raycaster, mouse = { x : 0, y : 0 };
 
@@ -255,8 +256,12 @@ function raycast ( e ) {
     //3. compute intersections (no 2nd parameter true anymore)
     var intersects = raycaster.intersectObjects( scene.children, true );
 
+    let closestIntersection = intersects[0];
+    console.log(closestIntersection);
+    selectedObject = closestIntersection.object;
+	
     for ( var i = 0; i < intersects.length; i++ ) {
-        console.log( intersects[ i ] ); 
+        //console.log( intersects[ i ] ); 
         /*
             An intersection has the following properties :
                 - object : intersected object (THREE.Mesh)
@@ -267,6 +272,7 @@ function raycast ( e ) {
                 - uv : intersection point in the object's UV coordinates (THREE.Vector2)
         */
     }
+	
 
 }
 
