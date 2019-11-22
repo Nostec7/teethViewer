@@ -148,6 +148,11 @@ function createControls() {
   controls.minPolarAngle = 0.0;
   controls.maxPolarAngle = 2.9;
   controls.screenSpacePanning = true;
+  controls.mouseButtons = {
+    LEFT: THREE.MOUSE.ROTATE,
+    MIDDLE: THREE.MOUSE.PAN,
+    RIGHT: THREE.MOUSE.PAN
+}
   controls.update();
 	
 }
