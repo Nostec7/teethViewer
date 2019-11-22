@@ -47,16 +47,20 @@ function init() {
   	mouse.x = (event.changedTouches[0].clientX / window.innerWidth) * 2 - 1;
 	mouse.y = -(event.changedTouches[0].clientY / window.innerHeight) * 2 + 1;
 	console.log('starting', mouse.x, mouse.y);
-	startingTouchePos = new Array(mouse.x, mouse.y);	  
+	startingTouchePos = [mouse.x, mouse.y];	  
   }, false);
 	
   renderer.domElement.addEventListener('touchend', function(event){
 	
+	  
+	  
     	mouse.x = (event.changedTouches[0].clientX / window.innerWidth) * 2 - 1;
     	mouse.y = -(event.changedTouches[0].clientY / window.innerHeight) * 2 + 1;
 	console.log('ending', mouse.x, mouse.y);
 	  
-	let distance = Math.sqrt( startingTouchePos[0]*mouse.x + startingTouchePos[1]*mouse.y );
+	let xCoord = startingTouchePos[0] - mouse.x;
+	let yCoord = startingTouchePos[1] - mouse.y;
+	let distance = Math.sqrt( xCoord*xCoord + yCoord*yCoord );
     	alert(distance);
   }, false);
 	
