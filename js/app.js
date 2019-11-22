@@ -101,7 +101,7 @@ function init() {
   composer.addPass( copyPass );
   //renderPass = new THREE.RenderPass( scene, camera );
   
- var depthShader = THREE.ShaderLib[ "depthRGBA" ];
+var depthShader = THREE.ShaderLib[ "depthRGBA" ];
 var depthUniforms = THREE.UniformsUtils.clone( depthShader.uniforms );
 	
 depthMaterial = new THREE.ShaderMaterial( { fragmentShader: depthShader.fragmentShader, vertexShader: depthShader.vertexShader, uniforms: depthUniforms } );
