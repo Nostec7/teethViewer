@@ -374,7 +374,7 @@ function raycast ( e ) {
     } else{
 	    selectedObject = closestIntersection.object;
 	    if(hasClicked){
-		addSelectedOutlinePass(selectedObject);   
+		//addSelectedOutlinePass(selectedObject);   
 		hasClicked = false;
 	    } else{
     	  	addOutlinePass(selectedObject); 
@@ -388,7 +388,7 @@ function raycast ( e ) {
 
 
 function addOutlinePass(object){
-	/*if(composer.passes[3] == undefined || !composer.passes[3].selectedObjects.includes(object)){
+	//if(composer.passes[3] == undefined || !composer.passes[3].selectedObjects.includes(object)){
 		if(composer.passes[2] != undefined){
 			outlinePass.enabled = true;
 			composer.passes[2].selectedObjects = [object];
@@ -409,10 +409,10 @@ function addOutlinePass(object){
 			outlinePass.selectedObjects = [object];
 			composer.addPass( outlinePass );
 		}
-	}*/
+	//}
 }
 
-function addSelectedOutlinePass(object){
+/*function addSelectedOutlinePass(object){
 	if(composer.passes[2] != undefined){
 		outlinePass.enabled = true;
 		composer.passes[2].selectedObjects = [object];
@@ -433,7 +433,7 @@ function addSelectedOutlinePass(object){
 		outlinePass.selectedObjects = [object];
 		composer.addPass( outlinePass );
 	}
-}
+}*/
 
 
 
