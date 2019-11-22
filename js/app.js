@@ -156,7 +156,7 @@ function createLights() {
 
   const ambientLight = new THREE.HemisphereLight( 0xddeeff, 0x0f0e0d, 4.5 );
 
-  const frontLight = new THREE.DirectionalLight( 0xffffff, 2 );
+  const frontLight = new THREE.DirectionalLight( 0xffffff, 1 );
   frontLight.position.set( 0, 5, 30 );
 	frontLight.castShadow = true;
 	frontLight.shadow.mapSize.width = 512;
