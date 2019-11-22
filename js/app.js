@@ -100,6 +100,28 @@ function init() {
   //renderPass = new THREE.RenderPass( scene, camera );
   
 
+	var depthShader = THREE.ShaderLib[ "depthRGBA" ]; // Depth encoding into RGBA texture
+var depthUniforms = THREE.UniformsUtils.clone( depthShader.uniforms );
+
+
+depthMaterial = new THREE.ShaderMaterial( { fragmentShader: depthShader.fragmentShader,
+vertexShader: depthShader.vertexShader, uniforms: depthUniforms } );
+depthMaterial.blending = THREE.NoBlending;
+
+
+depthTarget = new THREE.WebGLRenderTarget( window.innerWidth, window.innerHeight,
+{ minFilter: THREE.NearestFilter, magFilter: THREE.NearestFilter, format: THREE.RGBAFormat } );
+	
+	var effect = new THREE.ShaderPass( THREE.SSAOShader );
+effect.uniforms[ 'tDepth' ].value = depthTarget;
+effect.uniforms[ 'size' ].value.set( window.innerWidth, window.innerHeight );
+effect.uniforms[ 'cameraNear' ].value = camera.near;
+effect.uniforms[ 'cameraFar' ].value = camera.far;
+effect.renderToScreen = true;
+composer.addPass( effect );
+	
+	
+	
 	
   renderer.setAnimationLoop( () => {
 
@@ -257,8 +279,19 @@ function update() {
 function render() {
 
   
-  renderer.render( scene, camera );
-  composer.render();
+  /*renderer.render( scene, camera );
+  composer.render();*/
+	
+	
+	
+	
+	 controls.update();
+
+    scene.overrideMaterial = depthMaterial;
+    renderer.render( scene, camera, depthTarget );
+
+    scene.overrideMaterial = null;
+    composer.render();
 
 }
 
