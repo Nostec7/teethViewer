@@ -9,6 +9,9 @@ let animationMaxTime = 1.99; //Animation time when mouth is fully opened
 let animationLength = animationMaxTime * 100;
 let selectedObject;
 
+let startingTouchePos;
+let touchTravelDistance = 0;
+
 var globalGLTF;
 var globalModel;
 var globalAnimation;
@@ -38,6 +41,8 @@ function init() {
 	
   raycaster = new THREE.Raycaster();
   renderer.domElement.addEventListener( 'mousedown', raycast, false );
+  renderer.domElement.addEventListener('tuochstart', onWindowTouchStart, false);
+  renderer.domElement.addEventListener('touchend', onWindowTouchEnd, false);
 	
   //Outlining the object
   var renderPass = new THREE.RenderPass( scene, camera );
@@ -293,8 +298,27 @@ function raycast ( e ) {
     console.log(closestIntersection);
     selectedObject = closestIntersection.object;
     addOutlinePass(selectedObject)
-
 }
+
+function onWindowTouchStart(event) {
+	startingTouchePos = [(event.changedTouches[0].clientX / window.innerWidth) * 2 - 1, 
+			     event.changedTouches[0].clientY / window.innerHeight) * 2 + 1];
+}
+
+function onWindowTouchEnd(event) {
+	
+    mouse.x = (event.changedTouches[0].clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(event.changedTouches[0].clientY / window.innerHeight) * 2 + 1;
+    let distance = Math.sqrt( startingTouchePos[0]*mouse.x + startingTouchePos[1]*mouse.y );
+    alert(distance);
+	
+    //event.preventDefault();
+    
+
+    //raycaster.setFromCamera(mouse, camera);
+   // const intersects = raycaster.intersectObjects(yourObject3D);
+}
+
 
 function addOutlinePass(object){
 	if(composer.passes.length > 2){
