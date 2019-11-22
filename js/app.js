@@ -301,17 +301,19 @@ function raycast ( e ) {
 }
 
 function onWindowTouchStart(event) {
+	
     mouse.x = (event.changedTouches[0].clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(event.changedTouches[0].clientY / window.innerHeight) * 2 + 1;
+	console.log('starting', mouse.x, mouse.y);
     startingTouchePos = new Array(mouse.x, mouse.y);
 }
 
 function onWindowTouchEnd(event) {
-	
+	console.log('ending', mouse.x, mouse.y);
     mouse.x = (event.changedTouches[0].clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(event.changedTouches[0].clientY / window.innerHeight) * 2 + 1;
-    let distance = Math.sqrt( startingTouchePos[0]*mouse.x + startingTouchePos[1]*mouse.y );
-    alert(distance);
+    //let distance = Math.sqrt( startingTouchePos[0]*mouse.x + startingTouchePos[1]*mouse.y );
+    //alert(distance);
 	
     //event.preventDefault();
     
