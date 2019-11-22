@@ -254,15 +254,13 @@ function raycast ( e ) {
     //3. compute intersections (no 2nd parameter true anymore)
     var intersects = raycaster.intersectObjects( scene.children );
     
-    let closestIntersection = getClosestIntersection(intersects);
-    
-
-}
-function getClosestIntersection(intersects){
-   let closest = 1000;
-   for ( var i = 0; i < intersects.length; i++ ) {
-	if(intersects[i].distance < closest){
-		closest = intersects[i];
+	
+    let closestDistance = 1000;
+    let closestIntersection;
+	
+    for ( var i = 0; i < intersects.length; i++ ) {
+	if(intersects[i].distance < closestDistance){
+		closestIntersection = intersects[i];
 	}
         /*
             An intersection has the following properties :
@@ -274,11 +272,9 @@ function getClosestIntersection(intersects){
                 - uv : intersection point in the object's UV coordinates (THREE.Vector2)
         */
     }
-    
-   console.log('closest');
-   console.log(closest);
-   return closest;
+    console.log(closestDistance, closestIntersection);
 }
+
 
 
 init();
