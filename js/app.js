@@ -388,7 +388,7 @@ function raycast ( e ) {
 
 
 function addOutlinePass(object){
-	if(composer.passes[3] != undefined && !composer.passes[3].selectedObjects.includes(object){
+	if(composer.passes[3] != undefined && !composer.passes[3].selectedObjects.includes(object)){
 		if(composer.passes[2] != undefined){
 			outlinePass.enabled = true;
 			composer.passes[2].selectedObjects = [object];
