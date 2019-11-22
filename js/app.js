@@ -58,7 +58,7 @@ function init() {
 	}
   }, false );
 	
-   renderer.domElement.addEventListener( 'mouseover', function(event){
+   renderer.domElement.addEventListener( 'mousemove', function(event){
 	mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
 	mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 	   console.log(mouse.x, mouse.y);
@@ -366,7 +366,9 @@ function raycast ( e ) {
     let closestIntersection = intersects[0];
     if(closestIntersection == undefined){
 	    selectedObject = null;
-	    composer.passes[2].enabled = false;
+	    if(composer.passes[2] != undefined){
+	    	composer.passes[2].enabled = false;
+	    }
     } else{
 	  selectedObject = closestIntersection.object;
     	  addOutlinePass(selectedObject)  
