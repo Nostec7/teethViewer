@@ -90,12 +90,12 @@ ScrubberView.prototype.redraw = function () {
   var frac = (this.value() - this.min())/(this.max() - this.min());
   if (this.orientation() === 'horizontal') {
     this.elt.className = 'scrubber';
-    this.thumb.style.top = '50%';
+    //this.thumb.style.top = '50%';
     this.thumb.style.left = frac*100 + '%';
   }
   else {
     this.elt.className = 'scrubber-vert';
-    this.thumb.style.left = '50%';
+    //this.thumb.style.left = '50%';
     this.thumb.style.top = 100 - (frac*100) + '%';
   }
 };
