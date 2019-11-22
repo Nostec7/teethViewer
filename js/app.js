@@ -54,12 +54,15 @@ function init() {
 	//outlinePass.selectedObjects = selectedObject;
   composer.addPass( outlinePass );
 
-  renderer.setAnimationLoop( () => {
+  /*renderer.setAnimationLoop( () => {
 
     update();
     render();
 
-  } );
+  } );*/
+	requestAnimationFrame(function(){
+	 composer.render();	
+	});
 
 }
 
