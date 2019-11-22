@@ -196,7 +196,7 @@ function addMouthOpeningScrubber(){
 
 	// Setters are chainable
 	scrubber.value(0);
-	scrubber.min(0).max(60).step(1).value(animationMaxTime).orientation('horizontal');
+	scrubber.min(0).max(60).step(1).orientation('horizontal');
 	
 	scrubber.onScrubStart = function (value) {
     	console.log(value); // the value at the time of scrub start
