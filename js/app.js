@@ -267,7 +267,7 @@ function raycast ( e ) {
     let closestIntersection = intersects[0];
     console.log(closestIntersection);
     selectedObject = closestIntersection.object;
-    outlinePass.selectedObjects = selectedObject;
+    outlinePass.selectedObjects = [selectedObject];
 	
     for ( var i = 0; i < intersects.length; i++ ) {
         //console.log( intersects[ i ] ); 
