@@ -300,10 +300,10 @@ function addOutlinePass(object){
 		outlinePass = new THREE.OutlinePass(new THREE.Vector2(window.innerWidth, window.innerHeight), scene, camera);
 		outlinePass.edgeStrength = Number( 5 );
 		outlinePass.edgeGlow = Number( 0);
-		outlinePass.edgeThickness = Number( 5 );
+		outlinePass.edgeThickness = Number( 1 );
 		outlinePass.pulsePeriod = Number( 0 );
-		outlinePass.visibleEdgeColor.set( new THREE.Color("rgb(100%, 0%, 0%)") );
-		outlinePass.hiddenEdgeColor.set( new THREE.Color("rgb(50%, 0%, 0%)") );
+		outlinePass.visibleEdgeColor.set( new THREE.Color("rgb(90%, 90%, 90%)") );
+		outlinePass.hiddenEdgeColor.set( new THREE.Color("rgb(30%, 30%, 30%)") );
 		outlinePass.selectedObjects = [object];
 		composer.addPass( outlinePass );
 	}
