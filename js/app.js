@@ -44,24 +44,16 @@ function init() {
   //renderPass = new THREE.RenderPass( scene, camera );
   
   
-  outlinePass = new THREE.OutlinePass(new THREE.Vector2(window.innerWidth, window.innerHeight), scene, camera);
-	outlinePass.edgeStrength = Number( 10 );
-	outlinePass.edgeGlow = Number( 0);
-	outlinePass.edgeThickness = Number( 1 );
-	outlinePass.pulsePeriod = Number( 0 );
-	outlinePass.visibleEdgeColor.set( "#ffffff" );
-	outlinePass.hiddenEdgeColor.set( "#000000" );
-	//outlinePass.selectedObjects = selectedObject;
-  composer.addPass( outlinePass );
+  
 
-  /*renderer.setAnimationLoop( () => {
+  renderer.setAnimationLoop( () => {
 
     update();
     render();
 
-  } );*/
+  } );
 	
- animate();
+ //animate();
 	/*requestAnimationFrame(function(){
 	 composer.render();	
 	});*/
@@ -199,7 +191,7 @@ function render() {
 
 }
 
-function animate(){
+/*function animate(){
 	 requestAnimationFrame( animate );
 
 	   const delta = clock.getDelta();
@@ -209,7 +201,7 @@ function animate(){
 
     renderer.render( scene, camera );
     composer.render();
-}
+}*/
 
 function onWindowResize() {
 
@@ -291,7 +283,23 @@ function raycast ( e ) {
     let closestIntersection = intersects[0];
     console.log(closestIntersection);
     selectedObject = closestIntersection.object;
-    outlinePass.selectedObjects = [selectedObject];
+	
+	
+	outlinePass = new THREE.OutlinePass(new THREE.Vector2(window.innerWidth, window.innerHeight), scene, camera);
+    
+
+	outlinePass.edgeStrength = Number( 10 );
+	outlinePass.edgeGlow = Number( 0);
+	outlinePass.edgeThickness = Number( 1 );
+	outlinePass.pulsePeriod = Number( 0 );
+	outlinePass.visibleEdgeColor.set( "#ffffff" );
+	outlinePass.hiddenEdgeColor.set( "#000000" );
+	outlinePass.selectedObjects = [selectedObject];
+	//outlinePass.selectedObjects = selectedObject;
+  composer.addPass( outlinePass );
+	
+	
+	
 	
     for ( var i = 0; i < intersects.length; i++ ) {
         //console.log( intersects[ i ] ); 
