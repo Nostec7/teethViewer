@@ -163,8 +163,8 @@ function createLights() {
 	frontLight.shadow.mapSize.near = 0.5;
 	frontLight.shadow.mapSize.far = 500;
 	
-  const farLeftLight = new THREE.DirectionalLight( 0xffffff, 0.1 );
-  farLeftLight.position.set( -30, -2, -80 );
+  const farLeftLight = new THREE.DirectionalLight( 0xffffff, 1 );
+  farLeftLight.position.set( -30, 8, 10 );
 	
   const leftLight = new THREE.DirectionalLight( 0xffffff, 0.1 );
   leftLight.position.set( -30, 10, -80 );
