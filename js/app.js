@@ -37,7 +37,7 @@ function init() {
   renderer.domElement.addEventListener( 'mousedown', raycast, false );
 	
   //Outlining the object
-  composer = new EffectComposer(renderer);
+  composer = new THREE.EffectComposer(renderer);
   outlinePass = new THREE.OutlinePass(new THREE.Vector2(window.innerWidth, window.innerHeight), scene, camera);
   composer.addPass( outlinePass );
 
