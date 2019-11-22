@@ -58,6 +58,7 @@ function init() {
 
     update();
     render();
+    composer.render();
 
   } );
 
