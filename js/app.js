@@ -14,6 +14,8 @@ let hasTouched = false;
 let startingTouchePos;
 let touchTravelDistance = 0;
 
+let depthMaterial, depthTarget //for sssao
+
 var globalGLTF;
 var globalModel;
 var globalAnimation;
@@ -99,9 +101,21 @@ function init() {
   composer.addPass( copyPass );
   //renderPass = new THREE.RenderPass( scene, camera );
   
+ var depthShader = THREE.ShaderLib[ "depthRGBA" ];
+var depthUniforms = THREE.UniformsUtils.clone( depthShader.uniforms );
+	
+depthMaterial = new THREE.ShaderMaterial( { fragmentShader: depthShader.fragmentShader, vertexShader: depthShader.vertexShader, uniforms: depthUniforms } );
+depthMaterial.blending = THREE.NoBlending;
   
-  
-
+depthTarget = new THREE.WebGLRenderTarget( window.innerWidth, window.innerHeight, { minFilter: THREE.NearestFilter, magFilter: THREE.NearestFilter, format: THREE.RGBAFormat } );
+var effect = new THREE.ShaderPass( THREE.SSAOShader );
+effect.uniforms[ 'tDepth' ].value = depthTarget;
+effect.uniforms[ 'size' ].value.set( window.innerWidth, window.innerHeight );
+effect.uniforms[ 'cameraNear' ].value = camera.near;
+effect.uniforms[ 'cameraFar' ].value = camera.far;
+effect.renderToScreen = true;
+composer.addPass( effect );
+	
   renderer.setAnimationLoop( () => {
 
     update();
