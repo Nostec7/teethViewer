@@ -8,8 +8,10 @@ let scrubber;
 var globalAnimation;
 var globalAction;
 var globalMixer;
+let globalLoader;
 let animationMaxTime = 1.99; //Animation time when mouth is fully opened
 let animationLength = animationMaxTime * 100;
+
 
 const mixers = [];
 const clock = new THREE.Clock();
@@ -125,7 +127,8 @@ function loadModels() {
 
   const teethPosition = new THREE.Vector3( 0, -1, 1 );
   loader.load( 'models/Teeth.glb', gltf => onLoad( gltf, teethPosition ), onProgress, onError );
-
+globalLoader = loader;
+	
 }
 
 function createRenderer() {
