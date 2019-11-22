@@ -63,7 +63,7 @@ function init() {
    renderer.domElement.addEventListener( 'mousemove', function(event){
 	mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
 	mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-	   console.log(mouse.x, mouse.y);
+	   //console.log(mouse.x, mouse.y);
 	raycast (event);
   
 	/*if(get2dDistance(startingTouchePos, mouse) < 0.01){ // This is touch
@@ -402,14 +402,14 @@ function addOutlinePass(object){
 		
 		outlinePass.edgeGlow = Number( 0);
 		outlinePass.pulsePeriod = Number( 0 );
-		outlinePass.visibleEdgeColor.set( new THREE.Color("rgb(10, 10, 10)") );
+		outlinePass.visibleEdgeColor.set( new THREE.Color("rgb(15, 15, 15)") );
 		outlinePass.hiddenEdgeColor.set( new THREE.Color("rgb(4, 4, 4)") );
 		outlinePass.selectedObjects = [object];
 		composer.addPass( outlinePass );
 	}
 }
 
-function addSelectedOutlinePass(Object){
+function addSelectedOutlinePass(object){
 	if(composer.passes.length > 3){
 		outlinePass.enabled = true;
 		composer.passes[3].selectedObjects = [object];
