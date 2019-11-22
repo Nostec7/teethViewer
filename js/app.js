@@ -181,7 +181,6 @@ function createLights() {
 }
 
 function loadModels() {
-	console.log('loading');
   const loader = new THREE.GLTFLoader();
 
   // A reusable function to set up the models. We're passing in a position parameter
@@ -309,7 +308,6 @@ function addMouthOpeningScrubber(){
 	scrubber.min(0).max(60).step(1).orientation('horizontal');
 	
 	scrubber.onScrubStart = function (value) {
-    	console.log(value); // the value at the time of scrub start
 	}
 	// onValueChanged is called whenever the scrubber is moved.
 	scrubber.onValueChanged = function (value) {
@@ -321,11 +319,10 @@ function addMouthOpeningScrubber(){
 		seekAnimationTime(globalMixer, currentPos)
 		globalAction.paused = true
 		
-	  console.log(value, currentPos); // the value at time of invocation
 	}
 	// onScrubEnd is called whenever a user stops scrubbing
 	scrubber.onScrubEnd = function (value) {
-	    console.log(value); // the value at the time of scrub end
+	    //console.log(value); // the value at the time of scrub end
 	}
 function seekAnimationTime(animMixer, timeInSeconds){
     animMixer.time=0;
@@ -357,34 +354,25 @@ function raycast ( e ) {
     var intersects = raycaster.intersectObjects( scene.children, true );
 
     let closestIntersection = intersects[0];
-    console.log(closestIntersection);
-    selectedObject = closestIntersection.object;
-    addOutlinePass(selectedObject)
-}
-
-
-
-function onWindowTouchEnd(event) {
-	console.log('ending', mouse.x, mouse.y);
-    mouse.x = (event.changedTouches[0].clientX / window.innerWidth) * 2 - 1;
-    mouse.y = -(event.changedTouches[0].clientY / window.innerHeight) * 2 + 1;
-    //let distance = Math.sqrt( startingTouchePos[0]*mouse.x + startingTouchePos[1]*mouse.y );
-    //alert(distance);
-	
-    //event.preventDefault();
+    if(closestIntersection = undefined){
+	    selectedObject = null;
+	    composer.passes[2].enabled = false;
+    } else{
+	  selectedObject = closestIntersection.object;
+    	  addOutlinePass(selectedObject)  
+    }
     
-
-    //raycaster.setFromCamera(mouse, camera);
-   // const intersects = raycaster.intersectObjects(yourObject3D);
 }
+
 
 
 function addOutlinePass(object){
 	if(composer.passes.length > 2){
+		outlinePass.enabled = true;
 		composer.passes[2].selectedObjects = [object];
 	} else{
 		outlinePass = new THREE.OutlinePass(new THREE.Vector2(window.innerWidth, window.innerHeight), scene, camera);
-		outlinePass.edgeStrength = Number( 5 );
+		outlinePass.edgeStrength = Number( 10 );
 		outlinePass.edgeGlow = Number( 0);
 		outlinePass.edgeThickness = Number( 1 );
 		outlinePass.pulsePeriod = Number( 0 );
