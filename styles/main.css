@@ -28,7 +28,7 @@ a:hover{
 .controls-container{
   position:absolute;
   width: 90%;
-  height:150px;
+  height:30px;
   bottom:20px;
   left:5%;
   pointer-events:none;
@@ -38,7 +38,6 @@ a:hover{
 /*===========SCRUBBER=============*/
 .scrubber {
     position:relative;
-    bottom: 15px;
     margin: auto;
     width: 400px;
     max-width:50%;
@@ -88,7 +87,7 @@ a:hover{
   left: 0px; 
   width: 30px; 
   height: 30px; 
-  border: 20px solid rgba(255,255,255,0.7);
+  border: 15px solid rgba(255,255,255,0.7);
   transition: border-width 0.15s ease 0s;
   background-color:rgba(255,255,255,0.35)
  
