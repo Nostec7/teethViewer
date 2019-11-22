@@ -293,13 +293,12 @@ function addOutlinePass(object){
 		composer.passes[2].selectedObjects = [object];
 	} else{
 		outlinePass = new THREE.OutlinePass(new THREE.Vector2(window.innerWidth, window.innerHeight), scene, camera);
-		outlinePass.edgeStrength = Number( 10 );
+		outlinePass.edgeStrength = Number( 5 );
 		outlinePass.edgeGlow = Number( 0);
-		outlinePass.edgeThickness = Number( 10 );
+		outlinePass.edgeThickness = Number( 5 );
 		outlinePass.pulsePeriod = Number( 0 );
 		outlinePass.visibleEdgeColor.set( "#ffffff" );
-		outlinePass.hiddenEdgeColor.set( "#aaaaaa" );
-		outlinePass.selectedObjects = [selectedObject];
+		outlinePass.hiddenEdgeColor.set( "#ffffff" );
 		outlinePass.selectedObjects = [object];
 		composer.addPass( outlinePass );
 	}
