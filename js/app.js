@@ -155,7 +155,6 @@ function createControls() {
 function createLights() {
 
   const ambientLight = new THREE.HemisphereLight( 0xddeeff, 0x0f0e0d, 4.5 );
-  ambientLight.castShadow = true;
 
   const frontLight = new THREE.DirectionalLight( 0xffffff, 2 );
   frontLight.position.set( 0, 5, 30 );
