@@ -277,8 +277,11 @@ function seekAnimationTime(animMixer, timeInSeconds){
 function raycast ( e ) {
     //sets the mouse position with a coordinate system where the center
     //of the screen is the origin
-    mouse.x = ( e.clientX / window.innerWidth ) * 2 - 1;
-    mouse.y = - ( e.clientY / window.innerHeight ) * 2 + 1;
+    /*mouse.x = ( e.clientX / window.innerWidth ) * 2 - 1;
+    mouse.y = - ( e.clientY / window.innerHeight ) * 2 + 1;*/
+    mouse.x = (event.changedTouches[0].clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(event.changedTouches[0].clientY / window.innerHeight) * 2 + 1;
+    
 
     //set the picking ray from the camera position and mouse coordinates
     raycaster.setFromCamera( mouse, camera );    
