@@ -58,6 +58,17 @@ function init() {
 	}
   }, false );
 	
+   renderer.domElement.addEventListener( 'mouseover', function(event){
+	mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+	mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+	   
+	   raycast (event);
+  
+	/*if(get2dDistance(startingTouchePos, mouse) < 0.01){ // This is touch
+		raycast (event);
+	}*/
+  }, false );
+	
 	
 	
 
