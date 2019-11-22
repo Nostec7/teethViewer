@@ -41,11 +41,9 @@ function init() {
   addMouthOpeningScrubber();
 	
 
-  function onMouseMove(e) {
-    unlisten('mousemove', onMouseMove, false);
+window.onmousemove = function() {
     isTouchDevice = false;
-  }
-  listen('mousemove', onMouseMove, false);
+}
 	
   raycaster = new THREE.Raycaster();
   renderer.domElement.addEventListener( 'mousedown', function(event){
