@@ -1,5 +1,3 @@
-import {EffectComposer} from 'https://threejsfundamentals.org/threejs/resources/threejs/r110/examples/jsm/postprocessing/EffectComposer.js';
-
 let container;
 let camera;
 let controls;
