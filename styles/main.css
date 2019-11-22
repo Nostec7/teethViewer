@@ -38,10 +38,11 @@ a:hover{
 /*===========SCRUBBER=============*/
 .scrubber {
     position:relative;
-    top: 35%;
+    bottom: 15px;
     margin: auto;
     width: 400px;
-    height: 40px;
+    max-width:50%;
+    height: 30px;
     pointer-events:all;
 }
 
@@ -85,8 +86,8 @@ a:hover{
 
    top: 2px; 
   left: 0px; 
-  width: 40px; 
-  height: 40px; 
+  width: 30px; 
+  height: 30px; 
   border: 20px solid rgba(255,255,255,0.7);
   transition: border-width 0.15s ease 0s;
   background-color:rgba(255,255,255,0.35)
