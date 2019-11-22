@@ -140,7 +140,7 @@ function createControls() {
 
   controls = new THREE.OrbitControls( camera, container );
   controls.enableDamping = true;
-  controls.dampingFactor = 0.08;
+  controls.dampingFactor = 0.2;
   controls.rotateSpeed = 0.1;
   controls.panSpeed = 0.1;
   controls.zoomSpeed = 1;
