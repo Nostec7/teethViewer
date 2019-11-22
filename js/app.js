@@ -42,8 +42,8 @@ function init() {
   copyPass.renderToScreen = true;
 	
   composer = new THREE.EffectComposer(renderer);
-	composer.addPass( renderPass );
-	composer.addPass( copyPass );
+  composer.addPass( renderPass );
+  composer.addPass( copyPass );
   //renderPass = new THREE.RenderPass( scene, camera );
   
   
@@ -270,57 +270,40 @@ function seekAnimationTime(animMixer, timeInSeconds){
 //======================
 //===== RAYCASTING =====
 function raycast ( e ) {
-
-// Step 2: Detect normal objects
-    //1. sets the mouse position with a coordinate system where the center
-    //   of the screen is the origin
+    //sets the mouse position with a coordinate system where the center
+    //of the screen is the origin
     mouse.x = ( e.clientX / window.innerWidth ) * 2 - 1;
     mouse.y = - ( e.clientY / window.innerHeight ) * 2 + 1;
 
-    //2. set the picking ray from the camera position and mouse coordinates
+    //set the picking ray from the camera position and mouse coordinates
     raycaster.setFromCamera( mouse, camera );    
 
-    //3. compute intersections (no 2nd parameter true anymore)
+    //compute intersections (no 2nd parameter true anymore)
     var intersects = raycaster.intersectObjects( scene.children, true );
 
     let closestIntersection = intersects[0];
     console.log(closestIntersection);
     selectedObject = closestIntersection.object;
-	
-	
-	outlinePass = new THREE.OutlinePass(new THREE.Vector2(window.innerWidth, window.innerHeight), scene, camera);
-    
-
-	outlinePass.edgeStrength = Number( 10 );
-	outlinePass.edgeGlow = Number( 0);
-	outlinePass.edgeThickness = Number( 1 );
-	outlinePass.pulsePeriod = Number( 0 );
-	outlinePass.visibleEdgeColor.set( "#ffffff" );
-	outlinePass.hiddenEdgeColor.set( "#000000" );
-	outlinePass.selectedObjects = [selectedObject];
-	//outlinePass.selectedObjects = selectedObject;
-  composer.addPass( outlinePass );
-	
-	
-	
-	
-    for ( var i = 0; i < intersects.length; i++ ) {
-        //console.log( intersects[ i ] ); 
-        /*
-            An intersection has the following properties :
-                - object : intersected object (THREE.Mesh)
-                - distance : distance from camera to intersection (number)
-                - face : intersected face (THREE.Face3)
-                - faceIndex : intersected face index (number)
-                - point : intersection point (THREE.Vector3)
-                - uv : intersection point in the object's UV coordinates (THREE.Vector2)
-        */
-    }
-	
+    addOutlinePass(selectedObject)
 
 }
 
-
+function addOutlinePass(object){
+	if(composer.passes.length > 1){
+		composer.passes[2].selectedObjects = [object];
+	} else{
+		outlinePass = new THREE.OutlinePass(new THREE.Vector2(window.innerWidth, window.innerHeight), scene, camera);
+		outlinePass.edgeStrength = Number( 10 );
+		outlinePass.edgeGlow = Number( 0);
+		outlinePass.edgeThickness = Number( 10 );
+		outlinePass.pulsePeriod = Number( 0 );
+		outlinePass.visibleEdgeColor.set( "#ffffff" );
+		outlinePass.hiddenEdgeColor.set( "#aaaaaa" );
+		outlinePass.selectedObjects = [selectedObject];
+		outlinePass.selectedObjects = [object];
+		composer.addPass( outlinePass );
+	}
+}
 
 
 
