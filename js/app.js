@@ -354,7 +354,7 @@ function raycast ( e ) {
     var intersects = raycaster.intersectObjects( scene.children, true );
 
     let closestIntersection = intersects[0];
-    if(closestIntersection = undefined){
+    if(closestIntersection == undefined){
 	    selectedObject = null;
 	    composer.passes[2].enabled = false;
     } else{
