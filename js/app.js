@@ -42,14 +42,14 @@ function init() {
 	
   raycaster = new THREE.Raycaster();
   renderer.domElement.addEventListener( 'mousedown', function(event){
-	mouse.x = (event.changedTouches[0].clientX / window.innerWidth) * 2 - 1;
-	mouse.y = -(event.changedTouches[0].clientY / window.innerHeight) * 2 + 1;
+	mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+	mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 	startingTouchePos = [mouse.x, mouse.y];	
   }, false );
 	
   renderer.domElement.addEventListener( 'mouseup', function(event){
-	mouse.x = (event.changedTouches[0].clientX / window.innerWidth) * 2 - 1;
-    	mouse.y = -(event.changedTouches[0].clientY / window.innerHeight) * 2 + 1;
+	mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+	mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
   
 	if(get2dDistance(startingTouchePos, mouse) < 0.01){ // This is touch
 		raycast (event);
