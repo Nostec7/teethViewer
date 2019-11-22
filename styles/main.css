@@ -85,9 +85,9 @@ a:hover{
   left: -8px; 
   width: 40px; 
   height: 40px; 
-  border: 10px solid rgba(255,255,255,0.7);
+  border: 20px solid rgba(255,255,255,0.7);
   transition: border-width 0.2s ease 0s;
-  background-color:rgba(255,255,255,0.01)
+  background-color:rgba(255,255,255,0.35)
  
 }
 
