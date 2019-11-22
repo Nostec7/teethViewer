@@ -258,6 +258,7 @@ function raycast ( e ) {
     let closestDistance = 1000;
     let closestIntersection;
 	
+    console.log(intersects);
     intersects.forEach(elem){
 	if(elem.distance < closestDistance){
 		closestIntersection = elem;	
