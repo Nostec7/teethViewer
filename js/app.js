@@ -253,6 +253,7 @@ function update() {
 
 function render() {
 
+	controls.update();
   renderer.render( scene, camera );
   composer.render();
 
@@ -276,7 +277,7 @@ function onWindowResize() {
 
   // update the camera's frustum
   camera.updateProjectionMatrix();
-
+	
   renderer.setSize( container.clientWidth, container.clientHeight );
 
 }
