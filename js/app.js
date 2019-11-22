@@ -9,6 +9,7 @@ let animationMaxTime = 1.99; //Animation time when mouth is fully opened
 let animationLength = animationMaxTime * 100;
 let selectedObject;
 let isTouchDevice = true; // touch or mouse device (determines if mouse one first mousemove event)
+let hasTouched = false;
 
 let startingTouchePos;
 let touchTravelDistance = 0;
@@ -57,19 +58,34 @@ function init() {
 	}
   }, false );
 	
+	
+	
+
   renderer.domElement.addEventListener('touchstart', function(event){
-  	mouse.x = (event.changedTouches[0].clientX / window.innerWidth) * 2 - 1;
+	  
+	  hasTouched = true;
+	  
+  	/*mouse.x = (event.changedTouches[0].clientX / window.innerWidth) * 2 - 1;
 	mouse.y = -(event.changedTouches[0].clientY / window.innerHeight) * 2 + 1;
-	startingTouchePos = [mouse.x, mouse.y];	  
+	startingTouchePos = [mouse.x, mouse.y];	*/
+	  
   }, false);
 	
+  renderer.domElement.addEventListener('touchmove', function(event){
+	  hasTouched = false; 
+  }, false);
+	
+	
   renderer.domElement.addEventListener('touchend', function(event){
-    	mouse.x = (event.changedTouches[0].clientX / window.innerWidth) * 2 - 1;
+	  if(hasTouched){
+		raycast (event);  
+	  }
+    	/*mouse.x = (event.changedTouches[0].clientX / window.innerWidth) * 2 - 1;
     	mouse.y = -(event.changedTouches[0].clientY / window.innerHeight) * 2 + 1;
 
     	if(get2dDistance(startingTouchePos, mouse) < 0.01){ // This is touch
 		raycast (event);
-	}
+	}*/
   }, false);
 	
 	
