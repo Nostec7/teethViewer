@@ -9,6 +9,7 @@ let animationMaxTime = 1.99; //Animation time when mouth is fully opened
 let animationLength = animationMaxTime * 100;
 let selectedObject;
 
+var globalGLTF;
 var globalModel;
 var globalAnimation;
 var globalAction;
@@ -137,6 +138,7 @@ function loadModels() {
     action.play();
     action.paused = true;
 	  
+	  globalGLTF = gltf;
 	  globalModel = model;
 	  globalAnimation = animation;
 	  globalAction = action;
