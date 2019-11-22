@@ -148,11 +148,6 @@ function createControls() {
   controls.minPolarAngle = 0.0;
   controls.maxPolarAngle = 2.9;
   controls.screenSpacePanning = true;
-  controls.mouseButtons = {
-    LEFT: THREE.MOUSE.ROTATE,
-    MIDDLE: THREE.MOUSE.PAN,
-    RIGHT: THREE.MOUSE.PAN
-}
   controls.update();
 	
 }
@@ -378,12 +373,18 @@ function addOutlinePass(object){
 		composer.passes[2].selectedObjects = [object];
 	} else{
 		outlinePass = new THREE.OutlinePass(new THREE.Vector2(window.innerWidth, window.innerHeight), scene, camera);
-		outlinePass.edgeStrength = Number( 25 );
+		if(isTouchDevice){
+			outlinePass.edgeStrength = Number( 25 );
+			outlinePass.edgeThickness = Number( 3 );
+		} else{
+			outlinePass.edgeStrength = Number( 20 );
+			outlinePass.edgeThickness = Number( 2 );	
+		}
+		
 		outlinePass.edgeGlow = Number( 0);
-		outlinePass.edgeThickness = Number( 3 );
 		outlinePass.pulsePeriod = Number( 0 );
 		outlinePass.visibleEdgeColor.set( new THREE.Color("rgb(255, 255, 255)") );
-		outlinePass.hiddenEdgeColor.set( new THREE.Color("rgb(8, 8, 8)") );
+		outlinePass.hiddenEdgeColor.set( new THREE.Color("rgb(9, 9, 9)") );
 		outlinePass.selectedObjects = [object];
 		composer.addPass( outlinePass );
 	}
