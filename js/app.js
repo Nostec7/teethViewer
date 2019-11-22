@@ -259,11 +259,11 @@ function raycast ( e ) {
     let closestIntersection;
 	
     console.log(intersects);
-    intersects.forEach(elem){
+    intersects.forEach(function(elem){
 	if(elem.distance < closestDistance){
 		closestIntersection = elem;	
 	}
-    }
+    });
 	 console.log(closestDistance, closestIntersection);
 	
     /*for ( var i = 0; i < intersects.length; i++ ) {
