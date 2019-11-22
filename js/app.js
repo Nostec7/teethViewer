@@ -372,11 +372,11 @@ function raycast ( e ) {
 	    	composer.passes[2].enabled = false;
 	    }
     } else{
+	    selectedObject = closestIntersection.object;
 	    if(hasClicked){
 		addSelectedOutlinePass(selectedObject);   
 		hasClicked = false;
 	    } else{
-		  selectedObject = closestIntersection.object;
     	  	addOutlinePass(selectedObject); 
 	    }
 	    
