@@ -373,7 +373,8 @@ function raycast ( e ) {
 	    }
     } else{
 	    if(hasClicked){
-		addSelectedOutlinePass(selectedObject);    
+		addSelectedOutlinePass(selectedObject);   
+		hasClicked = false;
 	    } else{
 		  selectedObject = closestIntersection.object;
     	  	addOutlinePass(selectedObject); 
@@ -387,7 +388,7 @@ function raycast ( e ) {
 
 
 function addOutlinePass(object){
-	if(composer.passes.length > 2){
+	if(composer.passes[2] != undefined){
 		outlinePass.enabled = true;
 		composer.passes[2].selectedObjects = [object];
 	} else{
@@ -410,7 +411,7 @@ function addOutlinePass(object){
 }
 
 function addSelectedOutlinePass(object){
-	if(composer.passes.length > 3){
+	if(composer.passes[3] != undefined){
 		outlinePass.enabled = true;
 		composer.passes[3].selectedObjects = [object];
 	} else{
