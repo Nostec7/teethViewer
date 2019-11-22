@@ -388,25 +388,27 @@ function raycast ( e ) {
 
 
 function addOutlinePass(object){
-	if(composer.passes[2] != undefined){
-		outlinePass.enabled = true;
-		composer.passes[2].selectedObjects = [object];
-	} else{
-		outlinePass = new THREE.OutlinePass(new THREE.Vector2(window.innerWidth, window.innerHeight), scene, camera);
-		if(isTouchDevice){
-			outlinePass.edgeStrength = Number( 10 );
-			outlinePass.edgeThickness = Number( 2 );
+	if(composer.passes[3] != undefined && !composer.passes[3].selectedObjects.includes(object){
+		if(composer.passes[2] != undefined){
+			outlinePass.enabled = true;
+			composer.passes[2].selectedObjects = [object];
 		} else{
-			outlinePass.edgeStrength = Number( 10 );
-			outlinePass.edgeThickness = Number( 2 );	
+			outlinePass = new THREE.OutlinePass(new THREE.Vector2(window.innerWidth, window.innerHeight), scene, camera);
+			if(isTouchDevice){
+				outlinePass.edgeStrength = Number( 10 );
+				outlinePass.edgeThickness = Number( 2 );
+			} else{
+				outlinePass.edgeStrength = Number( 10 );
+				outlinePass.edgeThickness = Number( 2 );	
+			}
+
+			outlinePass.edgeGlow = Number( 0);
+			outlinePass.pulsePeriod = Number( 0 );
+			outlinePass.visibleEdgeColor.set( new THREE.Color("rgb(15, 15, 15)") );
+			outlinePass.hiddenEdgeColor.set( new THREE.Color("rgb(4, 4, 4)") );
+			outlinePass.selectedObjects = [object];
+			composer.addPass( outlinePass );
 		}
-		
-		outlinePass.edgeGlow = Number( 0);
-		outlinePass.pulsePeriod = Number( 0 );
-		outlinePass.visibleEdgeColor.set( new THREE.Color("rgb(15, 15, 15)") );
-		outlinePass.hiddenEdgeColor.set( new THREE.Color("rgb(4, 4, 4)") );
-		outlinePass.selectedObjects = [object];
-		composer.addPass( outlinePass );
 	}
 }
 
