@@ -41,7 +41,20 @@ function init() {
 	
 	
   raycaster = new THREE.Raycaster();
-  renderer.domElement.addEventListener( 'mousedown', raycast, false );
+  renderer.domElement.addEventListener( 'mousedown', function(event){
+	mouse.x = (event.changedTouches[0].clientX / window.innerWidth) * 2 - 1;
+	mouse.y = -(event.changedTouches[0].clientY / window.innerHeight) * 2 + 1;
+	startingTouchePos = [mouse.x, mouse.y];	
+  }, false );
+	
+  renderer.domElement.addEventListener( 'mouseup', function(event){
+	mouse.x = (event.changedTouches[0].clientX / window.innerWidth) * 2 - 1;
+    	mouse.y = -(event.changedTouches[0].clientY / window.innerHeight) * 2 + 1;
+  
+	if(get2dDistance(startingTouchePos, mouse) < 0.01){ // This is touch
+		raycast (event);
+	}
+  }, false );
 	
   renderer.domElement.addEventListener('touchstart', function(event){
   	mouse.x = (event.changedTouches[0].clientX / window.innerWidth) * 2 - 1;
@@ -53,10 +66,7 @@ function init() {
     	mouse.x = (event.changedTouches[0].clientX / window.innerWidth) * 2 - 1;
     	mouse.y = -(event.changedTouches[0].clientY / window.innerHeight) * 2 + 1;
 
-	let xCoord = startingTouchePos[0] - mouse.x;
-	let yCoord = startingTouchePos[1] - mouse.y;
-	let distance = Math.sqrt( xCoord*xCoord + yCoord*yCoord );
-    	if(distance < 0.01){ // This is touch
+    	if(get2dDistance(startingTouchePos, mouse) < 0.01){ // This is touch
 		raycast (event);
 	}
   }, false);
@@ -96,6 +106,12 @@ function createCamera() {
   
 	
 
+}
+
+function get2dDistance(pos1, mousePos){
+  let xCoord = pos1[0] - mousePos.x;
+  let yCoord = pos1[1] - mousePos.y;
+  return Math.sqrt( xCoord*xCoord + yCoord*yCoord );
 }
 
 function createControls() {
