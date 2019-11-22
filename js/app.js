@@ -41,7 +41,7 @@ function init() {
   copyPass.renderToScreen = true;*/
 	
   composer = new THREE.EffectComposer(renderer);
-  renderPass = new THREE.RenderPass( scene, camera );
+  //renderPass = new THREE.RenderPass( scene, camera );
   
   
   outlinePass = new THREE.OutlinePass(new THREE.Vector2(window.innerWidth, window.innerHeight), scene, camera);
@@ -60,9 +60,11 @@ function init() {
     render();
 
   } );*/
-	requestAnimationFrame(function(){
+	
+ animate();
+	/*requestAnimationFrame(function(){
 	 composer.render();	
-	});
+	});*/
 
 }
 
@@ -183,22 +185,30 @@ function createRenderer() {
 }
 
 function update() {
-
   const delta = clock.getDelta();
-
   for ( const mixer of mixers ) {
-
     mixer.update( delta );
-
   }
-
 }
 
 function render() {
 
-  composer.render();
+  
   renderer.render( scene, camera );
+  composer.render();
 
+}
+
+function animate(){
+	 requestAnimationFrame( animate );
+
+	   const delta = clock.getDelta();
+	  for ( const mixer of mixers ) {
+	    mixer.update( delta );
+	  }
+
+    renderer.render( scene, camera );
+    composer.render();
 }
 
 function onWindowResize() {
