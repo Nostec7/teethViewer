@@ -52,7 +52,7 @@ a:hover{
 
 .scrubber .track {
     position: absolute;
-    left:-12px;
+    left:0px;
     top:0px; 
     height:100%; 
     width: calc(100% + 36px); 
@@ -81,7 +81,7 @@ a:hover{
     cursor: pointer;
     border-radius: 100%;
 
-   top: 13px; 
+   top: 0px; 
   left: 0px; 
   width: 40px; 
   height: 40px; 
