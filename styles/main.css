@@ -40,7 +40,7 @@ a:hover{
     top: 40px;
     margin: auto;
     width: 400px;
-    height: 25px;
+    height: 40px;
 }
 
 .scrubber-vert {
@@ -52,7 +52,7 @@ a:hover{
 
 .scrubber .track {
     position: absolute;
-    left:-20px;
+    left:0px;
     top:0px; 
     height:40px; 
     width:100%; 
