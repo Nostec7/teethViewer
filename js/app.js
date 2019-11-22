@@ -8,6 +8,7 @@ let scrubber;
 let animationMaxTime = 1.99; //Animation time when mouth is fully opened
 let animationLength = animationMaxTime * 100;
 let selectedObject;
+let isTouchDevice = true; // touch or mouse device (determines if mouse one first mousemove event)
 
 let startingTouchePos;
 let touchTravelDistance = 0;
@@ -39,6 +40,12 @@ function init() {
   createRenderer();
   addMouthOpeningScrubber();
 	
+
+  function onMouseMove(e) {
+    unlisten('mousemove', onMouseMove, false);
+    isTouchDevice = false;
+  }
+  listen('mousemove', onMouseMove, false);
 	
   raycaster = new THREE.Raycaster();
   renderer.domElement.addEventListener( 'mousedown', function(event){
@@ -315,11 +322,13 @@ function seekAnimationTime(animMixer, timeInSeconds){
 //===== RAYCASTING =====
 function raycast ( e ) {
     //sets the mouse position with a coordinate system where the center
-    //of the screen is the origin
-    /*mouse.x = ( e.clientX / window.innerWidth ) * 2 - 1;
-    mouse.y = - ( e.clientY / window.innerHeight ) * 2 + 1;*/
-    mouse.x = (event.changedTouches[0].clientX / window.innerWidth) * 2 - 1;
-    mouse.y = -(event.changedTouches[0].clientY / window.innerHeight) * 2 + 1;
+    if(isTouchDevice){
+    	mouse.x = (event.changedTouches[0].clientX / window.innerWidth) * 2 - 1;
+   	mouse.y = -(event.changedTouches[0].clientY / window.innerHeight) * 2 + 1;
+    } else{
+	mouse.x = ( e.clientX / window.innerWidth ) * 2 - 1;
+    	mouse.y = - ( e.clientY / window.innerHeight ) * 2 + 1;
+    }
     
 
     //set the picking ray from the camera position and mouse coordinates
