@@ -10,6 +10,7 @@ let animationLength = animationMaxTime * 100;
 let selectedObject;
 let isTouchDevice = true; // touch or mouse device (determines if mouse one first mousemove event)
 let hasTouched = false;
+let hasClicked = false;
 
 let startingTouchePos;
 let touchTravelDistance = 0;
@@ -54,6 +55,7 @@ function init() {
 	mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
   
 	if(get2dDistance(startingTouchePos, mouse) < 0.01){ // This is touch
+		hasClicked = true;
 		raycast (event);
 	}
   }, false );
@@ -370,8 +372,14 @@ function raycast ( e ) {
 	    	composer.passes[2].enabled = false;
 	    }
     } else{
-	  selectedObject = closestIntersection.object;
-    	  addOutlinePass(selectedObject)  
+	    if(hasClicked){
+		addSelectedOutlinePass(selectedObject);    
+	    } else{
+		  selectedObject = closestIntersection.object;
+    	  	addOutlinePass(selectedObject); 
+	    }
+	    
+	  
     }
     
 }
@@ -382,6 +390,29 @@ function addOutlinePass(object){
 	if(composer.passes.length > 2){
 		outlinePass.enabled = true;
 		composer.passes[2].selectedObjects = [object];
+	} else{
+		outlinePass = new THREE.OutlinePass(new THREE.Vector2(window.innerWidth, window.innerHeight), scene, camera);
+		if(isTouchDevice){
+			outlinePass.edgeStrength = Number( 10 );
+			outlinePass.edgeThickness = Number( 2 );
+		} else{
+			outlinePass.edgeStrength = Number( 10 );
+			outlinePass.edgeThickness = Number( 2 );	
+		}
+		
+		outlinePass.edgeGlow = Number( 0);
+		outlinePass.pulsePeriod = Number( 0 );
+		outlinePass.visibleEdgeColor.set( new THREE.Color("rgb(10, 10, 10)") );
+		outlinePass.hiddenEdgeColor.set( new THREE.Color("rgb(4, 4, 4)") );
+		outlinePass.selectedObjects = [object];
+		composer.addPass( outlinePass );
+	}
+}
+
+function addSelectedOutlinePass(Object){
+	if(composer.passes.length > 3){
+		outlinePass.enabled = true;
+		composer.passes[3].selectedObjects = [object];
 	} else{
 		outlinePass = new THREE.OutlinePass(new THREE.Vector2(window.innerWidth, window.innerHeight), scene, camera);
 		if(isTouchDevice){
