@@ -138,7 +138,7 @@ function initPostprocessing() {
     depthRenderTarget = new THREE.WebGLRenderTarget( window.innerWidth, window.innerHeight, pars );
 
     // Setup Anti Aliasing pass
-    msaaRenderPass = new THREE.ManualMSAARenderPass( scene, camera );
+    msaaRenderPass = new THREE.SSAARenderPass ( scene, camera );
     msaaRenderPass.unbiased = false;
     msaaRenderPass.sampleLevel = 2;
 
