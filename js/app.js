@@ -258,10 +258,17 @@ function raycast ( e ) {
     let closestDistance = 1000;
     let closestIntersection;
 	
-    for ( var i = 0; i < intersects.length; i++ ) {
+    intersects.forEach(elem){
+	if(elem.distance < closestDistance){
+		closestIntersection = elem;	
+	}
+    }
+	 console.log(closestDistance, closestIntersection);
+	
+    /*for ( var i = 0; i < intersects.length; i++ ) {
 	if(intersects[i].distance < closestDistance){
 		closestIntersection = intersects[i];
-	}
+	}*/
         /*
             An intersection has the following properties :
                 - object : intersected object (THREE.Mesh)
@@ -271,9 +278,11 @@ function raycast ( e ) {
                 - point : intersection point (THREE.Vector3)
                 - uv : intersection point in the object's UV coordinates (THREE.Vector2)
         */
-    }
-    console.log(closestDistance, closestIntersection);
+   // }
+   
 }
+
+
 
 
 
