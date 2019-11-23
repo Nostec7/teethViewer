@@ -133,7 +133,7 @@ function addStatusButtonListeners(){
 	toothStatusButtons[2].addEventListener('click', setAsDamaged);
 	toothStatusButtons[3].addEventListener('click', setAsMissing);
 
-	/*for(let i = 0; i < toothStatusButtons.length; i++){
+	for(let i = 0; i < toothStatusButtons.length; i++){
 		toothStatusButtons[i].addEventListener('touchstart', function(event){
 			hasTouched = true;
 		}, false);
@@ -149,7 +149,33 @@ function addStatusButtonListeners(){
 			setAsHealthy();
 		}
 		isCameraMoving = false;
-	}, false);*/
+	}, false);
+
+	toothStatusButtons[0].addEventListener('touchend', function(event){
+		if(hasTouched){
+			setAsHealthy(); 
+		}
+		isCameraMoving = false;
+	});
+	toothStatusButtons[1].addEventListener('touchend', function(event){
+		if(hasTouched){
+			setAsSick(); 
+		}
+		isCameraMoving = false;
+	});
+	toothStatusButtons[2].addEventListener('touchend', function(event){
+		if(hasTouched){
+			setAsDamaged(); 
+		}
+		isCameraMoving = false;
+	});
+
+	toothStatusButtons[3].addEventListener('touchend', function(event){
+		if(hasTouched){
+			setAsMissing(); 
+		}
+		isCameraMoving = false;
+	});
 
 }
 function setAsHealthy(){
