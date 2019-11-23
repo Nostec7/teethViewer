@@ -5,8 +5,14 @@ let renderer;
 let composer, copyPass, renderPass;
 let scene;
 let scrubber;
+let loadingOverlay;
+let toothStatusMenu;
+let toothStatusButtons;
 let animationMaxTime = 1.99; //Animation time when mouth is fully opened
 let animationLength = animationMaxTime * 100;
+let isCameraMoving = false;
+
+let hoveredObject;
 let selectedObject;
 let isTouchDevice = true; // touch or mouse device (determines if mouse one first mousemove event)
 let hasTouched = false;
@@ -15,122 +21,185 @@ let hasClicked = true;
 let startingTouchePos;
 let touchTravelDistance = 0;
 
-var globalGLTF;
-var globalModel;
-var globalAnimation;
-var globalAction;
-var globalMixer;
-let globalLoader;
-
 let raycaster, mouse = { x : 0, y : 0 };
 
+let startingCameraPosition = new THREE.Vector3(-0.1469926322389252, 1.1960779151428367, 15.98586221593867);
+let filteredObjectNames = ["Upper_jaw001", "Lower_jaw001"]; // Objects that will not be selectable (jaw meshes)
+
+let gumObjects = [undefined, undefined];
+let gumObjectNames = ["Upper_jaw001", "Lower_jaw001"];
+let areGumsVisible = true;
 
 const mixers = [];
 const clock = new THREE.Clock();
 
+
 function init() {
-  isTouchDevice = isMobileTablet();
-  container = document.querySelector( '#scene-container' );
+	isTouchDevice = isMobileTablet();
 
-  scene = new THREE.Scene();
-  scene.background = new THREE.Color( 0x282828 );
+	container = document.getElementById( "scene-container" );
+	loadingOverlay = document.getElementById( "loading-screen" );
+	toothStatusMenu = document.getElementById( "tooth-status-menu" );
+	toothStatusButtons = document.getElementsByClassName("status-selection");
+	addStatusButtonListeners();
 
-  createCamera();
-  createControls();
-  createLights();
-  loadModels();
-  createRenderer();
-  addMouthOpeningScrubber();
-	
-	
-  raycaster = new THREE.Raycaster();
-  renderer.domElement.addEventListener( 'mousedown', function(event){
-	mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-	mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-	startingTouchePos = [mouse.x, mouse.y];	
-  }, false );
-	
-  renderer.domElement.addEventListener( 'mouseup', function(event){
-	mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-	mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-  
-	if(get2dDistance(startingTouchePos, mouse) < 0.01){ // This is touch
-		hasClicked = true;
-		raycast (event);
-	}
-  }, false );
-	
-   renderer.domElement.addEventListener( 'mousemove', function(event){
-	mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-	mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-	   //console.log(mouse.x, mouse.y);
-	//raycast (event);
-  
-	/*if(get2dDistance(startingTouchePos, mouse) < 0.01){ // This is touch
-		raycast (event);
-	}*/
-  }, false );
-	
-	
-	
+	scene = new THREE.Scene();
+	scene.background = new THREE.Color( 0x25282d );
 
-  renderer.domElement.addEventListener('touchstart', function(event){
-	  
-	  hasTouched = true;
-	  
-  	/*mouse.x = (event.changedTouches[0].clientX / window.innerWidth) * 2 - 1;
-	mouse.y = -(event.changedTouches[0].clientY / window.innerHeight) * 2 + 1;
-	startingTouchePos = [mouse.x, mouse.y];	*/
-	  
-  }, false);
-	
-  renderer.domElement.addEventListener('touchmove', function(event){
-	  hasTouched = false; 
-  }, false);
+	createCamera();
+	createControls();
+	createLights();
+	loadModels();
+	createRenderer();
+	addUiControls();
 	
 	
-  renderer.domElement.addEventListener('touchend', function(event){
-	  if(hasTouched){
-		raycast (event);  
-	  }
-    	/*mouse.x = (event.changedTouches[0].clientX / window.innerWidth) * 2 - 1;
-    	mouse.y = -(event.changedTouches[0].clientY / window.innerHeight) * 2 + 1;
+	raycaster = new THREE.Raycaster();
+	renderer.domElement.addEventListener( 'mousedown', function(event){
+		isCameraMoving = true;
+		mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+		mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+		startingTouchePos = [mouse.x, mouse.y];	
+	}, false );
+	
+	renderer.domElement.addEventListener( 'mouseup', function(event){
+		mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+		mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
-    	if(get2dDistance(startingTouchePos, mouse) < 0.01){ // This is touch
-		raycast (event);
-	}*/
-  }, false);
+		if(get2dDistance(startingTouchePos, mouse) < 0.01){ // This is touch
+			hasClicked = true;
+			raycast (event, true);
+		}
+		isCameraMoving = false;
+	}, false );
+	
+	renderer.domElement.addEventListener( 'mousemove', function(event){
+		mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+		mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+		raycast (event, false);
+	}, false );
 	
 	
-  //Outlining the object
-  var renderPass = new THREE.RenderPass( scene, camera );
-  copyPass = new THREE.ShaderPass( THREE.CopyShader );
-  copyPass.renderToScreen = true;
+	renderer.domElement.addEventListener('touchstart', function(event){
+		hasTouched = true;
+	}, false);
 	
-  composer = new THREE.EffectComposer(renderer);
-  composer.addPass( renderPass );
-  composer.addPass( copyPass );
-  //renderPass = new THREE.RenderPass( scene, camera );
+	renderer.domElement.addEventListener('touchmove', function(event){
+		hasTouched = false; 
+		isCameraMoving = true;
+	}, false);
 	
-  renderer.setAnimationLoop( () => {
+	
+	renderer.domElement.addEventListener('touchend', function(event){
+		if(hasTouched){
+			raycast (event, true);  
+		}
+		isCameraMoving = false;
+	}, false);
+	
+	
+	//Outlining the object
+	var renderPass = new THREE.RenderPass( scene, camera );
+	copyPass = new THREE.ShaderPass( THREE.CopyShader );
+	copyPass.renderToScreen = true;
 
-    update();
-    render();
+	composer = new THREE.EffectComposer(renderer);
+	composer.addPass( renderPass );
+	composer.addPass( copyPass );
+	createOutlinePasses();
+ 
 
-  } );
-	
- //animate();
-	/*requestAnimationFrame(function(){
-	 composer.render();	
-	});*/
+	renderer.setAnimationLoop( () => {
+    	update();
+    	render();
+	});
+
 
 }
 
 function createCamera() {
+	camera = new THREE.PerspectiveCamera( 35, container.clientWidth / container.clientHeight, 1, 5000 );
+	camera.position.set( 0, 1, 16 );
+}
 
-  camera = new THREE.PerspectiveCamera( 35, container.clientWidth / container.clientHeight, 1, 5000 );
-  camera.position.set( 0, 1, 16 );
-  
+
+
+//======================================================
+//============== TEETH STATUS SETTERS ==================
+function addStatusButtonListeners(){
+
+	toothStatusButtons[0].addEventListener('click', setAsHealthy);
+	toothStatusButtons[1].addEventListener('click', setAsSick);
+	toothStatusButtons[2].addEventListener('click', setAsDamaged);
+	toothStatusButtons[3].addEventListener('click', setAsMissing);
+
+	/*for(let i = 0; i < toothStatusButtons.length; i++){
+		toothStatusButtons[i].addEventListener('touchstart', function(event){
+			hasTouched = true;
+		}, false);
+		toothStatusButtons[i].addEventListener('touchmove', function(event){
+			hasTouched = false; 
+			isCameraMoving = true;
+		}, false);
+	}
+	
+	
+	toothStatusButtons[0].addEventListener('touchend', function(event){
+		if(hasTouched){
+			setAsHealthy();
+		}
+		isCameraMoving = false;
+	}, false);*/
+
+}
+function setAsHealthy(){
+	//Set as healty
+	selectedObject.material.transparent = false;
+	selectedObject.material.opacity = 1;
+	selectedObject.material.color.setHex( 0x838383 );
+
+	deselectObject();
+}
+function setAsSick(){
+	//Set as sick
+	let tempMaterial = selectedObject.material.clone();
+	tempMaterial.map = selectedObject.material.map.clone();
+	tempMaterial.map.repeat.set(1,1);
+	tempMaterial.map.offset.set(0,0); 
+	tempMaterial.map.needsUpdate = true;
+	tempMaterial.transparent = false;
+	tempMaterial.opacity = 1;
+	tempMaterial.color.setHex( 0x4f4f4f );
+	selectedObject.material = tempMaterial;
+
+	deselectObject();
+}
+function setAsDamaged(){
+	//Set as damaged
+	let tempMaterial = selectedObject.material.clone();
+	tempMaterial.map = selectedObject.material.map.clone();
+	tempMaterial.map.repeat.set(1,1);
+	tempMaterial.map.offset.set(0,0); 
+	tempMaterial.map.needsUpdate = true;
+	tempMaterial.transparent = false;
+	tempMaterial.opacity = 1;
+	tempMaterial.color.setHex( 0x222222 );
+	selectedObject.material = tempMaterial;
+
+	deselectObject();
+}
+function setAsMissing(){
+	//Set as missing
+	let tempMaterial = selectedObject.material.clone();
+	tempMaterial.map = selectedObject.material.map.clone();
+	tempMaterial.map.repeat.set(1,1);
+	tempMaterial.map.offset.set(0,0); 
+	tempMaterial.map.needsUpdate = true;
+	tempMaterial.transparent = true;
+	tempMaterial.opacity = 0.0;
+	selectedObject.material = tempMaterial;
+
+	deselectObject();
 }
 
 
@@ -144,30 +213,32 @@ function isMobileTablet(){
 }
 
 function get2dDistance(pos1, mousePos){
-  let xCoord = pos1[0] - mousePos.x;
-  let yCoord = pos1[1] - mousePos.y;
-  return Math.sqrt( xCoord*xCoord + yCoord*yCoord );
+	if(pos1 != undefined){
+	  let xCoord = pos1[0] - mousePos.x;
+	  let yCoord = pos1[1] - mousePos.y;
+	  return Math.sqrt( xCoord*xCoord + yCoord*yCoord );
+	}
+	return 0;
 }
 
 function createControls() {
-
-  controls = new THREE.OrbitControls( camera, container );
-  controls.enableDamping = true;
-  controls.dampingFactor = 0.2;
-  controls.rotateSpeed = 0.1;
-  controls.panSpeed = 0.1;
-  controls.zoomSpeed = 1;
-  controls.minPolarAngle = 0.0;
-  controls.maxPolarAngle = 2.9;
-  controls.screenSpacePanning = true;
-  controls.update();
-	
+	controls = new THREE.OrbitControls( camera, container );
+	controls.enableDamping = true;
+	controls.dampingFactor = 0.2;
+	controls.rotateSpeed = 0.1;
+	controls.panSpeed = 0.1;
+	controls.zoomSpeed = 1;
+	controls.minPolarAngle = 0.0;
+	controls.maxPolarAngle = 2.9;
+	controls.screenSpacePanning = true;
+	controls.update();
 }
 
+
+//======================================================
+//================= SCENE LIGHTS =======================
 function createLights() {
-
   const ambientLight = new THREE.HemisphereLight( 0xddeeff, 0x0f0e0d, 6 );
-
   const frontLight = new THREE.DirectionalLight( 0xffffff, 1 );
   frontLight.position.set( 0, 5, 30 );
 	frontLight.castShadow = true;
@@ -193,54 +264,54 @@ function createLights() {
 }
 
 function loadModels() {
-  const loader = new THREE.GLTFLoader();
+	const loader = new THREE.GLTFLoader();
 
-  // A reusable function to set up the models. We're passing in a position parameter
-  // so that they can be individually placed around the scene
-  const onLoad = ( gltf, position ) => {
+	// A reusable function to set up the models. We're passing in a position parameter
+	// so that they can be individually placed around the scene
+	const onLoad = ( gltf, position ) => {
 
-    const model = gltf.scene.children[ 0 ];
-    model.position.copy( position );
+		const model = gltf.scene.children[ 0 ];
+		model.position.copy( position );
 
-	 
-    const animation = gltf.animations[ 0 ];
-	  
-    const mixer = new THREE.AnimationMixer( model );
-    mixers.push( mixer );
+		 
+		const animation = gltf.animations[ 0 ];
+		  
+		const mixer = new THREE.AnimationMixer( model );
+		mixers.push( mixer );
+		  
+		const action = mixer.clipAction( animation );  
+		action.play();
+		action.paused = true;
+		  
+		addMouthOpeningScrubber(mixer, action);
+	    scene.add( model );
 
-	 
-	  
-    const action = mixer.clipAction( animation );  
-    action.play();
-    action.paused = true;
-	  
-	  globalGLTF = gltf;
-	  globalModel = model;
-	  globalAnimation = animation;
-	  globalAction = action;
-	  globalMixer = mixer;
-	  
+	    fadeOutDomElement(loadingOverlay);
 
-    scene.add( model );
+	    //Replace object names with actual objects
+		for(let i = 0; i < gumObjectNames.length; i++){
+			gumObjects[i] = scene.getObjectByName(gumObjectNames[i], true);
+		}
+	};	
 
-  };
+	// the loader will report the loading progress to this function
+	const onProgress = () => {};
 
-  // the loader will report the loading progress to this function
-  const onProgress = () => {};
+	// the loader will send any error messages to this function, and we'll log
+	// them to to console
+	const onError = ( errorMessage ) => { console.log( errorMessage ); };
 
-  // the loader will send any error messages to this function, and we'll log
-  // them to to console
-  const onError = ( errorMessage ) => { console.log( errorMessage ); };
+	// load the first model. Each model is loaded asynchronously,
+	// so don't make any assumption about which one will finish loading first
+	/*const parrotPosition = new THREE.Vector3( 0, 0, 2.5 );
+	loader.load( 'models/Parrot.glb', gltf => onLoad( gltf, parrotPosition ), onProgress, onError );*/
 
-  // load the first model. Each model is loaded asynchronously,
-  // so don't make any assumption about which one will finish loading first
-  /*const parrotPosition = new THREE.Vector3( 0, 0, 2.5 );
-  loader.load( 'models/Parrot.glb', gltf => onLoad( gltf, parrotPosition ), onProgress, onError );*/
+	const teethPosition = new THREE.Vector3( 0, -0.5, 1 );
+	loader.load( 'models/Teeth.glb', gltf => onLoad( gltf, teethPosition ), onProgress, onError );
 
-  const teethPosition = new THREE.Vector3( 0, -1, 1 );
-  loader.load( 'models/Teeth.glb', gltf => onLoad( gltf, teethPosition ), onProgress, onError );
-globalLoader = loader;
+
 	
+
 }
 
 function createRenderer() {
@@ -260,6 +331,9 @@ function createRenderer() {
 
 }
 
+
+
+
 function update() {
   const delta = clock.getDelta();
   for ( const mixer of mixers ) {
@@ -269,9 +343,18 @@ function update() {
 
 function render() {
 
+
+	if(isCameraMoving){
+		if(selectedObject != undefined){
+			transformToothStatusMenu();
+		}
+	}
+
+	TWEEN.update();
 	controls.update();
-  renderer.render( scene, camera );
-  composer.render();
+	
+	renderer.render( scene, camera );
+	composer.render();
 
 }
 
@@ -301,21 +384,145 @@ function onWindowResize() {
 window.addEventListener( 'resize', onWindowResize );
 
 
-function addMouthOpeningScrubber(){
-	scrubber = new ScrubberView();
-	//document.body.appendChild(scrubber.elt);
-	document.getElementsByClassName("controls-container")[0].appendChild(scrubber.elt);
+
+
+//======================================================
+//=================== TRANSITIONS ======================
+function fadeOutDomElement(element) {
+    var opacity = 1;  // initial opacity
+    var timer = setInterval(function () {
+
+    	if(opacity < 1){
+    		element.pointerEvents = "none";
+    	} 
+    	if (opacity <= 0.05){
+            clearInterval(timer);
+            element.style.display = 'none';
+        }
+        element.style.opacity = opacity;
+        element.style.filter = 'alpha(opacity=' + opacity * 100 + ")";
+        opacity -= opacity * 0.05;
+    }, 12);
+}
+
+function fadeInDomElement(element) {
+    var opacity = 0.1;  // initial opacity
+    element.style.display = 'block';
+    var timer = setInterval(function () {
+        if(opacity > 0.1){
+        	element.pointerEvents = "all";
+        }
+        if (opacity >= 1){
+            clearInterval(timer);
+        }
+        element.style.opacity = opacity;
+        element.style.filter = 'alpha(opacity=' + opacity * 100 + ")";
+        opacity += opacity * 0.1;
+    }, 10);
+}
+
+
+
+function fadeOutMeshElement(element) {
+	if(element != undefined){
+	    var opacity = 1;  // initial opacity
+	    var timer = setInterval(function () {
+	    	if(opacity < 1){
+	    		//element.pointerEvents = "none";
+	    	} 
+	    	if (opacity <= 0.05){
+	    		opacity = 0.0;
+	    		element.visible = false;
+	            clearInterval(timer);
+	        }
+	        element.material.opacity = opacity;
+	        opacity -= opacity * 0.05;
+	    }, 10);
+	}
+}
+function fadeInMeshElement(element) {
+	if(element != undefined){
+	    var opacity = 0.1;  // initial opacity
+	    element.visible = true;
+	    var timer = setInterval(function () {
+	        if (opacity >= 1){
+	            clearInterval(timer);
+	        }
+	        element.material.opacity = opacity;
+	        //element.style.filter = 'alpha(opacity=' + opacity * 100 + ")";
+	        opacity += opacity * 0.1;
+	    }, 10);
+	}
+}
+
+
+
+//======================================================
+//================== ADD UI CONTROLS ===================
+function addUiControls(){
+	let resetButton = document.createElement('div');
+	resetButton.className += "button";
+
+	let resetText = document.createTextNode("RESET");     // Create a text node
+	resetButton.appendChild(resetText);  
+
+	resetButton.id = "reset-button";
+	resetButton.title ="Reset camera button";
+	document.getElementById("controls-container").appendChild(resetButton);
+	resetButton.addEventListener('click', resetToStartingPosition);
+
+
+	let toggleGumsButton = document.createElement('div');
+	toggleGumsButton.className += "button";
+
+	let gumsText = document.createTextNode("GUMS");     // Create a text node
+	toggleGumsButton.appendChild(gumsText);  
+
+	toggleGumsButton.id = "toggle-gums-button";
+	toggleGumsButton.title = "Toggle gum visibility"
+	document.getElementById("controls-container").appendChild(toggleGumsButton);
+	toggleGumsButton.addEventListener('click', toggleGumVisibility);
+}
+
+function toggleGumVisibility(){
+	if(gumObjects[0] != undefined){
+		if(areGumsVisible){
+			for(let i = 0; i < gumObjects.length; i++){
+				let tempMaterial = gumObjects[i].material.clone();
+				tempMaterial.map = gumObjects[i].material.map.clone();
+				tempMaterial.map.repeat.set(1,1);
+				tempMaterial.map.offset.set(0,0); 
+				tempMaterial.map.needsUpdate = true;
+				tempMaterial.transparent = true;
+				tempMaterial.opacity = 1;
+				gumObjects[i].material = tempMaterial;
+				fadeOutMeshElement(gumObjects[i]);
+			}
+			areGumsVisible = false;
+		} else{
+			for(let i = 0; i < gumObjects.length; i++){
+				let tempMaterial = gumObjects[i].material.clone();
+				tempMaterial.map = gumObjects[i].material.map.clone();
+				tempMaterial.map.repeat.set(1,1);
+				tempMaterial.map.offset.set(0,0); 
+				tempMaterial.map.needsUpdate = true;
+				tempMaterial.transparent = true;
+				tempMaterial.opacity = 0;
+				gumObjects[i].material = tempMaterial;
+				fadeInMeshElement(gumObjects[i]);
+			}
+			areGumsVisible = true;
+		}
+	}
 	
-	/*scrubber.min();// 0
-	scrubber.max(); // 1
-	scrubber.step(); // 0
-	scrubber.value(); // 0
-	scrubber.orientation(); // 'horizontal'
+}
 
-	scrubber.value(0.5); // Updates the scrubber's value
-	scrubber.value(); // 0.5*/
 
-	// Setters are chainable
+function addMouthOpeningScrubber(mixer, action){
+	scrubber = new ScrubberView();
+	scrubber.elt.title = "Slide to control openness of the mouth"
+	document.getElementById("controls-container").appendChild(scrubber.elt);
+	
 	scrubber.value(0);
 	scrubber.min(0).max(60).step(1).orientation('horizontal');
 	
@@ -327,9 +534,11 @@ function addMouthOpeningScrubber(){
 		
 		let currentPos = value * (animationMaxTime+2) / animationLength; //animation's time based on slider value
 
-		globalAction.paused = false
-		seekAnimationTime(globalMixer, currentPos)
-		globalAction.paused = true
+		action.paused = false
+		seekAnimationTime(mixer, currentPos)
+		action.paused = true
+
+		transformToothStatusMenu(); // animate status box
 		
 	}
 	// onScrubEnd is called whenever a user stops scrubbing
@@ -346,19 +555,18 @@ function seekAnimationTime(animMixer, timeInSeconds){
 }
 
 
-//======================
-//===== RAYCASTING =====
-function raycast ( e ) {
+//======================================================
+//================== RAYCASTING ========================
+function raycast ( e , isSelected) {
     //sets the mouse position with a coordinate system where the center
     if(isTouchDevice){
     	mouse.x = (event.changedTouches[0].clientX / window.innerWidth) * 2 - 1;
-   	mouse.y = -(event.changedTouches[0].clientY / window.innerHeight) * 2 + 1;
+   		mouse.y = -(event.changedTouches[0].clientY / window.innerHeight) * 2 + 1;
     } else{
-	mouse.x = ( e.clientX / window.innerWidth ) * 2 - 1;
+		mouse.x = ( e.clientX / window.innerWidth ) * 2 - 1;
     	mouse.y = - ( e.clientY / window.innerHeight ) * 2 + 1;
     }
     
-
     //set the picking ray from the camera position and mouse coordinates
     raycaster.setFromCamera( mouse, camera );    
 
@@ -367,84 +575,233 @@ function raycast ( e ) {
 
     let closestIntersection = intersects[0];
     if(closestIntersection == undefined){
-	    selectedObject = null;
-	    if(composer.passes[2] != undefined){
-	    	composer.passes[2].enabled = false;
+	    //selectedObject = null;
+	    composer.passes[2].enabled = false;
+	    if(isSelected){
+	    	deselectObject();
+	    	
 	    }
     } else{
-	    selectedObject = closestIntersection.object;
-	    addOutlinePass(selectedObject); 
-	    
-	    
-	    if(hasClicked){
-		//addSelectedOutlinePass(selectedObject); 
-		
-		//hasClicked = false;
-	    } else{
-    	  	//addOutlinePass(selectedObject); 
-	    }
-	    
-	  
+		if(!isObjectFiltered(closestIntersection.object, isSelected)){
+			composer.passes[2].enabled = true;
+			if(isSelected){
+				selectObject(closestIntersection.object);
+				setOutlinedObject(closestIntersection.object, true); 
+
+		    } else{
+		    	setOutlinedObject(closestIntersection.object, false); 
+		    }
+		} else{
+			composer.passes[2].enabled = false;
+		}
     }
     
 }
 
 
-
-function addOutlinePass(object){
-	//if(composer.passes[3] == undefined || !composer.passes[3].selectedObjects.includes(object)){
-		if(composer.passes[2] != undefined){
-			outlinePass.enabled = true;
-			composer.passes[2].selectedObjects = [object];
-		} else{
-			outlinePass = new THREE.OutlinePass(new THREE.Vector2(window.innerWidth, window.innerHeight), scene, camera);
-			if(isTouchDevice){
-				//outlinePass.edgeStrength = Number( 10 );
-				//outlinePass.edgeThickness = Number( 2 );
-				outlinePass.edgeStrength = Number( 25 );
-				outlinePass.edgeThickness = Number( 3 );
-			} else{
-				//outlinePass.edgeStrength = Number( 10 );
-				//outlinePass.edgeThickness = Number( 2 );	
-				outlinePass.edgeStrength = Number( 20 );
-				outlinePass.edgeThickness = Number( 2 );	
+//Does not allow to pick an object that is in filtered object's list
+function isObjectFiltered(object, isSelected){
+	let objectName = object.name;
+	for(let i = 0; i < filteredObjectNames.length; i++){
+		if(filteredObjectNames[i] == objectName){
+			if(isSelected){
+				selectedObject = null;
+	    		composer.passes[3].enabled = false;
+	    		deselectObject();
 			}
-
-			outlinePass.edgeGlow = Number( 0);
-			outlinePass.pulsePeriod = Number( 0 );
-			//outlinePass.visibleEdgeColor.set( new THREE.Color("rgb(15, 15, 15)") );
-			//outlinePass.hiddenEdgeColor.set( new THREE.Color("rgb(4, 4, 4)") );
-			outlinePass.visibleEdgeColor.set( new THREE.Color("rgb(255, 255, 255)") );
-		outlinePass.hiddenEdgeColor.set( new THREE.Color("rgb(9, 9, 9)") );
-			outlinePass.selectedObjects = [object];
-			composer.addPass( outlinePass );
+			return true;
 		}
-	//}
+	}
+	return false;
 }
 
-/*function addSelectedOutlinePass(object){
-	if(composer.passes[2] != undefined){
-		outlinePass.enabled = true;
-		composer.passes[2].selectedObjects = [object];
-	} else{
-		outlinePass = new THREE.OutlinePass(new THREE.Vector2(window.innerWidth, window.innerHeight), scene, camera);
-		if(isTouchDevice){
-			outlinePass.edgeStrength = Number( 25 );
-			outlinePass.edgeThickness = Number( 3 );
+
+
+
+//======================================================
+//================ OBJECT SELECTION ====================
+function selectObject(object){
+	selectedObject = object;
+	setOutlinedObject(object, true); 
+	transformToothStatusMenu();
+	//fadeInDomElement(toothStatusMenu);
+
+	fadeInToothStatusMenu();
+	
+
+	//setNewTarget(object);
+
+	//setupTween (controls.target.clone(), new THREE.Vector3 (object.position.x, object.position.y, object.position.z), 1500);
+	//setupTween (camera, camera.position.clone(), startingCameraPosition, 2000);	
+
+	
+
+//startingCameraPosition
+
+
+	//controls.target.set(object.position.x, object.position.y, object.position.z);
+	//controls.update();
+	//console.log(toScreenPosition(selectedObject, camera));
+	//toothStatusMenu.style.left = ""
+}
+
+function deselectObject(){
+	selectedObject = null;
+	composer.passes[3].enabled = false;
+	//fadeOutDomElement(toothStatusMenu);
+	fadeOutToothStatusMenu();
+	controls.target.set(0, 0, 0);
+	controls.update();
+}
+
+
+function setupTween (object, position, target, duration)
+{
+    TWEEN.removeAll();    // remove previous tweens if needed
+    new TWEEN.Tween (position)
+        .to (target, duration)
+        .easing (TWEEN.Easing.Cubic.InOut)
+        .onUpdate (
+            function() {
+                // copy incoming position into capera position
+                object.position.copy (position);
+                transformToothStatusMenu();
+            })
+        .start();
+}
+function resetToStartingPosition(){
+	setupTween (camera, camera.position.clone(), startingCameraPosition, 1500);	
+}
+
+
+
+
+function fadeOutToothStatusMenu(){
+	toothStatusMenu.style.opacity = "0";
+	toothStatusMenu.style.pointerEvents = "none";
+}
+function fadeInToothStatusMenu(){
+	//setupTween (camera.position.clone(), new THREE.Vector3 (startingCameraPosition.x, startingCameraPosition.y, startingCameraPosition.z), 1500);
+	
+	toothStatusMenu.style.opacity = "1";
+	toothStatusMenu.style.pointerEvents = "all";
+}
+
+
+function transformToothStatusMenu(){
+	if(toothStatusMenu.opacity != "0"){
+		let pos = toScreenPosition(selectedObject, camera);
+		//console.log(pos);
+		if(pos.x > window.innerWidth/2){
+			toothStatusMenu.style.left = (`${pos.x+50}px`);
 		} else{
-			outlinePass.edgeStrength = Number( 20 );
-			outlinePass.edgeThickness = Number( 2 );	
+			toothStatusMenu.style.left = (`${pos.x-50-toothStatusMenu.clientWidth}px`);
 		}
 		
-		outlinePass.edgeGlow = Number( 0);
-		outlinePass.pulsePeriod = Number( 0 );
-		outlinePass.visibleEdgeColor.set( new THREE.Color("rgb(255, 255, 255)") );
-		outlinePass.hiddenEdgeColor.set( new THREE.Color("rgb(9, 9, 9)") );
-		outlinePass.selectedObjects = [object];
-		composer.addPass( outlinePass );
+		if(pos.y > window.innerHeight/2){
+			toothStatusMenu.style.top = (`${pos.y-50}px`);
+		} else{
+			toothStatusMenu.style.top = (`${pos.y+50}px`);
+		}
+		//Right border protection
+		if(toothStatusMenu.clientWidth + toothStatusMenu.offsetLeft + 5 > window.innerWidth){
+			toothStatusMenu.style.left = `${window.innerWidth - toothStatusMenu.clientWidth - 5}px`;
+		}
+		//Left border protection
+		if(toothStatusMenu.offsetLeft - 5 < 0 ){
+			toothStatusMenu.style.left = "5px";
+		}
+		//Bottom border protection
+		if(toothStatusMenu.clientHeight + toothStatusMenu.offsetTop + 5 > window.innerHeight){
+			toothStatusMenu.style.top = `${window.innerHeight - toothStatusMenu.clientHeight - 5}px`;
+		}
+		//Top border protection
+		if(toothStatusMenu.offsetTop - 5 < 0 ){
+			toothStatusMenu.style.top = "5px";
+		}
 	}
-}*/
+}
 
 
+//======================================================
+//================ OBJECT OUTLINING ====================
+function createOutlinePasses(){ // 2 pass - hover, 3 pass - selection
+	//Outline for hover
+	let outlinePass = new THREE.OutlinePass(new THREE.Vector2(window.innerWidth, window.innerHeight), scene, camera);
+	if(isTouchDevice){
+		outlinePass.edgeStrength = Number( 25 );
+		outlinePass.edgeThickness = Number( 3 );
+	} else{
+		outlinePass.edgeStrength = Number( 20 );
+		outlinePass.edgeThickness = Number( 3 );	
+	}
+	outlinePass.edgeGlow = Number( 0);
+	outlinePass.pulsePeriod = Number( 0 );
+	outlinePass.visibleEdgeColor.set( new THREE.Color("rgb(15, 15, 15)") );
+	outlinePass.hiddenEdgeColor.set( new THREE.Color("rgb(4, 4, 4)") );
+	outlinePass.selectedObjects = [];
+	composer.addPass( outlinePass );
+
+	//Outline for selection
+	outlinePass = new THREE.OutlinePass(new THREE.Vector2(window.innerWidth, window.innerHeight), scene, camera);
+	if(isTouchDevice){
+		outlinePass.edgeStrength = Number( 25 );
+		outlinePass.edgeThickness = Number( 3 );
+	} else{
+		outlinePass.edgeStrength = Number( 20 );
+		outlinePass.edgeThickness = Number( 3 );	
+	}
+
+	outlinePass.edgeGlow = Number( 0);
+	outlinePass.pulsePeriod = Number( 0 );
+	outlinePass.visibleEdgeColor.set( new THREE.Color("rgb(255, 255, 255)") );
+	outlinePass.hiddenEdgeColor.set( new THREE.Color("rgb(9, 9, 9)") );
+	outlinePass.selectedObjects = [];
+	composer.addPass( outlinePass );
+}
+
+function setOutlinedObject(object, isSelected){
+	if(isSelected){ // selected
+		let tempOutlinePass = composer.passes[3];
+		
+		if(tempOutlinePass == undefined || !tempOutlinePass.selectedObjects.includes(object)){
+			tempOutlinePass.enabled = true;
+			tempOutlinePass.selectedObjects = [object];
+		}
+	} else{ // hovered
+		let tempOutlinePass = composer.passes[2];
+		if((tempOutlinePass == undefined || !tempOutlinePass.selectedObjects.includes(object)) && !tempOutlinePass.selectedObjects.includes(selectedObject)){
+			tempOutlinePass.enabled = true;
+			tempOutlinePass.selectedObjects = [object];
+		}
+	}
+
+}
+
+
+//======================================================
+//============= 2D POSITIONING FROM 3D =================
+function toScreenPosition(object, camera){
+	if(object != null){
+	    var vector = new THREE.Vector3();
+
+	    //var widthHalf = 0.5*renderer.context.canvas.width;
+	    //var heightHalf = 0.5*renderer.context.canvas.height;
+	    var widthHalf = window.innerWidth/2;
+	    var heightHalf = window.innerHeight/2;
+
+	    object.updateMatrixWorld();
+	    vector.setFromMatrixPosition(object.matrixWorld);
+	    vector.project(camera);
+
+	    vector.x = ( vector.x * widthHalf ) + widthHalf;
+	    vector.y = - ( vector.y * heightHalf ) + heightHalf;
+
+	    return { 
+	        x: vector.x,
+	        y: vector.y
+	    };
+	} return {x:0, y:0}
+};
 
 init();

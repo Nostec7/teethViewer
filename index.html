@@ -23,10 +23,10 @@
     <script src="js/vendor/three/MaskPass.js"></script>
     <script src="js/vendor/three/ShaderPass.js"></script>
     <script src="js/vendor/three/OutlinePass.js"></script>
+
+    <script src="js/vendor/three/Tween.js"></script>
    
     
-
-
 
   </head>
 
@@ -35,11 +35,18 @@
     <h1 class="title">Teeth Status by Nostec7</h1>
 
     <div id="scene-container">
-      <!-- scene -->
-      
-      
+        <div id="tooth-status-menu">
+            <!--<h2 id="tooth-status-menu-name">NAME</h2>-->
+            <button  id="status1" class="status-selection">HEALTHY</button>
+            <button  id="status2" class="status-selection">SICK</button>
+            <button  id="status3" class="status-selection">DAMAGED</button>
+            <button  id="status4" class="status-selection">MISSING</button>
+        </div>
     </div>
-    <div class="controls-container"></div>
+    <div id="controls-container"></div>
+    <div id="loading-screen" class="loading-element">
+        <div id="loading-gif" class="loading-element"></div>
+    </div>
     
 
 
