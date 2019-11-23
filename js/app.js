@@ -605,7 +605,6 @@ function raycast ( e , isSelected) {
 	    composer.passes[2].enabled = false;
 	    if(isSelected){
 	    	deselectObject();
-	    	
 	    }
     } else{
 		if(!isObjectFiltered(closestIntersection.object, isSelected)){
@@ -648,6 +647,7 @@ function isObjectFiltered(object, isSelected){
 //================ OBJECT SELECTION ====================
 function selectObject(object){
 	selectedObject = object;
+	composer.passes[3].enabled = true;
 	setOutlinedObject(object, true); 
 	transformToothStatusMenu();
 	//fadeInDomElement(toothStatusMenu);
