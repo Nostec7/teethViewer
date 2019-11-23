@@ -41,7 +41,7 @@ a:hover{
   width: 95%;
   height:30px;
   bottom:30px;
-  left:5%;
+  left:2.5%;
   pointer-events:none;
 }
 
@@ -112,13 +112,13 @@ a:hover{
 
 #reset-button{
   position:absolute;
-  right:30px;
+  right:5px;
   
 }
 
 #toggle-gums-button{
   position:absolute;
-  right: 100px;
+  left: 5px;
 }
 .button{
   bottom:-2px;
@@ -149,7 +149,7 @@ a:hover{
 /*===========SCRUBBER=============*/
 .scrubber {
     position:relative;
-    left:-45px;
+    left:-16px;
     margin: auto;
     width: 400px;
     max-width:50%;
