@@ -29,6 +29,7 @@ let filteredObjectNames = ["Upper_jaw001", "Lower_jaw001"]; // Objects that will
 let gumObjects = [undefined, undefined];
 let gumObjectNames = ["Upper_jaw001", "Lower_jaw001"];
 let areGumsVisible = true;
+let toothMaterials = []; // Once model is loaded fill this up with 4 materials - healty,sick,damaged,missing
 
 const mixers = [];
 const clock = new THREE.Clock();
@@ -179,52 +180,19 @@ function addStatusButtonListeners(){
 
 }
 function setAsHealthy(){
-	//Set as healty
-	selectedObject.material.transparent = false;
-	selectedObject.material.opacity = 1;
-	selectedObject.material.color.setHex( 0x838383 );
-
+	selectedObject.material = toothMaterials[0];
 	deselectObject();
 }
 function setAsSick(){
-	//Set as sick
-	let tempMaterial = selectedObject.material.clone();
-	tempMaterial.map = selectedObject.material.map.clone();
-	tempMaterial.map.repeat.set(1,1);
-	tempMaterial.map.offset.set(0,0); 
-	tempMaterial.map.needsUpdate = true;
-	tempMaterial.transparent = false;
-	tempMaterial.opacity = 1;
-	tempMaterial.color.setHex( 0x4f4f4f );
-	selectedObject.material = tempMaterial;
-
+	selectedObject.material = toothMaterials[1];
 	deselectObject();
 }
 function setAsDamaged(){
-	//Set as damaged
-	let tempMaterial = selectedObject.material.clone();
-	tempMaterial.map = selectedObject.material.map.clone();
-	tempMaterial.map.repeat.set(1,1);
-	tempMaterial.map.offset.set(0,0); 
-	tempMaterial.map.needsUpdate = true;
-	tempMaterial.transparent = false;
-	tempMaterial.opacity = 1;
-	tempMaterial.color.setHex( 0x222222 );
-	selectedObject.material = tempMaterial;
-
+	selectedObject.material = toothMaterials[2];
 	deselectObject();
 }
 function setAsMissing(){
-	//Set as missing
-	let tempMaterial = selectedObject.material.clone();
-	tempMaterial.map = selectedObject.material.map.clone();
-	tempMaterial.map.repeat.set(1,1);
-	tempMaterial.map.offset.set(0,0); 
-	tempMaterial.map.needsUpdate = true;
-	tempMaterial.transparent = true;
-	tempMaterial.opacity = 0.0;
-	selectedObject.material = tempMaterial;
-
+	selectedObject.material = toothMaterials[3];
 	deselectObject();
 }
 
@@ -289,6 +257,31 @@ function createLights() {
 
 }
 
+function createNewToothMaterials(model){
+	let object = model.children[1];
+
+	let healthyMaterial = cloneMaterial(object, false, 1, 0x838383);
+	let sickMaterial = cloneMaterial(object, false, 1, 0x4f4f4f);
+	let damagedMaterial = cloneMaterial(object, false, 1, 0x222222);
+	let missingMaterial = cloneMaterial(object, true, 0, 0x838383);
+	let gumMaterial = cloneMaterial(object, true, 1, 0x838383);
+
+	toothMaterials.push(healthyMaterial, sickMaterial, damagedMaterial, missingMaterial, gumMaterial);
+}
+
+function cloneMaterial(objectToClone, transparency, opacity, colorHex){
+	//Healthy material
+	let mat = objectToClone.material.clone();
+	mat.map = objectToClone.material.map.clone();
+	mat.map.repeat.set(1,1);
+	mat.map.offset.set(0,0); 
+	mat.map.needsUpdate = true;
+	mat.transparent = transparency;
+	mat.opacity = opacity;
+	mat.color.setHex( colorHex );
+	return mat;
+}
+
 function loadModels() {
 	const loader = new THREE.GLTFLoader();
 
@@ -318,6 +311,8 @@ function loadModels() {
 		for(let i = 0; i < gumObjectNames.length; i++){
 			gumObjects[i] = scene.getObjectByName(gumObjectNames[i], true);
 		}
+
+		createNewToothMaterials(model);
 	};	
 
 	// the loader will report the loading progress to this function
@@ -456,13 +451,13 @@ function fadeOutMeshElement(element) {
 	    	if(opacity < 1){
 	    		//element.pointerEvents = "none";
 	    	} 
-	    	if (opacity <= 0.05){
+	    	if (opacity <= 0.1){
 	    		opacity = 0.0;
 	    		element.visible = false;
 	            clearInterval(timer);
 	        }
 	        element.material.opacity = opacity;
-	        opacity -= opacity * 0.05;
+	        opacity -= opacity * 0.1;
 	    }, 10);
 	}
 }
@@ -475,7 +470,6 @@ function fadeInMeshElement(element) {
 	            clearInterval(timer);
 	        }
 	        element.material.opacity = opacity;
-	        //element.style.filter = 'alpha(opacity=' + opacity * 100 + ")";
 	        opacity += opacity * 0.1;
 	    }, 10);
 	}
@@ -514,27 +508,13 @@ function toggleGumVisibility(){
 	if(gumObjects[0] != undefined){
 		if(areGumsVisible){
 			for(let i = 0; i < gumObjects.length; i++){
-				let tempMaterial = gumObjects[i].material.clone();
-				tempMaterial.map = gumObjects[i].material.map.clone();
-				tempMaterial.map.repeat.set(1,1);
-				tempMaterial.map.offset.set(0,0); 
-				tempMaterial.map.needsUpdate = true;
-				tempMaterial.transparent = true;
-				tempMaterial.opacity = 1;
-				gumObjects[i].material = tempMaterial;
+				gumObjects[i].material = toothMaterials[4];
 				fadeOutMeshElement(gumObjects[i]);
 			}
 			areGumsVisible = false;
 		} else{
 			for(let i = 0; i < gumObjects.length; i++){
-				let tempMaterial = gumObjects[i].material.clone();
-				tempMaterial.map = gumObjects[i].material.map.clone();
-				tempMaterial.map.repeat.set(1,1);
-				tempMaterial.map.offset.set(0,0); 
-				tempMaterial.map.needsUpdate = true;
-				tempMaterial.transparent = true;
-				tempMaterial.opacity = 0;
-				gumObjects[i].material = tempMaterial;
+				gumObjects[i].material = toothMaterials[4];
 				fadeInMeshElement(gumObjects[i]);
 			}
 			areGumsVisible = true;
@@ -651,7 +631,7 @@ function selectObject(object){
 	setOutlinedObject(object, true); 
 	transformToothStatusMenu();
 	//fadeInDomElement(toothStatusMenu);
-
+	//setupTween (controls, controls.target.clone(),controls.target, new THREE.Vector3(object.position.x, object.position.y, object.position.z +1), 1000);	//WORKS GREAT
 	fadeInToothStatusMenu();
 	
 
@@ -676,27 +656,30 @@ function deselectObject(){
 	composer.passes[3].enabled = false;
 	//fadeOutDomElement(toothStatusMenu);
 	fadeOutToothStatusMenu();
-	controls.target.set(0, 0, 0);
+	//controls.target.set(0, 0, 0);
+	//setupTween (controls, controls.target.clone(),controls.target, new THREE.Vector3(0,0,0), 1000);	
 	controls.update();
 }
 
 
-function setupTween (object, position, target, duration)
+function setupTween (object, position, copyParam, target, duration)
 {
-    TWEEN.removeAll();    // remove previous tweens if needed
+    //TWEEN.removeAll();    // remove previous tweens if needed
     new TWEEN.Tween (position)
         .to (target, duration)
         .easing (TWEEN.Easing.Cubic.InOut)
         .onUpdate (
             function() {
                 // copy incoming position into capera position
-                object.position.copy (position);
+                copyParam.copy (position);
+
                 transformToothStatusMenu();
             })
         .start();
 }
 function resetToStartingPosition(){
-	setupTween (camera, camera.position.clone(), startingCameraPosition, 1500);	
+	setupTween (camera, camera.position.clone(), camera.position, startingCameraPosition, 1500);	
+	setupTween (controls, controls.target.clone(),controls.target, new THREE.Vector3(0,0,0), 1500);	
 }
 
 
@@ -738,8 +721,8 @@ function transformToothStatusMenu(){
 			toothStatusMenu.style.left = "5px";
 		}
 		//Bottom border protection
-		if(toothStatusMenu.clientHeight + toothStatusMenu.offsetTop + 5 > window.innerHeight){
-			toothStatusMenu.style.top = `${window.innerHeight - toothStatusMenu.clientHeight - 5}px`;
+		if(toothStatusMenu.clientHeight + toothStatusMenu.offsetTop + 70 > window.innerHeight){
+			toothStatusMenu.style.top = `${window.innerHeight - toothStatusMenu.clientHeight - 70}px`;
 		}
 		//Top border protection
 		if(toothStatusMenu.offsetTop - 5 < 0 ){
