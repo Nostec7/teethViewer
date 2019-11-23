@@ -87,7 +87,7 @@ a:hover{
 .status-selection{
   position:relative;
   margin:1px;
-  width:100%;
+  width:90%;
   height:40px;
   line-height: 40px;
   background-color:rgba(45,45,45,0.55);
@@ -99,6 +99,8 @@ a:hover{
   border-width: 0px;
   text-align: left;
   cursor:pointer;
+  padding-left:10px;
+  padding-right:-10px;
 }
 
 .status-selection:hover{
