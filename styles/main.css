@@ -101,7 +101,6 @@ a:hover{
   cursor:pointer;
   padding-left:10px;
   padding-right:-10px;
-  pointer-events: all;
 }
 
 .status-selection:hover{
