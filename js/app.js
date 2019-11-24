@@ -61,6 +61,7 @@ function init() {
 		mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
 		mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 		startingTouchePos = [mouse.x, mouse.y];	
+
 	}, false );
 	
 	renderer.domElement.addEventListener( 'mouseup', function(event){
@@ -142,6 +143,14 @@ function addStatusButtonListeners(){
 			hasTouched = false; 
 			isCameraMoving = true;
 		}, false);
+
+		toothStatusButtons[i].addEventListener('mousedown', function(){
+			isCameraMoving = true;
+			transformToothStatusMenu();
+		});
+		toothStatusButtons[i].addEventListener('mouseup', function(){
+			isCameraMoving = false;
+		});
 	}
 	
 	
@@ -232,8 +241,8 @@ function createControls() {
 //======================================================
 //================= SCENE LIGHTS =======================
 function createLights() {
-  const ambientLight = new THREE.HemisphereLight( 0xddeeff, 0x0f0e0d, 6 );
-  const frontLight = new THREE.DirectionalLight( 0xffffff, 1 );
+  const ambientLight = new THREE.HemisphereLight( 0xddeeff, 0x0f0e0d, 8 );
+  const frontLight = new THREE.DirectionalLight( 0xffffff, 1.5 );
   frontLight.position.set( 0, 5, 30 );
 	frontLight.castShadow = true;
 	frontLight.shadow.mapSize.width = 512;
@@ -305,7 +314,7 @@ function loadModels() {
 		addMouthOpeningScrubber(mixer, action);
 	    scene.add( model );
 
-	    fadeOutDomElement(loadingOverlay);
+	    fadeOutDomElement(loadingOverlay, 5);
 
 	    //Replace object names with actual objects
 		for(let i = 0; i < gumObjectNames.length; i++){
@@ -409,21 +418,22 @@ window.addEventListener( 'resize', onWindowResize );
 
 //======================================================
 //=================== TRANSITIONS ======================
-function fadeOutDomElement(element) {
+function fadeOutDomElement(element, interval) {
+
     var opacity = 1;  // initial opacity
     var timer = setInterval(function () {
 
     	if(opacity < 1){
     		element.pointerEvents = "none";
     	} 
-    	if (opacity <= 0.05){
+    	if (opacity <= 0.1){
             clearInterval(timer);
             element.style.display = 'none';
         }
         element.style.opacity = opacity;
         element.style.filter = 'alpha(opacity=' + opacity * 100 + ")";
-        opacity -= opacity * 0.05;
-    }, 12);
+        opacity -= opacity * 0.1;
+    }, interval);
 }
 
 function fadeInDomElement(element) {
@@ -700,18 +710,14 @@ function fadeInToothStatusMenu(){
 function transformToothStatusMenu(){
 	if(toothStatusMenu.opacity != "0"){
 		let pos = toScreenPosition(selectedObject, camera);
-		//console.log(pos);
 		if(pos.x > window.innerWidth/2){
 			toothStatusMenu.style.left = (`${pos.x+50}px`);
 		} else{
 			toothStatusMenu.style.left = (`${pos.x-50-toothStatusMenu.clientWidth}px`);
 		}
 		
-		if(pos.y > window.innerHeight/2){
-			toothStatusMenu.style.top = (`${pos.y-50}px`);
-		} else{
-			toothStatusMenu.style.top = (`${pos.y+50}px`);
-		}
+		toothStatusMenu.style.top = (`${pos.y}px`);
+
 		//Right border protection
 		if(toothStatusMenu.clientWidth + toothStatusMenu.offsetLeft + 5 > window.innerWidth){
 			toothStatusMenu.style.left = `${window.innerWidth - toothStatusMenu.clientWidth - 5}px`;
