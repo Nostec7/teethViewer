@@ -82,13 +82,13 @@ a:hover{
   position:absolute;
   top:10px;
   left:10px;
-  width:120px;
+  width:85px;
   flex-direction: column;
   align-items: flex-start;
   display:inline-block;
-  padding:8px;
+  padding:5px;
   border-radius:5px;
-  background-color:rgba(20,20,20,0.6);
+  background-color:rgba(20,20,20,0.8);
 
   opacity:0;
   pointer-events: none;
@@ -102,12 +102,12 @@ a:hover{
 .status-selection{
   position:relative;
   margin:1px;
-  width:90%;
-  height:40px;
-  line-height: 40px;
+  width:85%;
+  height:30px;
+  line-height: 30px;
   background-color:rgba(45,45,45,0.55);
   font-family:helvetica;
-  font-size: 1rem;
+  font-size: 0.7rem;
   font-weight: 600;
   color:white;
   border-radius:3px;
@@ -153,20 +153,46 @@ a:hover{
   color:rgb(20,20,20);
   text-align: center;
 }
-.button:hover{
-  background-color: rgba(180,180,180, 0.7);
-}
-.button:active{
-  background-color: rgba(120,120,120,0.7);
+
+.button-with-icon{
+  bottom:7px;
+  position:relative;
+  height:35px;
+  width:35px;
+  padding: 5px;
+  margin:3px;
+  border-radius:100%;
+  background-color: rgba(255,255,255,0);
 }
 
+.icon{
+  height:35px;
+  width:35px;
+  pointer-events: all;
+}
+#no-gums-icon{
+  background: url(../images/NoGums-icon.svg);
+  background-size: 35px 35px;
+  opacity:0.7;
+}
+#reset-icon{
+  background: url(../images/Reset-icon.svg);
+  background-size: 35px 35px;
+  opacity:0.7;
+}
 
+.button:hover, .button-with-icon:hover{
+  background-color: rgba(180,180,180, 0.4);
+}
+.button:active, .button-with-icon:active{
+  background-color: rgba(120,120,120,0.4);
+}
 
 
 /*===========SCRUBBER=============*/
 .scrubber {
     position:relative;
-    left:-16px;
+    left:10px;
     margin: auto;
     width: 400px;
     max-width:50%;
