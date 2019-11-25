@@ -57,11 +57,21 @@ a:hover{
 #loading-gif{
   position:relative;
   top:calc(50% - 100px);
-  width:200px;
-  height:200px;
-  margin:auto;
+  width:140px;
+  height:187px;
+
+  background: url('../images/ToothLoadingSpritesheet.png') left center;
+  background-size:cover;
+  animation: play 3.5s steps(119) infinite;
+  display:inline-block;
 
 }
+/* Animating loading image */
+@keyframes play{
+  100% {background-position: -16660px;}
+}
+
+
 .loading-element{
 
 }
