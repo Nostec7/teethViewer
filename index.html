@@ -1,14 +1,11 @@
 <!DOCTYPE html>
 <html>
-
   <head>
-
     <title>Teeth Status by Nostec7</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="UTF-8" />
     <!--<link rel="icon" href="https://discoverthreejs.com/favicon.ico" type="image/x-icon">-->
     <link href="styles/main.css" rel="stylesheet" type="text/css">
-
 
     <!-- Source scripts -->
     <script src="js/vendor/three/three.js"></script>
@@ -25,14 +22,9 @@
 
     <script src="js/vendor/three/Tween.js"></script>
    
-    
-
   </head>
-
   <body>
-
     <h1 class="title">Teeth Status by Nostec7</h1>
-
     <div id="scene-container">
         <div id="tooth-status-menu">
             <!--<h2 id="tooth-status-menu-name">NAME</h2>-->
@@ -42,19 +34,18 @@
             <div  id="status4" class="status-selection">MISSING</div>
         </div>
     </div>
-    <div id="controls-container"></div>
+    <div id="controls-container">
+        <div class="button-with-icon">
+            <svg id="no-gums-icon" class="icon" src="images/NoGums-icon.svg"></svg>
+        </div>
+        <div class="button-with-icon">
+            <svg id="reset-icon" class="icon" src="images/Reset-icon-old.svg"></svg>
+        </div>
+    </div>
     <div id="loading-screen" class="loading-element">
-        <!--<img id="loading-gif" class="loading-element" src="images/ToothLoading-White.gif">-->
         <div id="loading-gif"></div>
     </div>
 
-    
-
-
-
-
     <script src="js/app.js"></script>
-
   </body>
-
 </html>
