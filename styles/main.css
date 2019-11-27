@@ -102,11 +102,11 @@ a:hover{
 
   opacity:0;
   pointer-events: none;
-  -webkit-transition: opacity 0.3s ease-in-out, width 0.5s ease-out;
-  -moz-transition: opacity 0.3s ease-in-out, width 0.5s ease-out;
-  -ms-transition: opacity 0.3s ease-in-out, width 0.5s ease-out;
-  -o-transition: opacity 0.3s ease-in-out, width 0.5s ease-out;
-  transition: opacity 0.3s ease-in-out, width 0.5s ease-out;
+  -webkit-transition: opacity 0.3s ease-in-out, width 0.35s ease-out;
+  -moz-transition: opacity 0.3s ease-in-out, width 0.35s ease-out;
+  -ms-transition: opacity 0.3s ease-in-out, width 0.35s ease-out;
+  -o-transition: opacity 0.3s ease-in-out, width 0.35s ease-out;
+  transition: opacity 0.3s ease-in-out, width 0.35s ease-out;
 
   max-width: var(maximum-status-menu-width);
 
@@ -205,11 +205,18 @@ a:hover{
   align-items: flex-start;
   flex-grow: 100;
 
+
 }
 
 #diseased-status-window{
   display:none;
   opacity:0;
+  -webkit-transition: opacity 0.5s ease-out;
+  -moz-transition: opacity 0.5s ease-out;
+  -ms-transition: opacity 0.5s ease-out;
+  -o-transition: opacity 0.5s ease-out;
+  transition: opacity 0.5s ease-out;
+
 }
 /*#diseased-window-details{
   position:relative;
@@ -448,6 +455,10 @@ a:hover{
   width: 30px; 
   height: 30px; 
   border: 15px solid rgba(255,255,255,0.7);
+  -webkit-transition: border-width 0.15s ease 0s;
+  -moz-transition: border-width 0.15s ease 0s;
+  -ms-transition: border-width 0.15s ease 0s;
+  -o-transition: border-width 0.15s ease 0s;
   transition: border-width 0.15s ease 0s;
   background-color:rgba(255,255,255,0.35)
  
@@ -467,7 +478,12 @@ a:hover{
   width: 40px; 
   height: 40px; 
   border: 20px solid rgba(255,255,255,0.7);
+  -webkit-transition: border-width 0.15s ease 0s;
+  -moz-transition: border-width 0.15s ease 0s;
+  -ms-transition: border-width 0.15s ease 0s;
+  -o-transition: border-width 0.15s ease 0s;
   transition: border-width 0.15s ease 0s;
+
   background-color:rgba(255,255,255,0.35)
 }
 
