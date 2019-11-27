@@ -77,6 +77,7 @@ a:hover{
   background-size:cover;
   animation: play 3.5s steps(119) infinite;
   display:inline-block;
+  transform:scale(0.5,0.5);
 
 }
 /* Animating loading image */
