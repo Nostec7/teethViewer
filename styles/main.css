@@ -275,6 +275,7 @@ a:hover{
   cursor:pointer;
   padding-left:10px;
   padding-right:-10px;
+  z-index:2;
 }
 
 .status-selection:hover{
@@ -352,7 +353,7 @@ a:hover{
   #diseased-teeth-title{
     font-size:1rem;
     left:106px;
-    top:8px;
+    top:12px;
     width:200px;
   }
 
