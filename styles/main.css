@@ -10,7 +10,7 @@ body {
   overflow: hidden;
   color: white;
   text-align: center;
-  padding-bottom: 20px;
+  /*padding-bottom: 20px;*/
 }
 
 h1 {
@@ -42,7 +42,7 @@ a:hover{
   position: absolute;
   width: 100%;
   height: 100%;
-  border-bottom:20px solid #25282d;
+  border-bottom:10px solid #25282d;
 }
 
 #controls-container{
@@ -397,7 +397,7 @@ a:hover{
   #tooth-status-menu{
     transform:scale(0.8,0.8);
     width:115px;
-    bottom:40px;
+    bottom:35px;
     right:-15px;
   }
   .status-selection{
@@ -406,7 +406,7 @@ a:hover{
 
   #controls-container{
     transform:scale(0.8,0.8);
-    bottom:10px;
+    bottom:15px;
   }
 }
 
