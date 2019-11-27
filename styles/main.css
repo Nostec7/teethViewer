@@ -173,20 +173,13 @@ a:hover{
   border-radius:2px;
   background-color: rgba(80,80,80,0.55);
 }
-.checkbox-container:hover input ~ .checkmark {
-  background-color: #ccc;
-}
-.checkbox-container input:checked ~ .checkmark {
+.selected{
   background-color: #2196F3;
 }
-.checkmark:after {
-  content: "";
-  position: absolute;
-  display: none;
-}
-.checkbox-container input:checked ~ .checkmark:after {
-  display: block;
-}
+
+
+
+
 .checkbox-container .checkmark:after {
   left: 6px;
   top: 2px;
@@ -202,7 +195,41 @@ a:hover{
   position:relative;
   margin:0;
   top:1px;
-  left:-10px;
+  left:-8px;
+}
+.checkmark {
+    display:inline-block;
+    width: 22px;
+    height:22px;
+}
+.checkmark:hover {
+  /*background-color:rgba(40,40,40,0.50);*/
+}
+
+
+.checkmark_stem {
+    position: absolute;
+    width:3px;
+    height:9px;
+    background-color:#ccc;
+    left:11px;
+    top:7px;
+    -ms-transform: rotate(45deg); /* IE 9 */
+    -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
+    transform: rotate(45deg);
+    pointer-events: none;
+}
+.checkmark_kick {
+    position: absolute;
+    width:3px;
+    height:3px;
+    background-color:#ccc;
+    left:7px;
+    top:10px;
+    -ms-transform: rotate(45deg); /* IE 9 */
+    -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
+    transform: rotate(45deg);
+    pointer-events: none;
 }
 
 
@@ -282,7 +309,7 @@ a:hover{
 }
 
 .status-selection:hover{
-  color:rgba(255,255,255, 0.75);
+  color:rgba(255,255,255, 0.40);
   background-color:rgba(20,20,20,0.50);
 }
 .status-selection:active{
