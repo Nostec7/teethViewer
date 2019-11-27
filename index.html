@@ -24,15 +24,8 @@
    
   </head>
   <body>
-    <h1 class="title">Teeth Status by Nostec7</h1>
     <div id="scene-container">
-        <div id="tooth-status-menu">
-            <!--<h2 id="tooth-status-menu-name">NAME</h2>-->
-            <div  id="status1" class="status-selection">HEALTHY</div>
-            <div  id="status2" class="status-selection">SICK</div>
-            <div  id="status3" class="status-selection">DAMAGED</div>
-            <div  id="status4" class="status-selection">MISSING</div>
-        </div>
+        
     </div>
     <div id="controls-container">
         <div class="button-with-icon">
@@ -42,6 +35,55 @@
             <svg id="reset-icon" class="icon" src="images/Reset-icon-old.svg"></svg>
         </div>
     </div>
+    <div id="tooth-status-menu">
+            <!--<h2 id="tooth-status-menu-name">NAME</h2>-->
+            <div id="status-button-container">
+                <div  id="status1" class="status-selection">HEALTHY</div>
+                <div  id="status2" class="status-selection">SICK</div>
+                <div  id="status3" class="status-selection">DAMAGED</div>
+                <div  id="status4" class="status-selection">MISSING</div>
+                <div  id="status4" class="status-selection">GOLDEN</div>
+            </div>
+            <div id="diseased-status-window">
+                <h1 id="diseased-teeth-title">Diseased teeth details</h1>
+                <div  id="save-description" class="status-selection">SAVE</div>
+                <div id="diseased-window-details">
+                    <div id="disease-checkboxes">
+                        <label class="checkbox-container">
+                            <input class="checkbox" type="checkbox" name="disease-inside" value="Inside">
+                            <span class="checkmark"></span>
+                        </label>
+                        <label class="checkbox-container">
+                            <input class="checkbox" type="checkbox" name="disease-outside" value="Outside">
+                            <span class="checkmark"></span>
+                        </label>
+                        <label class="checkbox-container">
+                            <input class="checkbox" type="checkbox" name="disease-left" value="Left">
+                            <span class="checkmark"></span>
+                        </label>
+                        <label class="checkbox-container">
+                            <input class="checkbox" type="checkbox" name="disease-right" value="Right">
+                            <span class="checkmark"></span>
+                        </label>
+                        <label class="checkbox-container">
+                            <input class="checkbox" type="checkbox" name="disease-top" value="Top">
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
+                    <div id="disease-checkbox-names">
+                        <h2> Inside</h2>
+                        <h2> Outside</h2>
+                        <h2> Left</h2>
+                        <h2> Right</h2>
+                        <h2> Top</h2>
+                    </div>
+                    <textarea cols="1" id="disease-description-box" type="text" name="Description" placeholder="Description..." value="Description"></textarea>
+
+                </div>
+
+            </div>
+            
+        </div>
     <div id="loading-screen" class="loading-element">
         <div id="loading-gif"></div>
     </div>
