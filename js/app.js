@@ -1,1 +1,1389 @@
-var _0x186d=['includes','updateMatrixWorld','setFromMatrixPosition','matrixWorld','project','log','*\x20\x20\x20TEETH\x20STATUS\x20VIEWER\x20BY\x20NOSTEC7\x20\x20\x20*','**************************************','Vector3','Upper_jaw001','Lower_jaw001','innerHeight','mesh','toothStatus','healthy','checkedOutside','checkedRight','description','setStatus','setCheckedInside','checkedInside','setCheckedOutside','checkedLeft','setCheckedRight','setCheckedTop','checkedTop','setDescription','getElementById','scene-container','loading-screen','tooth-status-menu','getElementsByClassName','status-selection','diseased-status-window','disease-description-box','disease-checkboxes','disease-checkbox-names','diseased-window-details','checkmark','Scene','background','Color','domElement','addEventListener','mousedown','clientX','innerWidth','clientY','touchstart','touchmove','touchend','ShaderPass','renderToScreen','addPass','setAnimationLoop','PerspectiveCamera','clientWidth','click','length','mouseup','backgroundColor','sick','style','rgba(20,20,20,0.50)','damaged','width','680px','calc(100%\x20+\x2020px)','flex','opacity','display','none','132px','pointerEvents','all','rgba(80,80,80,0.55)','material','missing','golden','children','name','root','Tooth','push','getAttribute','value','setCheckedLeft','test','substr','userAgent','vendor','opera','enableDamping','dampingFactor','rotateSpeed','panSpeed','zoomSpeed','minPolarAngle','maxPolarAngle','screenSpacePanning','update','HemisphereLight','DirectionalLight','position','set','add','map','minFilter','models/Textures/','TextureLoader','load','RepeatWrapping','wrapT','sRGBEncoding','flipY','needsUpdate','clone','repeat','offset','NearestFilter','color','setHex','GLTFLoader','scene','copy','AnimationMixer','clipAction','paused','getObjectByName','setSize','setPixelRatio','devicePixelRatio','gammaFactor','gammaOutput','physicallyCorrectLights','getDelta','render','aspect','clientHeight','updateProjectionMatrix','body','filter','alpha(opacity=','block','visible','reset-icon','title','no-gums-icon','Toggle\x20gum\x20visibility','isolate-icon','Toggle\x20object\x20isolation','hasAttribute','setAttribute','inline-block','onclick','className','replace','\x20selected','Slide\x20to\x20control\x20openness\x20of\x20the\x20mouth','controls-container','insertBefore','elt','min','max','step','orientation','horizontal','onScrubStart','onValueChanged','onScrubEnd','time','_actions','changedTouches','setFromCamera','intersectObjects','enabled','passes','object','setFromObject','getCenter','tan','far','target','hypot','Box3','getSize','fov','abs','maxDistance','lookAt','Tween','Easing','Cubic','InOut','onUpdate','start','OutlinePass','Vector2','edgeThickness','edgeGlow','pulsePeriod','visibleEdgeColor','rgb(15,\x2015,\x2015)','hiddenEdgeColor','rgb(4,\x204,\x204)','edgeStrength','rgb(255,\x20255,\x20255)','rgb(9,\x209,\x209)','selectedObjects'];(function(_0x58b0a1,_0x3f50a0){var _0x1b80e3=function(_0x4b5831){while(--_0x4b5831){_0x58b0a1['push'](_0x58b0a1['shift']());}};_0x1b80e3(++_0x3f50a0);}(_0x186d,0x1a7));var _0x1314=function(_0xa5a535,_0x32f919){_0xa5a535=_0xa5a535-0x0;var _0x438ea7=_0x186d[_0xa5a535];return _0x438ea7;};console['log']('**************************************');console[_0x1314('0x0')](_0x1314('0x1'));console[_0x1314('0x0')](_0x1314('0x2'));let container;let camera;let controls;let renderer;let composer,copyPass,renderPass;let scene;let scrubber;let loadingOverlay;let toothStatusMenu;let toothStatusButtons;let animationMaxTime=1.99;let animationLength=animationMaxTime*0x64;let isCameraMoving=![];let hoveredObject;let selectedObject;let selectedObjectStatus;let isTouchDevice=!![];let hasTouched=![];let hasClicked=!![];let startingTouchePos;let touchTravelDistance=0x0;let raycaster,mouse={'x':0x0,'y':0x0};let startingCameraPosition=new THREE[(_0x1314('0x3'))](-0.1469926322389252,1.1960779151428367,15.98586221593867);let filteredObjectNames=[_0x1314('0x4'),'Lower_jaw001'];let gumObjects=[undefined,undefined];let gumObjectNames=['Upper_jaw001',_0x1314('0x5')];let sickTeethTextures=[];let sickTeethMaterials=[];let damagedTeethTextures=[];let damagedTeethMaterials=[];let toothMaterials=[];let lastSelectedStatus;let isStatusMenuExpanded=![];let isIsolated=![];let diseasedTeethDetailsWindow;let diseasedWindowDetails;let diseasedDescriptionBox;let diseaseCheckboxes;let diseaseCheckmarks;let diseaseCheckboxNames;let areGumsVisible=!![];let smallScreenScaleFactor=0.8;const mixers=[];const clock=new THREE['Clock']();let iHeight=window[_0x1314('0x6')];let teethArr=[];class Tooth{constructor(_0x4118c7,_0x41145b,_0x17ac13,_0x448b36,_0x10dba3,_0x345bb2,_0x1e158f,_0x38bd3f){this[_0x1314('0x7')]=_0x4118c7;this[_0x1314('0x8')]=_0x1314('0x9');this['checkedInside']=_0x17ac13;this[_0x1314('0xa')]=_0x448b36;this['checkedLeft']=_0x10dba3;this[_0x1314('0xb')]=_0x345bb2;this['checkedTop']=_0x1e158f;this[_0x1314('0xc')]=_0x38bd3f;}[_0x1314('0xd')](_0xf94e89){this['toothStatus']=_0xf94e89;}[_0x1314('0xe')](_0x9e2804){this[_0x1314('0xf')]=_0x9e2804;}[_0x1314('0x10')](_0x32dabb){this[_0x1314('0xa')]=_0x32dabb;}['setCheckedLeft'](_0x364712){this[_0x1314('0x11')]=_0x364712;}[_0x1314('0x12')](_0x3fcfad){this[_0x1314('0xb')]=_0x3fcfad;}[_0x1314('0x13')](_0x141c9b){this[_0x1314('0x14')]=_0x141c9b;}[_0x1314('0x15')](_0x417eb0){this[_0x1314('0xc')]=_0x417eb0;}}function init(){isTouchDevice=isMobileTablet();container=document[_0x1314('0x16')](_0x1314('0x17'));loadingOverlay=document[_0x1314('0x16')](_0x1314('0x18'));toothStatusMenu=document['getElementById'](_0x1314('0x19'));toothStatusButtons=document[_0x1314('0x1a')](_0x1314('0x1b'));toothDescriptionSaveButton=document[_0x1314('0x16')]('save-description');diseasedTeethDetailsWindow=document[_0x1314('0x16')](_0x1314('0x1c'));diseasedDescriptionBox=document[_0x1314('0x16')](_0x1314('0x1d'));diseaseCheckboxes=document[_0x1314('0x16')](_0x1314('0x1e'));diseaseCheckboxNames=document[_0x1314('0x16')](_0x1314('0x1f'));diseasedWindowDetails=document[_0x1314('0x16')](_0x1314('0x20'));diseaseCheckmarks=document[_0x1314('0x1a')](_0x1314('0x21'));addStatusButtonListeners();scene=new THREE[(_0x1314('0x22'))]();scene[_0x1314('0x23')]=new THREE[(_0x1314('0x24'))](0x25282d);createCamera();createControls();createLights();loadModels();createRenderer();addUiControls();raycaster=new THREE['Raycaster']();renderer[_0x1314('0x25')][_0x1314('0x26')](_0x1314('0x27'),function(_0x1947ce){isCameraMoving=!![];mouse['x']=_0x1947ce[_0x1314('0x28')]/window[_0x1314('0x29')]*0x2-0x1;mouse['y']=-(_0x1947ce[_0x1314('0x2a')]/window[_0x1314('0x6')])*0x2+0x1;startingTouchePos=[mouse['x'],mouse['y']];},![]);renderer['domElement']['addEventListener']('mouseup',function(_0x468e6c){mouse['x']=_0x468e6c[_0x1314('0x28')]/window[_0x1314('0x29')]*0x2-0x1;mouse['y']=-(_0x468e6c[_0x1314('0x2a')]/window['innerHeight'])*0x2+0x1;if(get2dDistance(startingTouchePos,mouse)<0.01){hasClicked=!![];raycast(_0x468e6c,!![]);}isCameraMoving=![];},![]);renderer[_0x1314('0x25')][_0x1314('0x26')]('mousemove',function(_0x576c32){mouse['x']=_0x576c32[_0x1314('0x28')]/window[_0x1314('0x29')]*0x2-0x1;mouse['y']=-(_0x576c32[_0x1314('0x2a')]/window[_0x1314('0x6')])*0x2+0x1;raycast(_0x576c32,![]);},![]);renderer[_0x1314('0x25')][_0x1314('0x26')](_0x1314('0x2b'),function(_0x52f431){hasTouched=!![];},![]);renderer[_0x1314('0x25')][_0x1314('0x26')](_0x1314('0x2c'),function(_0x1c0ffe){hasTouched=![];isCameraMoving=!![];},![]);renderer['domElement']['addEventListener'](_0x1314('0x2d'),function(_0x4d1480){if(hasTouched){raycast(_0x4d1480,!![]);}isCameraMoving=![];},![]);var _0x1f0373=new THREE['RenderPass'](scene,camera);copyPass=new THREE[(_0x1314('0x2e'))](THREE['CopyShader']);copyPass[_0x1314('0x2f')]=!![];composer=new THREE['EffectComposer'](renderer);composer[_0x1314('0x30')](_0x1f0373);composer[_0x1314('0x30')](copyPass);createOutlinePasses();let _0x388bf8=0x0;renderer[_0x1314('0x31')](()=>{update();render();});}function createCamera(){camera=new THREE[(_0x1314('0x32'))](0x23,container[_0x1314('0x33')]/container['clientHeight'],0x1,0x1388);camera['position']['set'](0x0,0x1,0x13);}function addStatusButtonListeners(){toothStatusButtons[0x0]['addEventListener'](_0x1314('0x34'),setAsHealthy);toothStatusButtons[0x1][_0x1314('0x26')](_0x1314('0x34'),setAsSick);toothStatusButtons[0x2][_0x1314('0x26')](_0x1314('0x34'),setAsDamaged);toothStatusButtons[0x3]['addEventListener'](_0x1314('0x34'),setAsMissing);toothStatusButtons[0x4][_0x1314('0x26')](_0x1314('0x34'),setAsGolden);toothDescriptionSaveButton[_0x1314('0x26')]('click',saveToothDescription);for(let _0x3c362b=0x0;_0x3c362b<toothStatusButtons[_0x1314('0x35')];_0x3c362b++){toothStatusButtons[_0x3c362b][_0x1314('0x26')]('touchstart',function(_0x223825){hasTouched=!![];},![]);toothStatusButtons[_0x3c362b][_0x1314('0x26')](_0x1314('0x2c'),function(_0x35bfa6){hasTouched=![];isCameraMoving=!![];},![]);toothStatusButtons[_0x3c362b][_0x1314('0x26')](_0x1314('0x27'),function(){isCameraMoving=!![];});toothStatusButtons[_0x3c362b][_0x1314('0x26')](_0x1314('0x36'),function(){isCameraMoving=![];});}toothStatusButtons[0x0][_0x1314('0x26')]('touchend',function(_0x208fef){if(hasTouched){setAsHealthy();}isCameraMoving=![];},![]);toothStatusButtons[0x0][_0x1314('0x26')](_0x1314('0x2d'),function(_0x4605ed){if(hasTouched){setAsHealthy();}isCameraMoving=![];});toothStatusButtons[0x1][_0x1314('0x26')](_0x1314('0x2d'),function(_0x23510e){if(hasTouched){setAsSick();}isCameraMoving=![];});toothStatusButtons[0x2][_0x1314('0x26')](_0x1314('0x2d'),function(_0x3a8bcf){if(hasTouched){setAsDamaged();}isCameraMoving=![];});toothStatusButtons[0x3][_0x1314('0x26')](_0x1314('0x2d'),function(_0x506717){if(hasTouched){setAsMissing();}isCameraMoving=![];});toothStatusButtons[0x3][_0x1314('0x26')]('touchend',function(_0x55c100){if(hasTouched){setAsGolden();}isCameraMoving=![];});}function highlightCurrentObjectStatus(_0x3d3fb8){revertStatusButtonColorChanges();if(_0x3d3fb8[_0x1314('0x8')]==_0x1314('0x9')){toothStatusButtons[0x0]['style'][_0x1314('0x37')]='rgba(20,20,20,0.50)';}else if(_0x3d3fb8[_0x1314('0x8')]==_0x1314('0x38')){expandToothStatusMenu();toothStatusButtons[0x1][_0x1314('0x39')][_0x1314('0x37')]=_0x1314('0x3a');}else if(_0x3d3fb8[_0x1314('0x8')]==_0x1314('0x3b')){expandToothStatusMenu();toothStatusButtons[0x2][_0x1314('0x39')][_0x1314('0x37')]=_0x1314('0x3a');}else if(_0x3d3fb8['toothStatus']=='missing'){toothStatusButtons[0x3]['style'][_0x1314('0x37')]=_0x1314('0x3a');}else if(_0x3d3fb8['toothStatus']=='golden'){toothStatusButtons[0x4]['style'][_0x1314('0x37')]=_0x1314('0x3a');}}function adjustDescriptionElementSizing(){if(window[_0x1314('0x29')]>0x300){toothStatusMenu[_0x1314('0x39')][_0x1314('0x3c')]=_0x1314('0x3d');}else{toothStatusMenu[_0x1314('0x39')][_0x1314('0x3c')]=_0x1314('0x3e');}}function expandToothStatusMenu(){adjustDescriptionElementSizing();if(!isStatusMenuExpanded){setTimeout(function(){diseasedTeethDetailsWindow[_0x1314('0x39')]['display']=_0x1314('0x3f');showDiseasedTeethDetailWindow();},0xc8);}isStatusMenuExpanded=!![];}function hideDiseasedTeethDetailWindow(){diseasedTeethDetailsWindow[_0x1314('0x39')][_0x1314('0x40')]='0';setTimeout(function(){diseasedTeethDetailsWindow[_0x1314('0x39')][_0x1314('0x41')]=_0x1314('0x42');},0xc8);}function showDiseasedTeethDetailWindow(){diseasedTeethDetailsWindow['style'][_0x1314('0x41')]=_0x1314('0x3f');setTimeout(function(){diseasedTeethDetailsWindow['style'][_0x1314('0x40')]='1';},0x64);}function minimizeToothStatusMenu(){toothStatusMenu[_0x1314('0x39')]=_0x1314('0x43');toothStatusMenu[_0x1314('0x39')][_0x1314('0x40')]='1';toothStatusMenu[_0x1314('0x39')][_0x1314('0x44')]=_0x1314('0x45');hideDiseasedTeethDetailWindow();isStatusMenuExpanded=![];}function contractToothStatusMenu(){minimizeToothStatusMenu();isStatusMenuExpanded=![];}function revertStatusButtonColorChanges(){for(let _0x3e06f2=0x0;_0x3e06f2<toothStatusButtons[_0x1314('0x35')];_0x3e06f2++){toothStatusButtons[_0x3e06f2][_0x1314('0x39')][_0x1314('0x37')]=_0x1314('0x46');}}function setAsHealthy(){selectedObject[_0x1314('0x47')]=toothMaterials[0x0];contractToothStatusMenu();revertStatusButtonColorChanges();setToothStatus(selectedObject,_0x1314('0x9'));deselectObject();lastSelectedStatus=_0x1314('0x9');}function setAsSick(){revertStatusButtonColorChanges();toothStatusButtons[0x1][_0x1314('0x39')][_0x1314('0x37')]=_0x1314('0x3a');expandToothStatusMenu();lastSelectedStatus=_0x1314('0x38');}function setAsDamaged(){revertStatusButtonColorChanges();toothStatusButtons[0x2][_0x1314('0x39')][_0x1314('0x37')]=_0x1314('0x3a');expandToothStatusMenu();lastSelectedStatus=_0x1314('0x3b');}function setAsMissing(){selectedObject['material']=toothMaterials[0x3];revertStatusButtonColorChanges();contractToothStatusMenu();setToothStatus(selectedObject,_0x1314('0x48'));deselectObject();lastSelectedStatus=_0x1314('0x48');}function setAsGolden(){selectedObject[_0x1314('0x47')]=toothMaterials[0x4];revertStatusButtonColorChanges();contractToothStatusMenu();setToothStatus(selectedObject,_0x1314('0x49'));deselectObject();lastSelectedStatus=_0x1314('0x49');}function saveToothDescription(){contractToothStatusMenu();revertStatusButtonColorChanges();if(lastSelectedStatus==_0x1314('0x38')){selectedObject[_0x1314('0x47')]=toothMaterials[0x1];setToothStatus(selectedObject,'sick');}else if(lastSelectedStatus==_0x1314('0x3b')){selectedObject[_0x1314('0x47')]=toothMaterials[0x2];setToothStatus(selectedObject,_0x1314('0x3b'));}deselectObject();}function initTeethArray(){for(let _0x1482ec=0x0;_0x1482ec<scene[_0x1314('0x4a')][_0x1314('0x35')];_0x1482ec++){if(scene['children'][_0x1482ec][_0x1314('0x4b')]==_0x1314('0x4c')){for(let _0x5c6701=0x0;_0x5c6701<scene['children'][_0x1482ec][_0x1314('0x4a')]['length'];_0x5c6701++){let _0x3e2a8a=scene[_0x1314('0x4a')][_0x1482ec][_0x1314('0x4a')][_0x5c6701];if(_0x3e2a8a[_0x1314('0x4b')]['includes'](_0x1314('0x4d'))){teethArr[_0x1314('0x4e')](new Tooth(_0x3e2a8a,_0x1314('0x9'),'0','0','0','0','0',''));}}}}}function loadToothStatus(_0x3e6058){if(_0x3e6058!=undefined){let _0x33a1e2=getSelectedToothObj(_0x3e6058);setStatusDataOnUIElements(_0x33a1e2);}}function getSelectedToothObj(){let _0x4dc73b;for(let _0x25867b=0x0;_0x25867b<teethArr[_0x1314('0x35')];_0x25867b++){if(selectedObject[_0x1314('0x4b')]==teethArr[_0x25867b][_0x1314('0x7')][_0x1314('0x4b')]){_0x4dc73b=teethArr[_0x25867b];break;}}return _0x4dc73b;}function getSelectedToothObj(_0x3bcc14){let _0xd66c37;for(let _0x830b6c=0x0;_0x830b6c<teethArr['length'];_0x830b6c++){if(_0x3bcc14[_0x1314('0x4b')]==teethArr[_0x830b6c][_0x1314('0x7')][_0x1314('0x4b')]){_0xd66c37=teethArr[_0x830b6c];break;}}return _0xd66c37;}function setStatusDataOnUIElements(_0x443223){selectedObjectStatus=_0x443223[_0x1314('0x8')];if(selectedObjectStatus==_0x1314('0x38')||selectedObjectStatus==_0x1314('0x3b')){expandToothStatusMenu();}else if(isStatusMenuExpanded){minimizeToothStatusMenu();}highlightCurrentObjectStatus(_0x443223);if(_0x443223[_0x1314('0xf')]!=diseaseCheckmarks[0x0][_0x1314('0x4f')](_0x1314('0x50')))diseaseCheckmarks[0x0][_0x1314('0x34')]();if(_0x443223[_0x1314('0xa')]!=diseaseCheckmarks[0x1][_0x1314('0x4f')](_0x1314('0x50')))diseaseCheckmarks[0x1][_0x1314('0x34')]();if(_0x443223[_0x1314('0x11')]!=diseaseCheckmarks[0x2]['getAttribute'](_0x1314('0x50')))diseaseCheckmarks[0x2][_0x1314('0x34')]();if(_0x443223[_0x1314('0xb')]!=diseaseCheckmarks[0x3]['getAttribute'](_0x1314('0x50')))diseaseCheckmarks[0x3][_0x1314('0x34')]();if(_0x443223[_0x1314('0x14')]!=diseaseCheckmarks[0x4][_0x1314('0x4f')](_0x1314('0x50')))diseaseCheckmarks[0x4][_0x1314('0x34')]();diseasedDescriptionBox['value']=_0x443223[_0x1314('0xc')];}function setToothStatus(_0x17f8ed,_0x4b8249){let _0x5b0959=getSelectedToothObj(_0x17f8ed);_0x5b0959[_0x1314('0xd')](_0x4b8249);setTimeout(function(){if(_0x4b8249==_0x1314('0x38')||_0x4b8249==_0x1314('0x3b')){_0x5b0959[_0x1314('0xe')](diseaseCheckmarks[0x0]['getAttribute']('value'));_0x5b0959[_0x1314('0x10')](diseaseCheckmarks[0x1][_0x1314('0x4f')]('value'));_0x5b0959[_0x1314('0x51')](diseaseCheckmarks[0x2]['getAttribute'](_0x1314('0x50')));_0x5b0959[_0x1314('0x12')](diseaseCheckmarks[0x3][_0x1314('0x4f')](_0x1314('0x50')));_0x5b0959[_0x1314('0x13')](diseaseCheckmarks[0x4]['getAttribute'](_0x1314('0x50')));_0x5b0959['setDescription'](diseasedDescriptionBox[_0x1314('0x50')]);}else{_0x5b0959[_0x1314('0xe')]('0');_0x5b0959[_0x1314('0x10')]('0');_0x5b0959[_0x1314('0x51')]('0');_0x5b0959[_0x1314('0x12')]('0');_0x5b0959[_0x1314('0x13')]('0');}},0x64);}function isMobileTablet(){var _0x54b2fa=![];(function(_0x4c2229){if(/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino|android|ipad|playbook|silk/i['test'](_0x4c2229)||/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i[_0x1314('0x52')](_0x4c2229[_0x1314('0x53')](0x0,0x4)))_0x54b2fa=!![];}(navigator[_0x1314('0x54')]||navigator[_0x1314('0x55')]||window[_0x1314('0x56')]));return _0x54b2fa;}function get2dDistance(_0x394f41,_0x47a066){if(_0x394f41!=undefined){let _0x5c24fc=_0x394f41[0x0]-_0x47a066['x'];let _0x3cc163=_0x394f41[0x1]-_0x47a066['y'];return Math['sqrt'](_0x5c24fc*_0x5c24fc+_0x3cc163*_0x3cc163);}return 0x0;}function createControls(){controls=new THREE['OrbitControls'](camera,container);controls[_0x1314('0x57')]=!![];controls[_0x1314('0x58')]=0.2;controls[_0x1314('0x59')]=0.1;controls[_0x1314('0x5a')]=0.1;controls[_0x1314('0x5b')]=0x1;controls[_0x1314('0x5c')]=0x0;controls[_0x1314('0x5d')]=2.9;controls[_0x1314('0x5e')]=!![];controls[_0x1314('0x5f')]();}function createLights(){const _0x3f09d1=new THREE[(_0x1314('0x60'))](0xddeeff,0xf0e0d,0x8);const _0xca4ff4=new THREE[(_0x1314('0x61'))](0xffffff,0x1);_0xca4ff4[_0x1314('0x62')][_0x1314('0x63')](0x0,0x5,0x1e);const _0x341b5d=new THREE[(_0x1314('0x61'))](0xffffff,0.5);_0x341b5d[_0x1314('0x62')][_0x1314('0x63')](0x0,-0xf,0x1e);const _0xf96287=new THREE[(_0x1314('0x61'))](0xffffff,0x1);_0xf96287[_0x1314('0x62')][_0x1314('0x63')](-0x1e,0x8,0xa);const _0x4bd99e=new THREE[(_0x1314('0x61'))](0xffffff,0.1);_0x4bd99e[_0x1314('0x62')][_0x1314('0x63')](-0x1e,0xa,-0x50);const _0x3e7b6d=new THREE[(_0x1314('0x61'))](0xffffff,0x1);_0x3e7b6d['position'][_0x1314('0x63')](0x1e,0x3,0x2);const _0x306ef9=new THREE[(_0x1314('0x61'))](0xffffff,0x1);_0x306ef9[_0x1314('0x62')]['set'](0x14,0xa,0xa);scene[_0x1314('0x64')](_0x3f09d1,_0xca4ff4,_0x341b5d,_0xf96287,_0x4bd99e,_0x306ef9,_0x3e7b6d);}function createToothMaterials(_0x45c480){let _0x3ffb80=_0x45c480['children'][0x1];_0x3ffb80['material']['side']=THREE['DoubleSide'];_0x3ffb80[_0x1314('0x47')][_0x1314('0x65')][_0x1314('0x66')]=THREE['NearestFilter'];let _0x6dec2c=cloneMaterial(_0x3ffb80,!![],0x1,0x838383);let _0x4bc58d=cloneMaterial(_0x3ffb80,!![],0x1,0x4f4f4f);let _0x550c0a=cloneMaterial(_0x3ffb80,!![],0x1,0x222222);let _0xf769b1=cloneMaterial(_0x3ffb80,!![],0x0,0x838383);let _0x4a6a32=cloneMaterial(_0x3ffb80,!![],0x1,0xb28c26);let _0x3c3c53=cloneMaterial(_0x3ffb80,!![],0x1,0x838383);toothMaterials[_0x1314('0x4e')](_0x6dec2c,_0x4bc58d,_0x550c0a,_0xf769b1,_0x4a6a32,_0x3c3c53);}function loadTextureMap(_0x255024){let _0x97a567=_0x1314('0x67')+_0x255024+'.jpg';let _0x33114a=new THREE[(_0x1314('0x68'))]()[_0x1314('0x69')](_0x97a567);_0x33114a['wrapS']=THREE[_0x1314('0x6a')];_0x33114a[_0x1314('0x6b')]=THREE[_0x1314('0x6a')];_0x33114a['encoding']=THREE[_0x1314('0x6c')];_0x33114a[_0x1314('0x6d')]=![];_0x33114a[_0x1314('0x6e')]=!![];}function fillSickAndDamagedMapArrays(){}function cloneMaterial(_0x4f3930,_0x2c90ec,_0x206911,_0xfb3d35){let _0x20ec9d=_0x4f3930[_0x1314('0x47')][_0x1314('0x6f')]();_0x20ec9d['map']=_0x4f3930['material'][_0x1314('0x65')][_0x1314('0x6f')]();_0x20ec9d[_0x1314('0x65')][_0x1314('0x70')][_0x1314('0x63')](0x1,0x1);_0x20ec9d[_0x1314('0x65')][_0x1314('0x71')][_0x1314('0x63')](0x0,0x0);_0x20ec9d[_0x1314('0x65')][_0x1314('0x66')]=THREE[_0x1314('0x72')];_0x20ec9d[_0x1314('0x65')]['magFilter']=THREE['NearestFilter'];_0x20ec9d[_0x1314('0x65')][_0x1314('0x6e')]=!![];_0x20ec9d['side']=THREE['DoubleSide'];_0x20ec9d['transparent']=_0x2c90ec;_0x20ec9d['opacity']=_0x206911;_0x20ec9d[_0x1314('0x73')][_0x1314('0x74')](_0xfb3d35);return _0x20ec9d;}function loadModels(){const _0x410509=new THREE[(_0x1314('0x75'))]();const _0x230808=(_0x70002,_0x2e142f)=>{const _0x282186=_0x70002[_0x1314('0x76')][_0x1314('0x4a')][0x0];_0x282186[_0x1314('0x62')][_0x1314('0x77')](_0x2e142f);const _0x19e977=_0x70002['animations'][0x0];const _0x502630=new THREE[(_0x1314('0x78'))](_0x282186);mixers[_0x1314('0x4e')](_0x502630);const _0x3e379f=_0x502630[_0x1314('0x79')](_0x19e977);_0x3e379f['play']();_0x3e379f[_0x1314('0x7a')]=!![];addMouthOpeningScrubber(_0x502630,_0x3e379f);scene['add'](_0x282186);fadeOutLoadingScreen();for(let _0x243184=0x0;_0x243184<gumObjectNames[_0x1314('0x35')];_0x243184++){gumObjects[_0x243184]=scene[_0x1314('0x7b')](gumObjectNames[_0x243184],!![]);}createToothMaterials(_0x282186);initTeethArray();};const _0x5c0b84=()=>{};const _0x19ade9=_0x349332=>{console[_0x1314('0x0')](_0x349332);};const _0xe2d0ad=new THREE[(_0x1314('0x3'))](0x0,-0.1,0x1);_0x410509[_0x1314('0x69')]('models/GLTF/Teeth.gltf',_0x5eee7c=>_0x230808(_0x5eee7c,_0xe2d0ad),_0x5c0b84,_0x19ade9);}function createRenderer(){renderer=new THREE['WebGLRenderer']({'antialias':!![]});renderer[_0x1314('0x7c')](container[_0x1314('0x33')],container['clientHeight']);renderer[_0x1314('0x7d')](window[_0x1314('0x7e')]);renderer[_0x1314('0x7f')]=2.2;renderer[_0x1314('0x80')]=!![];renderer[_0x1314('0x81')]=!![];container['appendChild'](renderer[_0x1314('0x25')]);}function update(){const _0x340bd1=clock[_0x1314('0x82')]();for(const _0xfebe72 of mixers){_0xfebe72[_0x1314('0x5f')](_0x340bd1);}}function render(){TWEEN[_0x1314('0x5f')]();controls[_0x1314('0x5f')]();renderer[_0x1314('0x83')](scene,camera);composer[_0x1314('0x83')]();}var timeOut=null;function onWindowResize(){camera[_0x1314('0x84')]=container[_0x1314('0x33')]/container[_0x1314('0x85')];camera[_0x1314('0x86')]();renderer['setSize'](container[_0x1314('0x33')],container[_0x1314('0x85')]);if(window[_0x1314('0x6')]!=iHeight){iHeight=window[_0x1314('0x6')];document[_0x1314('0x87')][_0x1314('0x39')]['height']=iHeight+'px';}if(timeOut)clearTimeout(timeOut);timeOut=setTimeout(onWindowResize,0x64);}window[_0x1314('0x26')]('resize',onWindowResize);function fadeOutDomElement(_0x510b9c,_0x11dfca){var _0x271c67=0x1;var _0x2356e2=setInterval(function(){if(_0x271c67<0x1){_0x510b9c[_0x1314('0x44')]=_0x1314('0x42');}if(_0x271c67<=0.1){clearInterval(_0x2356e2);_0x510b9c[_0x1314('0x39')][_0x1314('0x41')]=_0x1314('0x42');}_0x510b9c[_0x1314('0x39')][_0x1314('0x40')]=_0x271c67;_0x510b9c[_0x1314('0x39')][_0x1314('0x88')]=_0x1314('0x89')+_0x271c67*0x64+')';_0x271c67-=_0x271c67*0.1;},_0x11dfca);}function fadeOutLoadingScreen(_0x36fbb3,_0x2880ad){setTimeout(function(){fadeOutDomElement(loadingOverlay['children'][0x0],0x14);setTimeout(function(){fadeOutDomElement(loadingOverlay,0x14);},0xa0);},0x578);}function fadeInDomElement(_0x2100ac){var _0x4f1d47=0.1;_0x2100ac['style'][_0x1314('0x41')]=_0x1314('0x8a');var _0x20685d=setInterval(function(){if(_0x4f1d47>0.1){_0x2100ac[_0x1314('0x44')]=_0x1314('0x45');}if(_0x4f1d47>=0x1){clearInterval(_0x20685d);}_0x2100ac[_0x1314('0x39')]['opacity']=_0x4f1d47;_0x2100ac[_0x1314('0x39')]['filter']=_0x1314('0x89')+_0x4f1d47*0x64+')';_0x4f1d47+=_0x4f1d47*0.1;},0xa);}function fadeOutMeshElement(_0x4ba40b){if(_0x4ba40b!=undefined){var _0x4e5ab6=0x1;var _0x2ae636=setInterval(function(){if(_0x4e5ab6<0x1){}if(_0x4e5ab6<=0.1){_0x4e5ab6=0x0;_0x4ba40b[_0x1314('0x8b')]=![];clearInterval(_0x2ae636);}_0x4ba40b[_0x1314('0x47')]['opacity']=_0x4e5ab6;_0x4e5ab6-=_0x4e5ab6*0.1;},0xa);}}function fadeInMeshElement(_0xd509ee){if(_0xd509ee!=undefined){var _0x1a3bbe=0.1;_0xd509ee[_0x1314('0x8b')]=!![];var _0x4be7bb=setInterval(function(){if(_0x1a3bbe>=0x1){clearInterval(_0x4be7bb);}_0xd509ee[_0x1314('0x47')][_0x1314('0x40')]=_0x1a3bbe;_0x1a3bbe+=_0x1a3bbe*0.1;},0xa);}}function addUiControls(){let _0x4bc81b=document['getElementById'](_0x1314('0x8c'));_0x4bc81b[_0x1314('0x8d')]='Reset\x20camera\x20button';_0x4bc81b[_0x1314('0x26')](_0x1314('0x34'),resetToStartingPosition);let _0x39e990=document[_0x1314('0x16')](_0x1314('0x8e'));_0x39e990[_0x1314('0x8d')]=_0x1314('0x8f');_0x39e990[_0x1314('0x26')](_0x1314('0x34'),toggleGumVisibility);let _0x566764=document[_0x1314('0x16')](_0x1314('0x90'));_0x566764[_0x1314('0x8d')]=_0x1314('0x91');_0x566764[_0x1314('0x26')](_0x1314('0x34'),toggleSelectionIsolation);for(let _0x3f1ce2=0x0;_0x3f1ce2<diseaseCheckmarks['length'];_0x3f1ce2++){if(diseaseCheckmarks[_0x3f1ce2][_0x1314('0x92')](_0x1314('0x50'))==![]){diseaseCheckmarks[_0x3f1ce2][_0x1314('0x93')](_0x1314('0x50'),'0');diseaseCheckmarks[_0x3f1ce2][_0x1314('0x4a')][0x0][_0x1314('0x39')][_0x1314('0x41')]='none';}else{if(diseaseCheckmarks[_0x3f1ce2][_0x1314('0x4f')]('value')=='1'){diseaseCheckmarks[_0x3f1ce2][_0x1314('0x93')]('value','1');diseaseCheckmarks[_0x3f1ce2]['className']+='\x20selected';diseaseCheckmarks[_0x3f1ce2][_0x1314('0x4a')][0x0][_0x1314('0x39')][_0x1314('0x41')]=_0x1314('0x94');}}diseaseCheckmarks[_0x3f1ce2][_0x1314('0x95')]=function(){if(this[_0x1314('0x4f')](_0x1314('0x50'))=='1'){this[_0x1314('0x93')](_0x1314('0x50'),'0');this[_0x1314('0x96')]=this[_0x1314('0x96')][_0x1314('0x97')](_0x1314('0x98'),'');this[_0x1314('0x4a')][0x0]['style']['display']=_0x1314('0x42');}else{this['setAttribute'](_0x1314('0x50'),'1');this[_0x1314('0x96')]+=_0x1314('0x98');this[_0x1314('0x4a')][0x0][_0x1314('0x39')][_0x1314('0x41')]=_0x1314('0x94');}};}}function toggleGumVisibility(){if(gumObjects[0x0]!=undefined){if(areGumsVisible){for(let _0x1bec46=0x0;_0x1bec46<gumObjects[_0x1314('0x35')];_0x1bec46++){gumObjects[_0x1bec46][_0x1314('0x47')]=toothMaterials[0x5];fadeOutMeshElement(gumObjects[_0x1bec46]);}areGumsVisible=![];}else{for(let _0x51b3ba=0x0;_0x51b3ba<gumObjects['length'];_0x51b3ba++){gumObjects[_0x51b3ba][_0x1314('0x47')]=toothMaterials[0x5];fadeInMeshElement(gumObjects[_0x51b3ba]);}areGumsVisible=!![];}}}function addMouthOpeningScrubber(_0x10564a,_0x4d6b5c){scrubber=new ScrubberView();scrubber['elt'][_0x1314('0x8d')]=_0x1314('0x99');let _0x2a1353=document['getElementById'](_0x1314('0x9a'));_0x2a1353[_0x1314('0x9b')](scrubber[_0x1314('0x9c')],_0x2a1353[_0x1314('0x4a')][0x2]);scrubber['value'](0x0);scrubber[_0x1314('0x9d')](0x0)[_0x1314('0x9e')](0x3c)[_0x1314('0x9f')](0x1)[_0x1314('0xa0')](_0x1314('0xa1'));scrubber[_0x1314('0xa2')]=function(_0x48e254){};scrubber[_0x1314('0xa3')]=function(_0x10fafb){let _0x1cfc73=_0x10fafb*(animationMaxTime+0x4)/animationLength;_0x4d6b5c[_0x1314('0x7a')]=![];_0x2db13f(_0x10564a,_0x1cfc73);_0x4d6b5c[_0x1314('0x7a')]=!![];adjustIsolationPositionOnMouthPositionChange();};scrubber[_0x1314('0xa4')]=function(_0x57fa14){};function _0x2db13f(_0x14cdf6,_0x458df0){_0x14cdf6[_0x1314('0xa5')]=0x0;for(var _0x4460d6=0x0;_0x4460d6<_0x14cdf6[_0x1314('0xa6')][_0x1314('0x35')];_0x4460d6++){_0x14cdf6[_0x1314('0xa6')][_0x4460d6][_0x1314('0xa5')]=0x0;}_0x14cdf6[_0x1314('0x5f')](_0x458df0);}}function raycast(_0x96a10c,_0x212bd2){if(isTouchDevice){mouse['x']=event[_0x1314('0xa7')][0x0][_0x1314('0x28')]/window[_0x1314('0x29')]*0x2-0x1;mouse['y']=-(event[_0x1314('0xa7')][0x0][_0x1314('0x2a')]/window['innerHeight'])*0x2+0x1;}else{mouse['x']=_0x96a10c[_0x1314('0x28')]/window[_0x1314('0x29')]*0x2-0x1;mouse['y']=-(_0x96a10c[_0x1314('0x2a')]/window['innerHeight'])*0x2+0x1;}raycaster[_0x1314('0xa8')](mouse,camera);var _0x2bd3b1=raycaster[_0x1314('0xa9')](scene[_0x1314('0x4a')],!![]);let _0x5514b7=_0x2bd3b1[0x0];if(_0x5514b7==undefined){composer['passes'][0x2][_0x1314('0xaa')]=![];if(_0x212bd2){deselectObject();}}else{if(!isObjectFiltered(_0x5514b7['object'],_0x212bd2)){composer[_0x1314('0xab')][0x2][_0x1314('0xaa')]=!![];if(_0x212bd2){selectObject(_0x5514b7[_0x1314('0xac')]);setOutlinedObject(_0x5514b7[_0x1314('0xac')],!![]);}else{setOutlinedObject(_0x5514b7[_0x1314('0xac')],![]);}}else{composer[_0x1314('0xab')][0x2][_0x1314('0xaa')]=![];}}}function isObjectFiltered(_0x4aae6e,_0x4f8aaa){let _0x34b23d=_0x4aae6e[_0x1314('0x4b')];for(let _0x188969=0x0;_0x188969<filteredObjectNames['length'];_0x188969++){if(filteredObjectNames[_0x188969]==_0x34b23d){if(_0x4f8aaa){selectedObject=null;composer[_0x1314('0xab')][0x3]['enabled']=![];deselectObject();}return!![];}}return![];}function selectObject(_0x571d4a){selectedObject=_0x571d4a;composer[_0x1314('0xab')][0x3][_0x1314('0xaa')]=!![];setOutlinedObject(_0x571d4a,!![]);loadToothStatus(_0x571d4a);fadeInToothStatusMenu();}function deselectObject(){selectedObject=null;composer[_0x1314('0xab')][0x3][_0x1314('0xaa')]=![];contractToothStatusMenu();fadeOutToothStatusMenu();controls[_0x1314('0x5f')]();}let defaultCameraSettings;function isolateObject(){if(selectedObject!=undefined){defaultCameraSettings=camera[_0x1314('0x6f')]();let _0x2fb8e7=new THREE['Box3']();_0x2fb8e7[_0x1314('0xad')](selectedObject);const _0x49645d=new THREE[(_0x1314('0x3'))]();const _0x59f3e0=new THREE[(_0x1314('0x3'))]();_0x2fb8e7[_0x1314('0xae')](_0x49645d);_0x2fb8e7['getSize'](_0x59f3e0);let _0x522444=7.5;const _0x2f46d4=Math[_0x1314('0x9e')](_0x59f3e0['x'],_0x59f3e0['y'],_0x59f3e0['z']);let _0x37fcbf=Math['abs'](_0x2f46d4/0x4*Math[_0x1314('0xaf')](camera['fov']*0x2));_0x37fcbf*=_0x522444;const _0x5f5495=_0x2fb8e7[_0x1314('0x9d')]['z'];const _0x3178f6=_0x5f5495<0x0?-_0x5f5495+_0x37fcbf:_0x37fcbf-_0x5f5495;camera[_0x1314('0xb0')]=_0x3178f6*0x64;let _0x457d14=selectedObject[_0x1314('0x62')];let _0x46076f=camera[_0x1314('0x62')];let _0x4761f4=getLinearCoords(_0x46076f,_0x457d14,0x6);setupTween(controls,controls[_0x1314('0xb1')]['clone'](),controls[_0x1314('0xb1')],_0x49645d,0x514);setupTween(camera,camera[_0x1314('0x62')][_0x1314('0x6f')](),camera['position'],_0x4761f4,0x514);setNonSelectedObjectVisibility(![]);}}function addVectors(_0x142dcb,_0xd6c141){return _0x142dcb[_0x1314('0x65')]((_0x20e377,_0x3000d4)=>_0x20e377+_0xd6c141[_0x3000d4]);}function scalarMultiply(_0x37faf2,_0x5ede77){return _0x37faf2[_0x1314('0x65')](_0x5c6744=>_0x5c6744*_0x5ede77);}function getLength(_0x465ce7){return Math[_0x1314('0xb2')](..._0x465ce7);}function getLinearCoords(_0x311e9e,_0x4f4565,_0xec84e6){const _0x35562d=[_0x311e9e['x'],_0x311e9e['y'],_0x311e9e['z']];const _0x58c38b=[_0x4f4565['x'],_0x4f4565['y'],_0x4f4565['z']];const _0x1f2e2b=addVectors(_0x35562d,scalarMultiply(_0x58c38b,-0x1));const _0x1942b9=scalarMultiply(_0x1f2e2b,0x1/getLength(_0x1f2e2b));const _0x19fadf=scalarMultiply(_0x1942b9,_0xec84e6);const _0x210a74=addVectors(_0x58c38b,_0x19fadf);return new THREE[(_0x1314('0x3'))](_0x210a74[0x0],_0x210a74[0x1],_0x210a74[0x2]);}function deIsolateObject(){if(selectedObject!=undefined){setNonSelectedObjectVisibility(!![]);camera['needsUpdate']=!![];let _0x452faf=selectedObject['position'];let _0x34aa4b=camera[_0x1314('0x62')];let _0x511f89;if(camera['position']['z']<0x0){_0x511f89=startingCameraPosition;}else{_0x511f89=getLinearCoords(_0x34aa4b,_0x452faf,0x13);}setupTween(controls,controls[_0x1314('0xb1')][_0x1314('0x6f')](),controls[_0x1314('0xb1')],new THREE[(_0x1314('0x3'))](0x0,0x0,0x0),0x514);setupTween(camera,camera[_0x1314('0x62')][_0x1314('0x6f')](),camera[_0x1314('0x62')],_0x511f89,0x514);}else{setNonSelectedObjectVisibility(!![]);setupTween(controls,controls[_0x1314('0xb1')][_0x1314('0x6f')](),controls[_0x1314('0xb1')],new THREE[(_0x1314('0x3'))](0x0,0x0,0x0),0x514);setupTween(camera,camera[_0x1314('0x62')][_0x1314('0x6f')](),camera[_0x1314('0x62')],startingCameraPosition,0x514);}}function toggleSelectionIsolation(){if(isIsolated){deIsolateObject();isIsolated=![];}else{if(selectedObject!=undefined){isolateObject();isIsolated=!![];}}}function adjustIsolationPositionOnMouthPositionChange(){if(isIsolated&&selectedObject!=undefined){let _0x481f34=new THREE[(_0x1314('0xb3'))]();_0x481f34[_0x1314('0xad')](selectedObject);let _0x2d1f07=new THREE['Vector3']();_0x481f34[_0x1314('0xae')](_0x2d1f07);controls[_0x1314('0xb1')]=_0x2d1f07;}}const fitCameraToObject=function(_0x53ca60,_0x556a88,_0x1055b5,_0x72454){_0x1055b5=_0x1055b5||1.25;const _0x41a0bb=new THREE[(_0x1314('0xb3'))]();_0x41a0bb[_0x1314('0xad')](_0x556a88);const _0x57c4a5=_0x41a0bb[_0x1314('0xae')]();const _0x3a0cca=_0x41a0bb[_0x1314('0xb4')]();const _0x520d11=Math[_0x1314('0x9e')](_0x3a0cca['x'],_0x3a0cca['y'],_0x3a0cca['z']);const _0x553237=_0x53ca60[_0x1314('0xb5')]*(Math['PI']/0xb4);let _0x2a40ba=Math[_0x1314('0xb6')](_0x520d11/0x4*Math['tan'](_0x553237*0x2));_0x2a40ba*=_0x1055b5;_0x53ca60[_0x1314('0x62')]['z']=_0x2a40ba;const _0x3e0515=_0x41a0bb[_0x1314('0x9d')]['z'];const _0x3e599f=_0x3e0515<0x0?-_0x3e0515+_0x2a40ba:_0x2a40ba-_0x3e0515;_0x53ca60[_0x1314('0xb0')]=_0x3e599f*0x3;_0x53ca60['updateProjectionMatrix']();if(_0x72454){_0x72454[_0x1314('0xb1')]=_0x57c4a5;_0x72454[_0x1314('0xb7')]=_0x3e599f*0x2;_0x72454['saveState']();}else{_0x53ca60[_0x1314('0xb8')](_0x57c4a5);}};function setNonSelectedObjectVisibility(_0x944957){for(let _0x126e37=0x0;_0x126e37<scene[_0x1314('0x4a')][_0x1314('0x35')];_0x126e37++){if(scene[_0x1314('0x4a')][_0x126e37][_0x1314('0x4b')]==_0x1314('0x4c')){for(let _0x3f3507=0x0;_0x3f3507<scene[_0x1314('0x4a')][_0x126e37][_0x1314('0x4a')][_0x1314('0x35')];_0x3f3507++){let _0x5d3ffc=scene[_0x1314('0x4a')][_0x126e37]['children'][_0x3f3507];if(selectedObject!=undefined){if(selectedObject[_0x1314('0x4b')]!=_0x5d3ffc[_0x1314('0x4b')]){_0x5d3ffc[_0x1314('0x8b')]=_0x944957;}}else{_0x5d3ffc[_0x1314('0x8b')]=_0x944957;}}}}}function setupTween(_0x54791a,_0x54faf3,_0x161570,_0x90de22,_0x4130dd){new TWEEN[(_0x1314('0xb9'))](_0x54faf3)['to'](_0x90de22,_0x4130dd)['easing'](TWEEN[_0x1314('0xba')][_0x1314('0xbb')][_0x1314('0xbc')])[_0x1314('0xbd')](function(){_0x161570[_0x1314('0x77')](_0x54faf3);})[_0x1314('0xbe')]();}function resetToStartingPosition(){setupTween(camera,camera['position'][_0x1314('0x6f')](),camera[_0x1314('0x62')],startingCameraPosition,0x5dc);setupTween(controls,controls[_0x1314('0xb1')]['clone'](),controls[_0x1314('0xb1')],new THREE[(_0x1314('0x3'))](0x0,0x0,0x0),0x5dc);}function fadeOutToothStatusMenu(){toothStatusMenu[_0x1314('0x39')][_0x1314('0x40')]='0';toothStatusMenu[_0x1314('0x39')][_0x1314('0x44')]=_0x1314('0x42');}function fadeInToothStatusMenu(){toothStatusMenu['style']['opacity']='1';toothStatusMenu[_0x1314('0x39')][_0x1314('0x44')]='all';if(selectedObjectStatus==_0x1314('0x38')||selectedObjectStatus==_0x1314('0x3b')){expandToothStatusMenu();}}function createOutlinePasses(){let _0x1f6cab=new THREE[(_0x1314('0xbf'))](new THREE[(_0x1314('0xc0'))](window[_0x1314('0x29')],window[_0x1314('0x6')]),scene,camera);if(isTouchDevice){_0x1f6cab['edgeStrength']=Number(0x19);_0x1f6cab[_0x1314('0xc1')]=Number(0x3);}else{_0x1f6cab['edgeStrength']=Number(0x14);_0x1f6cab['edgeThickness']=Number(0x3);}_0x1f6cab[_0x1314('0xc2')]=Number(0x0);_0x1f6cab[_0x1314('0xc3')]=Number(0x0);_0x1f6cab[_0x1314('0xc4')]['set'](new THREE['Color'](_0x1314('0xc5')));_0x1f6cab[_0x1314('0xc6')]['set'](new THREE[(_0x1314('0x24'))](_0x1314('0xc7')));_0x1f6cab['selectedObjects']=[];composer[_0x1314('0x30')](_0x1f6cab);_0x1f6cab=new THREE[(_0x1314('0xbf'))](new THREE['Vector2'](window[_0x1314('0x29')],window[_0x1314('0x6')]),scene,camera);if(isTouchDevice){_0x1f6cab[_0x1314('0xc8')]=Number(0x19);_0x1f6cab[_0x1314('0xc1')]=Number(0x3);}else{_0x1f6cab[_0x1314('0xc8')]=Number(0x14);_0x1f6cab[_0x1314('0xc1')]=Number(0x3);}_0x1f6cab[_0x1314('0xc2')]=Number(0x0);_0x1f6cab['pulsePeriod']=Number(0x0);_0x1f6cab[_0x1314('0xc4')][_0x1314('0x63')](new THREE[(_0x1314('0x24'))](_0x1314('0xc9')));_0x1f6cab[_0x1314('0xc6')][_0x1314('0x63')](new THREE[(_0x1314('0x24'))](_0x1314('0xca')));_0x1f6cab[_0x1314('0xcb')]=[];composer[_0x1314('0x30')](_0x1f6cab);}function setOutlinedObject(_0x1e35b1,_0x227912){if(_0x227912){let _0x245ca2=composer['passes'][0x3];if(_0x245ca2==undefined||!_0x245ca2[_0x1314('0xcb')][_0x1314('0xcc')](_0x1e35b1)){_0x245ca2[_0x1314('0xaa')]=!![];_0x245ca2[_0x1314('0xcb')]=[_0x1e35b1];}}else{let _0x3e15bd=composer[_0x1314('0xab')][0x2];if((_0x3e15bd==undefined||!_0x3e15bd['selectedObjects']['includes'](_0x1e35b1))&&!_0x3e15bd[_0x1314('0xcb')][_0x1314('0xcc')](selectedObject)){_0x3e15bd[_0x1314('0xaa')]=!![];_0x3e15bd[_0x1314('0xcb')]=[_0x1e35b1];}}}function toScreenPosition(_0xa94d39,_0xb9105){if(_0xa94d39!=null){var _0x29e929=new THREE[(_0x1314('0x3'))]();var _0x239d50=window[_0x1314('0x29')]/0x2;var _0x15db8a=window['innerHeight']/0x2;_0xa94d39[_0x1314('0xcd')]();_0x29e929[_0x1314('0xce')](_0xa94d39[_0x1314('0xcf')]);_0x29e929[_0x1314('0xd0')](_0xb9105);_0x29e929['x']=_0x29e929['x']*_0x239d50+_0x239d50;_0x29e929['y']=-(_0x29e929['y']*_0x15db8a)+_0x15db8a;return{'x':_0x29e929['x'],'y':_0x29e929['y']};}return{'x':0x0,'y':0x0};};init();
+console.log('**************************************');
+console.log('*   TEETH STATUS VIEWER BY NOSTEC7   *');
+console.log('**************************************');
+
+
+let container;
+let camera;
+let controls;
+let renderer;
+let composer, copyPass, renderPass;
+let scene;
+let scrubber;
+let loadingOverlay;
+let toothStatusMenu;
+let toothStatusButtons;
+let animationMaxTime = 1.99; //Animation time when mouth is fully opened
+let animationLength = animationMaxTime * 100;
+let isCameraMoving = false;
+
+let hoveredObject;
+let selectedObject;
+let selectedObjectStatus;
+let isTouchDevice = true; // touch or mouse device (determines if mouse one first mousemove event)
+let hasTouched = false;
+let hasClicked = true;
+
+let startingTouchePos;
+let touchTravelDistance = 0;
+
+let raycaster, mouse = { x : 0, y : 0 };
+
+let startingCameraPosition = new THREE.Vector3(-0.1469926322389252, 1.1960779151428367, 15.98586221593867);
+let filteredObjectNames = ["Upper_jaw001", "Lower_jaw001"]; // Objects that will not be selectable (jaw meshes)
+
+let gumObjects = [undefined, undefined];
+let gumObjectNames = ["Upper_jaw001", "Lower_jaw001"];
+
+let sickTeethTextures = [];
+let sickTeethMaterials = [];
+let damagedTeethTextures = [];
+let damagedTeethMaterials = [];
+let toothMaterials = []; // Holds 3 materials - healthy, missing and golden
+
+let lastSelectedStatus;
+let isStatusMenuExpanded = false;
+
+let isIsolated = false;
+
+let diseasedTeethDetailsWindow;
+let diseasedWindowDetails;
+let diseasedDescriptionBox;
+let diseaseCheckboxes;
+let diseaseCheckmarks;
+let diseaseCheckboxNames;
+
+let areGumsVisible = true;
+let smallScreenScaleFactor = 0.8;
+
+
+const mixers = [];
+const clock = new THREE.Clock();
+
+let iHeight = window.innerHeight;
+
+let teethArr = [];
+class Tooth{
+	constructor(mesh, status, inside, outside, left, right, top, description){
+		this.mesh = mesh;
+		this.toothStatus = 'healthy';
+		this.checkedInside = inside;
+		this.checkedOutside = outside;
+		this.checkedLeft = left;
+		this.checkedRight = right;
+		this.checkedTop = top;
+		this.description = description;
+	}
+
+	setStatus(status){
+		this.toothStatus = status;
+	}
+	setCheckedInside(isChecked){
+		this.checkedInside = isChecked;
+	}
+	setCheckedOutside(isChecked){
+		this.checkedOutside = isChecked;
+	}
+	setCheckedLeft(isChecked){
+		this.checkedLeft = isChecked;
+	}
+	setCheckedRight(isChecked){
+		this.checkedRight = isChecked;
+	}
+	setCheckedTop(isChecked){
+		this.checkedTop = isChecked;
+	}
+	setDescription(description){
+		this.description = description;
+	}
+}
+
+
+
+function init() {
+	isTouchDevice = isMobileTablet();
+
+	container = document.getElementById( "scene-container" );
+	loadingOverlay = document.getElementById( "loading-screen" );
+	toothStatusMenu = document.getElementById( "tooth-status-menu" );
+	toothStatusButtons = document.getElementsByClassName("status-selection");
+	toothDescriptionSaveButton = document.getElementById("save-description");
+	diseasedTeethDetailsWindow = document.getElementById('diseased-status-window');
+	diseasedDescriptionBox = document.getElementById('disease-description-box');
+	diseaseCheckboxes = document.getElementById('disease-checkboxes');
+	diseaseCheckboxNames = document.getElementById('disease-checkbox-names');
+	diseasedWindowDetails = document.getElementById('diseased-window-details');
+	diseaseCheckmarks = document.getElementsByClassName('checkmark');
+
+	addStatusButtonListeners();
+
+	scene = new THREE.Scene();
+	scene.background = new THREE.Color( 0x25282d );
+
+	createCamera();
+	createControls();
+	createLights();
+	loadModels();
+	createRenderer();
+	addUiControls();
+	
+	
+	raycaster = new THREE.Raycaster();
+	renderer.domElement.addEventListener( 'mousedown', function(event){
+		isCameraMoving = true;
+		mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+		mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+		startingTouchePos = [mouse.x, mouse.y];	
+
+	}, false );
+	
+	renderer.domElement.addEventListener( 'mouseup', function(event){
+		mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+		mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+		if(get2dDistance(startingTouchePos, mouse) < 0.01){ // This is touch
+			hasClicked = true;
+			raycast (event, true);
+		}
+		isCameraMoving = false;
+	}, false );
+	
+	renderer.domElement.addEventListener( 'mousemove', function(event){
+		mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+		mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+		raycast (event, false);
+	}, false );
+	
+	
+	renderer.domElement.addEventListener('touchstart', function(event){
+		hasTouched = true;
+	}, false);
+	
+	renderer.domElement.addEventListener('touchmove', function(event){
+		hasTouched = false; 
+		isCameraMoving = true;
+	}, false);
+	
+	
+	renderer.domElement.addEventListener('touchend', function(event){
+		if(hasTouched){
+			raycast (event, true);  
+		}
+		isCameraMoving = false;
+	}, false);
+	
+	
+	//Outlining the object
+	var renderPass = new THREE.RenderPass( scene, camera );
+	copyPass = new THREE.ShaderPass( THREE.CopyShader );
+	copyPass.renderToScreen = true;
+
+	composer = new THREE.EffectComposer(renderer);
+	composer.addPass( renderPass );
+	composer.addPass( copyPass );
+	createOutlinePasses();
+ 
+
+	let i = 0;
+	renderer.setAnimationLoop( () => {
+    	update();
+    	render();
+	});
+
+
+}
+
+function createCamera() {
+	camera = new THREE.PerspectiveCamera( 35, container.clientWidth / container.clientHeight, 1, 5000 );
+	camera.position.set( 0, 1, 19 );
+}
+
+
+
+//======================================================
+//============== TEETH STATUS SETTERS ==================
+function addStatusButtonListeners(){
+
+	toothStatusButtons[0].addEventListener('click', setAsHealthy);
+	toothStatusButtons[1].addEventListener('click', setAsSick);
+	toothStatusButtons[2].addEventListener('click', setAsDamaged);
+	toothStatusButtons[3].addEventListener('click', setAsMissing);
+	toothStatusButtons[4].addEventListener('click', setAsGolden);
+	toothDescriptionSaveButton.addEventListener('click', saveToothDescription);
+
+
+	for(let i = 0; i < toothStatusButtons.length; i++){
+		toothStatusButtons[i].addEventListener('touchstart', function(event){
+			hasTouched = true;
+		}, false);
+		toothStatusButtons[i].addEventListener('touchmove', function(event){
+			hasTouched = false; 
+			isCameraMoving = true;
+		}, false);
+
+		toothStatusButtons[i].addEventListener('mousedown', function(){
+			isCameraMoving = true;
+			//transformToothStatusMenu();
+		});
+		toothStatusButtons[i].addEventListener('mouseup', function(){
+			isCameraMoving = false;
+		});
+	}
+	
+	
+	toothStatusButtons[0].addEventListener('touchend', function(event){
+		if(hasTouched){
+			setAsHealthy();
+		}
+		isCameraMoving = false;
+	}, false);
+
+	toothStatusButtons[0].addEventListener('touchend', function(event){
+		if(hasTouched){
+			setAsHealthy(); 
+		}
+		isCameraMoving = false;
+	});
+	toothStatusButtons[1].addEventListener('touchend', function(event){
+		if(hasTouched){
+			setAsSick(); 
+		}
+		isCameraMoving = false;
+	});
+	toothStatusButtons[2].addEventListener('touchend', function(event){
+		if(hasTouched){
+			setAsDamaged(); 
+		}
+		isCameraMoving = false;
+	});
+
+	toothStatusButtons[3].addEventListener('touchend', function(event){
+		if(hasTouched){
+			setAsMissing(); 
+		}
+		isCameraMoving = false;
+	});
+	toothStatusButtons[3].addEventListener('touchend', function(event){
+		if(hasTouched){
+			setAsGolden(); 
+		}
+		isCameraMoving = false;
+	});
+
+}
+
+function highlightCurrentObjectStatus(toothObj){
+	revertStatusButtonColorChanges();
+	if(toothObj.toothStatus == 'healthy'){
+		toothStatusButtons[0].style.backgroundColor = "rgba(20,20,20,0.50)";
+	}
+	else if(toothObj.toothStatus == 'sick'){
+		expandToothStatusMenu();
+		toothStatusButtons[1].style.backgroundColor = "rgba(20,20,20,0.50)";
+	}
+	else if(toothObj.toothStatus == 'damaged'){
+		expandToothStatusMenu();
+		toothStatusButtons[2].style.backgroundColor = "rgba(20,20,20,0.50)";
+	} 
+	else if(toothObj.toothStatus == 'missing'){
+		toothStatusButtons[3].style.backgroundColor = "rgba(20,20,20,0.50)";
+	} 
+	else if(toothObj.toothStatus == 'golden'){
+		toothStatusButtons[4].style.backgroundColor = "rgba(20,20,20,0.50)";
+	} 
+}
+
+
+function adjustDescriptionElementSizing(){
+	if(window.innerWidth > 768){
+		//toothStatusMenu.style.transform = `scale(${smallScreenScaleFactor}, ${smallScreenScaleFactor})`;
+		toothStatusMenu.style.width = "680px";
+	} else{
+		//toothStatusMenu.style.transform = `scale(${smallScreenScaleFactor}, ${smallScreenScaleFactor})`;
+		//toothStatusMenu.style.width = "calc(100% - 30px)";
+		toothStatusMenu.style.width = "calc(100% + 20px)";
+		//toothStatusMenu.style.right = "-15px";
+		//toothStatusMenu.style.bottom = "40px";
+		//toothStatusMenu.transform = "translate(50,50)";
+		//diseasedDescriptionBox.style.width = `${window.innerWidth-20 - toothStatusButtons[0].clientWidth - 37-62 - 30}px`; // 37 - checkbox width, 62 - checkboxname width
+	}
+}
+
+function expandToothStatusMenu(){
+	adjustDescriptionElementSizing();
+
+	if(!isStatusMenuExpanded){
+		setTimeout(function(){
+			diseasedTeethDetailsWindow.style.display="flex";
+			showDiseasedTeethDetailWindow();
+			
+		},200);
+	}
+	isStatusMenuExpanded = true;
+}
+
+
+function hideDiseasedTeethDetailWindow(){
+	diseasedTeethDetailsWindow.style.opacity = "0";
+	setTimeout(function(){
+		diseasedTeethDetailsWindow.style.display = "none";
+		//diseasedTeethDetailsWindow.pointerEvents = "none";
+	},200);
+}
+function showDiseasedTeethDetailWindow(){
+	diseasedTeethDetailsWindow.style.display = "flex";
+	setTimeout(function(){
+		diseasedTeethDetailsWindow.style.opacity = "1";
+	}, 100);
+	
+	
+	
+}
+
+function minimizeToothStatusMenu(){
+	toothStatusMenu.style = "132px";
+	toothStatusMenu.style.opacity = "1";
+	toothStatusMenu.style.pointerEvents = "all";
+	//fadeOutDomElement(diseasedTeethDetailsWindow, 10);
+	hideDiseasedTeethDetailWindow();
+	//diseasedTeethDetailsWindow.style.opacity = "0";
+	isStatusMenuExpanded = false;
+}
+function contractToothStatusMenu(){
+	minimizeToothStatusMenu();
+		//if(selectedObject != undefined && lastSelectedStatus != 'sick' && lastSelectedStatus != 'damaged'){
+			/*fadeOutDomElement(diseasedTeethDetailsWindow, 10);
+			setTimeout(function(){
+				diseasedTeethDetailsWindow.style.display="none";
+			},1000);*/
+		//}
+	isStatusMenuExpanded = false;
+	
+}
+function revertStatusButtonColorChanges(){
+	for(let i = 0; i < toothStatusButtons.length; i++){
+		toothStatusButtons[i].style.backgroundColor = "rgba(80,80,80,0.55)";
+	}
+}
+
+function setAsHealthy(){
+	selectedObject.material = toothMaterials[0];
+	contractToothStatusMenu();
+	revertStatusButtonColorChanges();
+	setToothStatus(selectedObject, 'healthy');
+	deselectObject();
+	lastSelectedStatus = 'healthy';
+	
+}
+function setAsSick(){
+	revertStatusButtonColorChanges();
+	toothStatusButtons[1].style.backgroundColor = "rgba(20,20,20,0.50)";
+	
+	expandToothStatusMenu();
+	lastSelectedStatus = 'sick';
+	
+	//setToothStatus(selectedObject, 'sick');
+}
+function setAsDamaged(){
+	revertStatusButtonColorChanges();
+	toothStatusButtons[2].style.backgroundColor = "rgba(20,20,20,0.50)";
+	
+	expandToothStatusMenu();
+	lastSelectedStatus = 'damaged';
+	
+	//setToothStatus(selectedObject, 'damaged');
+}
+function setAsMissing(){
+	selectedObject.material = toothMaterials[3];
+	revertStatusButtonColorChanges();
+	contractToothStatusMenu();
+	setToothStatus(selectedObject, 'missing');
+	deselectObject();
+	lastSelectedStatus = 'missing';
+}
+function setAsGolden(){
+	selectedObject.material = toothMaterials[4];
+	revertStatusButtonColorChanges();
+	contractToothStatusMenu();
+	setToothStatus(selectedObject, 'golden');
+	deselectObject();
+	lastSelectedStatus = 'golden'
+}
+function saveToothDescription(){
+	contractToothStatusMenu();
+	revertStatusButtonColorChanges();
+
+	if(lastSelectedStatus == 'sick'){
+		selectedObject.material = toothMaterials[1];
+		setToothStatus(selectedObject, 'sick');
+		//deselectObject();
+	} else if(lastSelectedStatus == 'damaged'){
+		selectedObject.material = toothMaterials[2];
+		setToothStatus(selectedObject, 'damaged');
+		
+	}
+	deselectObject();
+}
+
+
+function initTeethArray(){
+	for(let i = 0; i < scene.children.length; i++){
+		if(scene.children[i].name == 'root'){
+			for(let j = 0; j < scene.children[i].children.length; j++){
+				let tempMesh = scene.children[i].children[j];
+				if(tempMesh.name.includes('Tooth')){
+					teethArr.push(new Tooth(tempMesh, 'healthy', '0', '0', '0', '0', '0', ""));
+				}
+			}
+		}
+	}
+}
+
+function loadToothStatus(object){
+	if(object != undefined){
+		let toothObj = getSelectedToothObj(object);
+		setStatusDataOnUIElements(toothObj);
+	}
+}
+
+
+function getSelectedToothObj(){
+	let toothObjInArr;
+	for(let i = 0; i < teethArr.length; i++){
+		if(selectedObject.name == teethArr[i].mesh.name){
+			toothObjInArr = teethArr[i];
+			break;
+		}
+	}
+	return toothObjInArr;
+}
+function getSelectedToothObj(mesh){
+	let toothObjInArr;
+	for(let i = 0; i < teethArr.length; i++){
+		if(mesh.name == teethArr[i].mesh.name){
+			toothObjInArr = teethArr[i];
+			break;
+		}
+	}
+	return toothObjInArr;
+}
+
+
+function setStatusDataOnUIElements(object){
+	selectedObjectStatus = object.toothStatus;
+	if(selectedObjectStatus == 'sick' || selectedObjectStatus == 'damaged'){
+		expandToothStatusMenu();
+	} else if(isStatusMenuExpanded){
+		minimizeToothStatusMenu();
+	}
+	highlightCurrentObjectStatus(object); // show on button that it is selected
+	if(object.checkedInside != diseaseCheckmarks[0].getAttribute('value')) diseaseCheckmarks[0].click();
+	if(object.checkedOutside != diseaseCheckmarks[1].getAttribute('value')) diseaseCheckmarks[1].click();
+	if(object.checkedLeft != diseaseCheckmarks[2].getAttribute('value')) diseaseCheckmarks[2].click();
+	if(object.checkedRight != diseaseCheckmarks[3].getAttribute('value')) diseaseCheckmarks[3].click();
+	if(object.checkedTop != diseaseCheckmarks[4].getAttribute('value')) diseaseCheckmarks[4].click();
+	diseasedDescriptionBox.value = object.description;
+}
+
+
+function setToothStatus(object, status){
+	let toothObj = getSelectedToothObj(object);
+	toothObj.setStatus(status);
+
+	setTimeout(function(){
+		if(status == 'sick' || status == 'damaged'){
+			toothObj.setCheckedInside(diseaseCheckmarks[0].getAttribute('value'));
+			toothObj.setCheckedOutside(diseaseCheckmarks[1].getAttribute('value'));
+			toothObj.setCheckedLeft(diseaseCheckmarks[2].getAttribute('value'));
+			toothObj.setCheckedRight(diseaseCheckmarks[3].getAttribute('value'));
+			toothObj.setCheckedTop(diseaseCheckmarks[4].getAttribute('value'));
+			toothObj.setDescription(diseasedDescriptionBox.value);
+		} else{
+			toothObj.setCheckedInside('0');
+			toothObj.setCheckedOutside('0');
+			toothObj.setCheckedLeft('0');
+			toothObj.setCheckedRight('0');
+			toothObj.setCheckedTop('0');
+		}
+	}, 100);
+	
+}
+
+function isMobileTablet(){
+    var check = false;
+    (function(a){
+        if(/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino|android|ipad|playbook|silk/i.test(a)||/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(a.substr(0,4))) 
+            check = true;
+    })(navigator.userAgent||navigator.vendor||window.opera);
+    return check;
+}
+
+function get2dDistance(pos1, mousePos){
+	if(pos1 != undefined){
+	  let xCoord = pos1[0] - mousePos.x;
+	  let yCoord = pos1[1] - mousePos.y;
+	  return Math.sqrt( xCoord*xCoord + yCoord*yCoord );
+	}
+	return 0;
+}
+
+function createControls() {
+	controls = new THREE.OrbitControls( camera, container );
+	controls.enableDamping = true;
+	controls.dampingFactor = 0.2;
+	controls.rotateSpeed = 0.1;
+	controls.panSpeed = 0.1;
+	controls.zoomSpeed = 1;
+	controls.minPolarAngle = 0.0;
+	controls.maxPolarAngle = 2.9;
+	controls.screenSpacePanning = true;
+	controls.update();
+}
+
+
+//======================================================
+//================= SCENE LIGHTS =======================
+function createLights() {
+  const ambientLight = new THREE.HemisphereLight( 0xddeeff, 0x0f0e0d, 8 );
+  const frontLight = new THREE.DirectionalLight( 0xffffff, 1.0 );
+  frontLight.position.set( 0, 5, 30 );
+	
+	const frontBottomLight = new THREE.DirectionalLight( 0xffffff, 0.5 );
+  frontBottomLight.position.set( 0, -15, 30 );
+
+  const farLeftLight = new THREE.DirectionalLight( 0xffffff, 1 );
+  farLeftLight.position.set( -30, 8, 10 );
+	
+  const leftLight = new THREE.DirectionalLight( 0xffffff, 0.1 );
+  leftLight.position.set( -30, 10, -80 );
+	
+  const farRightLight = new THREE.DirectionalLight( 0xffffff, 1 );
+  farRightLight.position.set( 30, 3, 2 );
+	
+  const rightLight = new THREE.DirectionalLight( 0xffffff, 1 );
+  rightLight.position.set( 20, 10, 10 );	
+
+  scene.add( ambientLight, frontLight, frontBottomLight, farLeftLight, leftLight, rightLight, farRightLight );
+
+}
+
+function createToothMaterials(model){
+	let object = model.children[1];
+
+	object.material.side = THREE.DoubleSide;
+	object.material.map.minFilter = THREE.NearestFilter;
+	let healthyMaterial = cloneMaterial(object, true, 1, 0x838383);
+	let sickMaterial = cloneMaterial(object, true, 1, 0x4f4f4f);
+	let damagedMaterial = cloneMaterial(object, true, 1, 0x222222);
+	let missingMaterial = cloneMaterial(object, true, 0, 0x838383);
+	let goldenMaterial = cloneMaterial(object, true, 1, 0xb28c26);
+	let gumMaterial = cloneMaterial(object, true, 1, 0x838383);
+
+	toothMaterials.push(healthyMaterial, sickMaterial, damagedMaterial, missingMaterial, goldenMaterial, gumMaterial);
+}
+
+function loadTextureMap(textureName){
+	//let texture = new THREE.TextureLoader().load( 'models/Textures/Roughness.jpg' );
+	let src = 'models/Textures/' + textureName + '.jpg';
+	let texture = new THREE.TextureLoader().load( src );
+	texture.wrapS = THREE.RepeatWrapping;
+	texture.wrapT = THREE.RepeatWrapping;
+	texture.encoding = THREE.sRGBEncoding;
+	texture.flipY = false;
+	texture.needsUpdate = true;
+}
+
+function fillSickAndDamagedMapArrays(){
+
+}
+
+function cloneMaterial(objectToClone, transparency, opacity, colorHex){
+	//Healthy material
+	let mat = objectToClone.material.clone();
+	mat.map = objectToClone.material.map.clone();
+	mat.map.repeat.set(1,1);
+	mat.map.offset.set(0,0); 
+	mat.map.minFilter = THREE.NearestFilter;
+	mat.map.magFilter = THREE.NearestFilter;
+	mat.map.needsUpdate = true;
+	mat.side = THREE.DoubleSide;
+	mat.transparent = transparency;
+	mat.opacity = opacity;
+	mat.color.setHex( colorHex );
+	return mat;
+}
+
+function loadModels() {
+	const loader = new THREE.GLTFLoader();
+
+	// A reusable function to set up the models. We're passing in a position parameter
+	// so that they can be individually placed around the scene
+	const onLoad = ( gltf, position ) => {
+
+		const model = gltf.scene.children[ 0 ];
+		model.position.copy( position );
+
+		 
+		const animation = gltf.animations[ 0 ];
+		  
+		const mixer = new THREE.AnimationMixer( model );
+		mixers.push( mixer );
+		  
+		const action = mixer.clipAction( animation );  
+		action.play();
+		action.paused = true;
+		  
+		addMouthOpeningScrubber(mixer, action);
+	    scene.add( model );
+
+	    fadeOutLoadingScreen();
+
+	    //Replace object names with actual objects
+		for(let i = 0; i < gumObjectNames.length; i++){
+			gumObjects[i] = scene.getObjectByName(gumObjectNames[i], true);
+		}
+
+		createToothMaterials(model);
+		initTeethArray();
+	};	
+
+	// the loader will report the loading progress to this function
+	const onProgress = () => {};
+
+	// the loader will send any error messages to this function, and we'll log
+	// them to to console
+	const onError = ( errorMessage ) => { console.log( errorMessage ); };
+
+	// load the first model. Each model is loaded asynchronously,
+	// so don't make any assumption about which one will finish loading first
+	/*const parrotPosition = new THREE.Vector3( 0, 0, 2.5 );
+	loader.load( 'models/Parrot.glb', gltf => onLoad( gltf, parrotPosition ), onProgress, onError );*/
+
+	const teethPosition = new THREE.Vector3( 0, -0.1, 1 );
+	loader.load( 'models/GLTF/Teeth.gltf', gltf => onLoad( gltf, teethPosition ), onProgress, onError );
+
+
+	
+
+}
+
+function createRenderer() {
+
+  // create a WebGLRenderer and set its width and height
+  renderer = new THREE.WebGLRenderer( { antialias: true } );
+  renderer.setSize( container.clientWidth, container.clientHeight );
+
+  renderer.setPixelRatio( window.devicePixelRatio );
+
+  renderer.gammaFactor = 2.2;
+  renderer.gammaOutput = true;
+
+  renderer.physicallyCorrectLights = true;
+
+  container.appendChild( renderer.domElement );
+
+}
+
+
+
+
+function update() {
+  const delta = clock.getDelta();
+  for ( const mixer of mixers ) {
+    mixer.update( delta );
+  }
+}
+
+function render() {
+
+	TWEEN.update();
+	controls.update();
+	
+	renderer.render( scene, camera );
+	composer.render();
+
+}
+
+var timeOut = null;
+
+function onWindowResize() {
+  camera.aspect = container.clientWidth / container.clientHeight;
+  // update the camera's frustum
+  camera.updateProjectionMatrix();
+  renderer.setSize( container.clientWidth, container.clientHeight );
+
+
+	if(window.innerHeight != iHeight) {
+		iHeight = window.innerHeight;
+		document.body.style.height = iHeight + 'px';
+	}
+	if(timeOut) clearTimeout(timeOut);
+	timeOut = setTimeout(onWindowResize, 100);
+}
+
+window.addEventListener( 'resize', onWindowResize );
+/*
+
+function additionalHeightresize() {
+	if(window.innerHeight != iHeight) {
+		iHeight = window.innerHeight;
+		document.body.style.height = iHeight + 'px';
+	}
+}*/
+
+
+//======================================================
+//=================== TRANSITIONS ======================
+function fadeOutDomElement(element, interval) {
+
+    var opacity = 1;  // initial opacity
+    var timer = setInterval(function () {
+
+    	if(opacity < 1){
+    		element.pointerEvents = "none";
+    	} 
+    	if (opacity <= 0.1){
+            clearInterval(timer);
+            element.style.display = 'none';
+        }
+        element.style.opacity = opacity;
+        element.style.filter = 'alpha(opacity=' + opacity * 100 + ")";
+        opacity -= opacity * 0.1;
+    }, interval);
+}
+
+function fadeOutLoadingScreen(element, interval) {
+	setTimeout(function(){
+		fadeOutDomElement(loadingOverlay.children[0], 20); // fade loading animation first
+		setTimeout(function(){
+			fadeOutDomElement(loadingOverlay, 20);
+		}, 160);
+	}, 1400);
+}
+
+function fadeInDomElement(element) {
+    var opacity = 0.1;  // initial opacity
+    element.style.display = 'block';
+    var timer = setInterval(function () {
+        if(opacity > 0.1){
+        	element.pointerEvents = "all";
+        }
+        if (opacity >= 1){
+            clearInterval(timer);
+        }
+        element.style.opacity = opacity;
+        element.style.filter = 'alpha(opacity=' + opacity * 100 + ")";
+        opacity += opacity * 0.1;
+    }, 10);
+}
+
+
+
+function fadeOutMeshElement(element) {
+	if(element != undefined){
+	    var opacity = 1;  // initial opacity
+	    var timer = setInterval(function () {
+	    	if(opacity < 1){
+	    		//element.pointerEvents = "none";
+	    	} 
+	    	if (opacity <= 0.1){
+	    		opacity = 0.0;
+	    		element.visible = false;
+	            clearInterval(timer);
+	        }
+	        element.material.opacity = opacity;
+	        opacity -= opacity * 0.1;
+	    }, 10);
+	}
+}
+function fadeInMeshElement(element) {
+	if(element != undefined){
+	    var opacity = 0.1;  // initial opacity
+	    element.visible = true;
+	    var timer = setInterval(function () {
+	        if (opacity >= 1){
+	            clearInterval(timer);
+	        }
+	        element.material.opacity = opacity;
+	        opacity += opacity * 0.1;
+	    }, 10);
+	}
+}
+
+
+
+//======================================================
+//================== ADD UI CONTROLS ===================
+function addUiControls(){
+	/*
+	let resetButton = document.createElement('div');
+	resetButton.className += "button";
+
+	let resetText = document.createTextNode("RESET");     // Create a text node
+	resetButton.appendChild(resetText);  
+
+	resetButton.id = "reset-button";
+	resetButton.title ="Reset camera button";
+	document.getElementById("controls-container").appendChild(resetButton);
+	resetButton.addEventListener('click', resetToStartingPosition);*/
+
+	/*let resetButton = document.createElement('div');
+	let resetImage = document.createElement('IMG');
+	resetImage.src = "../images/Reset-icon.svg";
+	resetButton.appendChild(resetImage);
+	
+	resetButton.id = "reset-button";
+	resetButton.class += 'button';
+	resetButton.title ="Reset camera button";
+	document.getElementById("controls-container").appendChild(resetButton);
+	resetButton.addEventListener('click', resetToStartingPosition);*/
+
+
+	/*let toggleGumsButton = document.createElement('div');
+	toggleGumsButton.className += "button";
+
+	let gumsText = document.createTextNode("GUMS");     // Create a text node
+	toggleGumsButton.appendChild(gumsText);  
+
+	toggleGumsButton.id = "toggle-gums-button";
+	toggleGumsButton.title = "Toggle gum visibility"
+	document.getElementById("controls-container").appendChild(toggleGumsButton);
+	toggleGumsButton.addEventListener('click', toggleGumVisibility);*/
+
+
+	let resetButton = document.getElementById('reset-icon');
+	resetButton.title ="Reset camera button";
+	resetButton.addEventListener('click', resetToStartingPosition);
+
+	let toggleGumsButton = document.getElementById('no-gums-icon');
+	toggleGumsButton.title = "Toggle gum visibility";
+	toggleGumsButton.addEventListener('click', toggleGumVisibility);
+
+	let toggleIsolationButton = document.getElementById('isolate-icon');
+	toggleIsolationButton.title = "Toggle object isolation";
+	toggleIsolationButton.addEventListener('click', toggleSelectionIsolation);
+
+
+	for(let i = 0; i < diseaseCheckmarks.length; i++){
+		if (diseaseCheckmarks[i].hasAttribute('value') == false) {
+            diseaseCheckmarks[i].setAttribute('value', '0');
+            diseaseCheckmarks[i].children[0].style.display="none";
+        } else {
+            if (diseaseCheckmarks[i].getAttribute('value') == '1') {
+                diseaseCheckmarks[i].setAttribute('value', '1');
+                diseaseCheckmarks[i].className += " selected";
+                diseaseCheckmarks[i].children[0].style.display="inline-block";
+            }
+        }
+
+
+        diseaseCheckmarks[i].onclick = function () {
+            if (this.getAttribute('value') == '1') {
+                this.setAttribute('value', '0');
+                this.className = this.className.replace(' selected', '');
+                this.children[0].style.display="none";
+            } else {
+                this.setAttribute('value', '1');
+                this.className += " selected";
+                this.children[0].style.display="inline-block";
+            }
+        };
+    }
+
+/*
+		diseaseCheckmarks[i].addEventListener('click', function(){
+			if(diseaseCheckmarks[i].getAttribute('value') == '0') {
+				diseaseCheckmarks[i].setAttribute('value', '1');
+			}
+			else {
+				diseaseCheckmarks[i].setAttribute('value', '0');
+			}
+		});
+		diseaseCheckmarks[i].setAttribute('value', '0');
+	}*/
+}
+
+function toggleGumVisibility(){
+	if(gumObjects[0] != undefined){
+		if(areGumsVisible){
+			for(let i = 0; i < gumObjects.length; i++){
+				gumObjects[i].material = toothMaterials[5];
+				fadeOutMeshElement(gumObjects[i]);
+			}
+			areGumsVisible = false;
+		} else{
+			for(let i = 0; i < gumObjects.length; i++){
+				gumObjects[i].material = toothMaterials[5];
+				fadeInMeshElement(gumObjects[i]);
+			}
+			areGumsVisible = true;
+		}
+	}
+	
+}
+
+
+function addMouthOpeningScrubber(mixer, action){
+	scrubber = new ScrubberView();
+	scrubber.elt.title = "Slide to control openness of the mouth"
+
+	let container = document.getElementById("controls-container");
+	container.insertBefore(scrubber.elt, container.children[2]);
+	/*if(window.innerWidth < 768){
+		container.style.transform = `scale(${smallScreenScaleFactor}, ${smallScreenScaleFactor})`;
+		container.style.bottom = "20px";
+	}*/
+	
+	scrubber.value(0);
+	scrubber.min(0).max(60).step(1).orientation('horizontal');
+	
+	scrubber.onScrubStart = function (value) {
+	}
+	// onValueChanged is called whenever the scrubber is moved.
+	scrubber.onValueChanged = function (value) {
+		
+		
+		let currentPos = value * (animationMaxTime+4) / animationLength; //animation's time based on slider value
+
+		action.paused = false
+		seekAnimationTime(mixer, currentPos)
+		action.paused = true;
+
+
+		adjustIsolationPositionOnMouthPositionChange();
+
+		
+
+
+
+		//transformToothStatusMenu(); // animate status box
+		
+	}
+	// onScrubEnd is called whenever a user stops scrubbing
+	scrubber.onScrubEnd = function (value) {
+	    //console.log(value); // the value at the time of scrub end
+	}
+function seekAnimationTime(animMixer, timeInSeconds){
+    animMixer.time=0;
+    for(var i=0;i<animMixer._actions.length;i++){
+      animMixer._actions[i].time=0;
+    }
+    animMixer.update(timeInSeconds)
+  }
+}
+
+
+//======================================================
+//================== RAYCASTING ========================
+function raycast ( e , isSelected) {
+    //sets the mouse position with a coordinate system where the center
+    if(isTouchDevice){
+    	mouse.x = (event.changedTouches[0].clientX / window.innerWidth) * 2 - 1;
+   		mouse.y = -(event.changedTouches[0].clientY / window.innerHeight) * 2 + 1;
+    } else{
+		mouse.x = ( e.clientX / window.innerWidth ) * 2 - 1;
+    	mouse.y = - ( e.clientY / window.innerHeight ) * 2 + 1;
+    }
+    
+    //set the picking ray from the camera position and mouse coordinates
+    raycaster.setFromCamera( mouse, camera );    
+
+    //compute intersections (no 2nd parameter true anymore)
+    var intersects = raycaster.intersectObjects( scene.children, true );
+
+    let closestIntersection = intersects[0];
+    if(closestIntersection == undefined){
+	    //selectedObject = null;
+	    composer.passes[2].enabled = false;
+	    if(isSelected){
+	    	deselectObject();
+	    }
+    } else{
+		if(!isObjectFiltered(closestIntersection.object, isSelected)){
+			composer.passes[2].enabled = true;
+			if(isSelected){
+				selectObject(closestIntersection.object);
+				setOutlinedObject(closestIntersection.object, true); 
+
+		    } else{
+		    	setOutlinedObject(closestIntersection.object, false); 
+		    }
+		} else{
+			composer.passes[2].enabled = false;
+		}
+    }
+    
+}
+
+
+//Does not allow to pick an object that is in filtered object's list
+function isObjectFiltered(object, isSelected){
+	let objectName = object.name;
+	for(let i = 0; i < filteredObjectNames.length; i++){
+		if(filteredObjectNames[i] == objectName){
+			if(isSelected){
+				selectedObject = null;
+	    		composer.passes[3].enabled = false;
+	    		deselectObject();
+			}
+			return true;
+		}
+	}
+	return false;
+}
+
+
+
+//======================================================
+//================ OBJECT SELECTION ====================
+function selectObject(object){
+	selectedObject = object;
+	composer.passes[3].enabled = true;
+	setOutlinedObject(object, true); 
+	//transformToothStatusMenu();
+	loadToothStatus(object);
+	fadeInToothStatusMenu();
+}
+
+function deselectObject(){
+	selectedObject = null;
+	composer.passes[3].enabled = false;
+	//fadeOutDomElement(toothStatusMenu);
+	contractToothStatusMenu();
+	fadeOutToothStatusMenu();
+	//controls.target.set(0, 0, 0);
+	//setupTween (controls, controls.target.clone(),controls.target, new THREE.Vector3(0,0,0), 1000);	
+	controls.update();
+
+}
+
+
+let defaultCameraSettings;
+function isolateObject(){
+	if(selectedObject != undefined){
+
+
+		defaultCameraSettings = camera.clone();
+
+		//console.log(camera.position.z);
+		let boundingBox = new THREE.Box3();
+		boundingBox.setFromObject( selectedObject );
+		const center = new THREE.Vector3();
+		const size = new THREE.Vector3();
+		boundingBox.getCenter(center);
+		boundingBox.getSize(size);
+		
+		let offset = 7.5;
+		const maxDim = Math.max( size.x, size.y, size.z );
+		//const fov = camera.fov * ( Math.PI / 180 );
+
+
+		let cameraZ = Math.abs( maxDim / 4 * Math.tan( camera.fov * 2 ) );
+	    cameraZ *= offset; // zoom out a little so that objects don't fill the screen
+	    //camera.position.z = cameraZ;
+
+	    const minZ = boundingBox.min.z;
+
+	    const cameraToFarEdge = ( minZ < 0 ) ? -minZ + cameraZ : cameraZ - minZ;
+	    camera.far = cameraToFarEdge * 100;
+	    
+
+		let objPos = selectedObject.position;
+		let camPos = camera.position;
+		let destinationCamPos = getLinearCoords(camPos, objPos, 6);
+
+
+		setupTween(controls, controls.target.clone(), controls.target, center, 1300);
+		setupTween(camera, camera.position.clone(), camera.position, destinationCamPos, 1300);
+		
+
+		setNonSelectedObjectVisibility(false);
+
+	}
+}
+//VECTOR CALCULATIONS (For camera zooming)
+function addVectors(v1, v2) {
+    return v1.map((x, i) => x + v2[i]);
+}
+
+function scalarMultiply(v, c) {
+    return v.map(x => x*c);
+}
+
+function getLength(v) {
+    return Math.hypot(...v);
+}
+
+//Point B + distance looking from point A
+function getLinearCoords(posA, posB, dist){
+	const A = [posA.x, posA.y, posA.z];
+	const B = [posB.x, posB.y, posB.z];
+
+	const vecB2A = addVectors(A, scalarMultiply(B, -1));
+	const normB2A = scalarMultiply(vecB2A, 1/getLength(vecB2A));
+	const distB2A = scalarMultiply(normB2A, dist);
+	const C = addVectors(B, distB2A);
+	return new THREE.Vector3(C[0], C[1], C[2]);
+}
+
+
+function deIsolateObject(){
+	if(selectedObject != undefined){
+		
+		setNonSelectedObjectVisibility(true);
+		camera.needsUpdate = true;
+
+		let objPos = selectedObject.position;
+		let camPos = camera.position;
+
+		let destinationCamPos;
+
+		if(camera.position.z < 0){
+			destinationCamPos = startingCameraPosition;
+		//destinationCamPos.y = 1;
+		
+			/*destinationCamPos.z = 0;
+			if(controls.target.x >= 0) destinationCamPos.x = 16;
+			else destinationCamPos.x = -16;*/
+		}  else{
+			destinationCamPos = getLinearCoords(camPos, objPos, 19);
+		}
+		setupTween(controls, controls.target.clone(), controls.target, new THREE.Vector3(0,0,0), 1300);
+		setupTween(camera, camera.position.clone(), camera.position, destinationCamPos, 1300);
+	} else{
+
+		setNonSelectedObjectVisibility(true);
+		setupTween(controls, controls.target.clone(), controls.target, new THREE.Vector3(0,0,0), 1300);
+		setupTween(camera, camera.position.clone(), camera.position, startingCameraPosition, 1300);
+	}
+}
+
+
+function toggleSelectionIsolation(){
+		if(isIsolated){
+			deIsolateObject();
+			isIsolated = false;
+		} else{
+			if(selectedObject != undefined){
+				isolateObject();
+				isIsolated = true;
+			}
+		}
+}
+
+function adjustIsolationPositionOnMouthPositionChange(){
+	if(isIsolated && selectedObject != undefined){
+			let boundingBox = new THREE.Box3();
+			boundingBox.setFromObject( selectedObject );
+			let center = new THREE.Vector3();
+			boundingBox.getCenter(center);
+			controls.target = center;
+		}
+}
+
+
+const fitCameraToObject = function ( camera, object, offset, controls ) {
+    offset = offset || 1.25;
+    const boundingBox = new THREE.Box3();
+    // get bounding box of object - this will be used to setup controls and camera
+    boundingBox.setFromObject( object );
+    const center = boundingBox.getCenter();
+    const size = boundingBox.getSize();
+    // get the max side of the bounding box (fits to width OR height as needed )
+    const maxDim = Math.max( size.x, size.y, size.z );
+    const fov = camera.fov * ( Math.PI / 180 );
+    let cameraZ = Math.abs( maxDim / 4 * Math.tan( fov * 2 ) );
+    cameraZ *= offset; // zoom out a little so that objects don't fill the screen
+    camera.position.z = cameraZ;
+    const minZ = boundingBox.min.z;
+    const cameraToFarEdge = ( minZ < 0 ) ? -minZ + cameraZ : cameraZ - minZ;
+    camera.far = cameraToFarEdge * 3;
+    camera.updateProjectionMatrix();
+
+    if ( controls ) {
+      // set camera to rotate around center of loaded object
+      controls.target = center;
+      // prevent camera from zooming out far enough to create far plane cutoff
+      controls.maxDistance = cameraToFarEdge * 2;
+      controls.saveState();
+    } else {
+        camera.lookAt( center )
+   }
+}
+
+function setNonSelectedObjectVisibility(isVisible){
+	for(let i = 0; i < scene.children.length; i++){
+		if(scene.children[i].name == 'root'){
+			for(let j = 0; j < scene.children[i].children.length; j++){
+				let tempChild = scene.children[i].children[j];
+				if(selectedObject != undefined){
+					if(selectedObject.name != tempChild.name){
+						tempChild.visible = isVisible;
+					}
+				} else{
+					tempChild.visible = isVisible
+				}
+			}
+		}
+	}
+}
+
+function setupTween (object, position, copyParam, target, duration)
+{
+    //TWEEN.removeAll();    // remove previous tweens if needed
+    new TWEEN.Tween (position)
+        .to (target, duration)
+        .easing (TWEEN.Easing.Cubic.InOut)
+        .onUpdate (
+            function() {
+                // copy incoming position into capera position
+                copyParam.copy (position);
+
+                //transformToothStatusMenu();
+            })
+        .start();
+}
+function resetToStartingPosition(){
+	setupTween (camera, camera.position.clone(), camera.position, startingCameraPosition, 1500);	
+	setupTween (controls, controls.target.clone(),controls.target, new THREE.Vector3(0,0,0), 1500);	
+}
+
+
+
+
+
+function fadeOutToothStatusMenu(){
+	toothStatusMenu.style.opacity = "0";
+	toothStatusMenu.style.pointerEvents = "none";
+}
+function fadeInToothStatusMenu(){
+	//setupTween (camera.position.clone(), new THREE.Vector3 (startingCameraPosition.x, startingCameraPosition.y, startingCameraPosition.z), 1500);
+	
+	toothStatusMenu.style.opacity = "1";
+	toothStatusMenu.style.pointerEvents = "all";
+
+	//console.log(selectedObjectStatus);
+	if(selectedObjectStatus == 'sick' || selectedObjectStatus == 'damaged'){
+		expandToothStatusMenu();
+	}
+}
+
+
+/*function transformToothStatusMenu(){
+	if(toothStatusMenu.opacity != "0"){
+		let pos = toScreenPosition(selectedObject, camera);
+		toothStatusMenu.style.left = (`${pos.x+50}px`);
+		toothStatusMenu.style.top = (`${pos.y}px`);
+
+
+
+		if(pos.x > window.innerWidth/2){
+			//toothStatusMenu.style.left = (`${pos.x+50}px`);
+		} else{
+			//toothStatusMenu.style.left = (`${pos.x-50-toothStatusMenu.clientWidth}px`);
+		}
+		
+		
+
+		//Right border protection
+		if(toothStatusMenu.clientWidth + toothStatusMenu.offsetLeft + 5 > window.innerWidth){
+			toothStatusMenu.style.left = `${window.innerWidth - toothStatusMenu.clientWidth - 5}px`;
+		}
+		//Left border protection
+		if(toothStatusMenu.offsetLeft - 5 < 0 ){
+			toothStatusMenu.style.left = "5px";
+		}
+		//Bottom border protection
+		if(toothStatusMenu.clientHeight + toothStatusMenu.offsetTop + 70 > window.innerHeight){
+			toothStatusMenu.style.top = `${window.innerHeight - toothStatusMenu.clientHeight - 70}px`;
+		}
+		//Top border protection
+		if(toothStatusMenu.offsetTop - 5 < 0 ){
+			toothStatusMenu.style.top = "5px";
+		}
+	}
+}*/
+
+
+//======================================================
+//================ OBJECT OUTLINING ====================
+function createOutlinePasses(){ // 2 pass - hover, 3 pass - selection
+	//Outline for hover
+	let outlinePass = new THREE.OutlinePass(new THREE.Vector2(window.innerWidth, window.innerHeight), scene, camera);
+	if(isTouchDevice){
+		outlinePass.edgeStrength = Number( 25 );
+		outlinePass.edgeThickness = Number( 3 );
+	} else{
+		outlinePass.edgeStrength = Number( 20 );
+		outlinePass.edgeThickness = Number( 3 );	
+	}
+	outlinePass.edgeGlow = Number( 0);
+	outlinePass.pulsePeriod = Number( 0 );
+	outlinePass.visibleEdgeColor.set( new THREE.Color("rgb(15, 15, 15)") );
+	outlinePass.hiddenEdgeColor.set( new THREE.Color("rgb(4, 4, 4)") );
+	outlinePass.selectedObjects = [];
+	composer.addPass( outlinePass );
+
+	//Outline for selection
+	outlinePass = new THREE.OutlinePass(new THREE.Vector2(window.innerWidth, window.innerHeight), scene, camera);
+	if(isTouchDevice){
+		outlinePass.edgeStrength = Number( 25 );
+		outlinePass.edgeThickness = Number( 3 );
+	} else{
+		outlinePass.edgeStrength = Number( 20 );
+		outlinePass.edgeThickness = Number( 3 );	
+	}
+
+	outlinePass.edgeGlow = Number( 0);
+	outlinePass.pulsePeriod = Number( 0 );
+	outlinePass.visibleEdgeColor.set( new THREE.Color("rgb(255, 255, 255)") );
+	outlinePass.hiddenEdgeColor.set( new THREE.Color("rgb(9, 9, 9)") );
+	outlinePass.selectedObjects = [];
+	composer.addPass( outlinePass );
+}
+
+function setOutlinedObject(object, isSelected){
+	if(isSelected){ // selected
+		let tempOutlinePass = composer.passes[3];
+		
+		if(tempOutlinePass == undefined || !tempOutlinePass.selectedObjects.includes(object)){
+			tempOutlinePass.enabled = true;
+			tempOutlinePass.selectedObjects = [object];
+		}
+	} else{ // hovered
+		let tempOutlinePass = composer.passes[2];
+		if((tempOutlinePass == undefined || !tempOutlinePass.selectedObjects.includes(object)) && !tempOutlinePass.selectedObjects.includes(selectedObject)){
+			tempOutlinePass.enabled = true;
+			tempOutlinePass.selectedObjects = [object];
+		}
+	}
+
+}
+
+
+//======================================================
+//============= 2D POSITIONING FROM 3D =================
+function toScreenPosition(object, camera){
+	if(object != null){
+	    var vector = new THREE.Vector3();
+
+	    //var widthHalf = 0.5*renderer.context.canvas.width;
+	    //var heightHalf = 0.5*renderer.context.canvas.height;
+	    var widthHalf = window.innerWidth/2;
+	    var heightHalf = window.innerHeight/2;
+
+	    object.updateMatrixWorld();
+	    vector.setFromMatrixPosition(object.matrixWorld);
+	    vector.project(camera);
+
+	    vector.x = ( vector.x * widthHalf ) + widthHalf;
+	    vector.y = - ( vector.y * heightHalf ) + heightHalf;
+
+	    return { 
+	        x: vector.x,
+	        y: vector.y
+	    };
+	} return {x:0, y:0}
+};
+
+init();
