@@ -62,6 +62,10 @@ const clock = new THREE.Clock();
 
 let iHeight = window.innerHeight;
 
+var params;
+var url = window.location.href;
+
+
 let teethArr = [];
 class Tooth{
 	constructor(mesh, status, inside, outside, left, right, top, description){
@@ -190,7 +194,17 @@ function init() {
     	render();
 	});
 
+}
 
+function getJsonParamsFromUrl(url) {
+    var regex = /[?&]([^=#]+)=([^&#]*)/g,
+    url = window.location.href,
+    params = {},
+    match;
+    while(match = regex.exec(url)) {
+        params[match[1]] = match[2];
+    }
+    return params;
 }
 
 function createCamera() {
@@ -1386,4 +1400,17 @@ function toScreenPosition(object, camera){
 	} return {x:0, y:0}
 };
 
-init();
+
+
+params = getJsonParamsFromUrl(url);
+if(params.autostart == "false"){
+	var preloadScreen = document.getElementById("preloader");
+	preloadScreen.children[0].addEventListener('click', function(){
+		preloadScreen.style.pointerEvents = "none";
+		preloadScreen.style.opacity = "0";
+		init();
+	});
+} else{
+	init();
+}
+
