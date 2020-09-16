@@ -1,2 +1,2 @@
 # teethViewer
-Temporary development link: https://teethviewer01.herokuapp.com/
+Temporary development link: https://teethviewer.herokuapp.com/
